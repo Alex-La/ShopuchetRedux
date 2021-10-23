@@ -3,3 +3,11 @@ export type PublicStackNavigator = {
   Registration: undefined;
   Forgot: undefined;
 };
+
+export type PrivateStackNavigator = {
+  Home: undefined;
+};
+
+export type DrawerNavigator = {
+  Main: undefined;
+};
