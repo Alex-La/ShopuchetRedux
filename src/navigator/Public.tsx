@@ -6,9 +6,9 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {PublicStackNavigator} from '../utils/navigation.types';
 
-import Login from '../pages/public/Login';
-import Forgot from '../pages/public/Forgot';
-import Registration from '../pages/public/Registration';
+import Login from '../components/pages/public/Login';
+import Forgot from '../components/pages/public/Forgot';
+import Registration from '../components/pages/public/Registration';
 
 const Stack = createNativeStackNavigator<PublicStackNavigator>();
 

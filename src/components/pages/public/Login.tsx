@@ -9,7 +9,10 @@ import {
 import {Button, Icon, Input, Layout, Text} from '@ui-kitten/components';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {PublicStackNavigator} from '../../utils/navigation.types';
+import {PublicStackNavigator} from '../../../utils/navigation.types';
+
+import {useAppDispatch} from '../../../redux';
+import {SetToken} from '../../../redux/actions/authActions';
 
 const Email = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="email-outline" />
@@ -24,6 +27,8 @@ type Props = {
 };
 
 const Login: React.FC<Props> = ({navigation}) => {
+  const dispatch = useAppDispatch();
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -78,7 +83,9 @@ const Login: React.FC<Props> = ({navigation}) => {
         <TouchableOpacity style={styles.forgot} onPress={navToForgot}>
           <Text status="primary">Забыли пароль?</Text>
         </TouchableOpacity>
-        <Button style={styles.login}>ВХОД</Button>
+        <Button style={styles.login} onPress={() => dispatch(SetToken(true))}>
+          ВХОД
+        </Button>
         <Button
           style={styles.registration}
           appearance="ghost"

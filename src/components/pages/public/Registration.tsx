@@ -18,7 +18,7 @@ import {
 } from '@ui-kitten/components';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {PublicStackNavigator} from '../../utils/navigation.types';
+import {PublicStackNavigator} from '../../../utils/navigation.types';
 
 const User = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="person-outline" />

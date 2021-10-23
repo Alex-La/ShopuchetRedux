@@ -15,7 +15,7 @@ import {
 } from '@ui-kitten/components';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {PublicStackNavigator} from '../../utils/navigation.types';
+import {PublicStackNavigator} from '../../../utils/navigation.types';
 
 const Email = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="email-outline" />
