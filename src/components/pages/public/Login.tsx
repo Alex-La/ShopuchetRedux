@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {
   ImageProps,
   Keyboard,
@@ -6,13 +6,22 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {Button, Icon, Input, Layout, Text} from '@ui-kitten/components';
+import {
+  Button,
+  Icon,
+  Input,
+  Layout,
+  Text,
+  TopNavigation,
+  TopNavigationAction,
+} from '@ui-kitten/components';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PublicStackNavigator} from '../../../utils/navigation.types';
 
 import {useAppDispatch} from '../../../redux';
 import {SetToken} from '../../../redux/actions/authActions';
+import ThemeContext from '../../../context/ThemeContext';
 
 const Email = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="email-outline" />
@@ -22,12 +31,21 @@ const Lock = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="lock-outline" />
 );
 
+const SunIcon = (props?: Partial<ImageProps>) => (
+  <Icon {...props} name="sun-outline" />
+);
+
+const MoonIcon = (props?: Partial<ImageProps>) => (
+  <Icon {...props} name="moon-outline" />
+);
+
 type Props = {
   navigation: NativeStackNavigationProp<PublicStackNavigator, 'Login'>;
 };
 
 const Login: React.FC<Props> = ({navigation}) => {
   const dispatch = useAppDispatch();
+  const {theme, toggleTheme} = useContext(ThemeContext);
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -57,47 +75,61 @@ const Login: React.FC<Props> = ({navigation}) => {
   );
   //--------------------
 
+  const ThemeAction = useCallback(
+    () => (
+      <TopNavigationAction
+        icon={theme === 'light' ? SunIcon : MoonIcon}
+        onPress={toggleTheme}
+      />
+    ),
+    [theme, toggleTheme],
+  );
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Layout style={styles.wrap}>
-        <Text category="h2">ВХОД</Text>
-        <Input
-          value={email}
-          onChangeText={handleChangeEmail}
-          accessoryLeft={Email}
-          placeholder="E-mail"
-          keyboardType="email-address"
-          style={styles.email}
-          size="large"
-        />
-        <Input
-          value={password}
-          onChangeText={handleChangePassword}
-          accessoryLeft={Lock}
-          accessoryRight={renderToggleIcon}
-          placeholder="Password"
-          style={styles.password}
-          secureTextEntry={secureTextEntry}
-          size="large"
-        />
-        <TouchableOpacity style={styles.forgot} onPress={navToForgot}>
-          <Text status="primary">Забыли пароль?</Text>
-        </TouchableOpacity>
-        <Button style={styles.login} onPress={() => dispatch(SetToken(true))}>
-          ВХОД
-        </Button>
-        <Button
-          style={styles.registration}
-          appearance="ghost"
-          onPress={navToReg}>
-          РЕГИСТРАЦИЯ
-        </Button>
+      <Layout style={styles.topWrap}>
+        <TopNavigation accessoryRight={ThemeAction} />
+        <Layout style={styles.wrap}>
+          <Text category="h2">ВХОД</Text>
+          <Input
+            value={email}
+            onChangeText={handleChangeEmail}
+            accessoryLeft={Email}
+            placeholder="E-mail"
+            keyboardType="email-address"
+            style={styles.email}
+            size="large"
+          />
+          <Input
+            value={password}
+            onChangeText={handleChangePassword}
+            accessoryLeft={Lock}
+            accessoryRight={renderToggleIcon}
+            placeholder="Password"
+            style={styles.password}
+            secureTextEntry={secureTextEntry}
+            size="large"
+          />
+          <TouchableOpacity style={styles.forgot} onPress={navToForgot}>
+            <Text status="primary">Забыли пароль?</Text>
+          </TouchableOpacity>
+          <Button style={styles.login} onPress={() => dispatch(SetToken(true))}>
+            ВХОД
+          </Button>
+          <Button
+            style={styles.registration}
+            appearance="ghost"
+            onPress={navToReg}>
+            РЕГИСТРАЦИЯ
+          </Button>
+        </Layout>
       </Layout>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  topWrap: {flex: 1},
   wrap: {flex: 1, justifyContent: 'center', alignItems: 'center', padding: 15},
   email: {marginTop: 50},
   password: {marginTop: 10},
