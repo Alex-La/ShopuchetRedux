@@ -6,8 +6,15 @@ export type PublicStackNavigator = {
 
 export type PrivateStackNavigator = {
   Home: undefined;
+  TradePoint: undefined;
 };
 
 export type DrawerNavigator = {
   Main: undefined;
+  ConReport: undefined;
+  Trade: undefined;
+  Reports: undefined;
+  Remainders: undefined;
+  Friends: undefined;
+  Profile: undefined;
 };

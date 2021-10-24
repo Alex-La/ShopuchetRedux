@@ -5,13 +5,11 @@ import {
   Icon,
   Layout,
   Text,
-  Toggle,
-  TopNavigation,
   TopNavigationAction,
   useTheme,
 } from '@ui-kitten/components';
 import React, {useCallback, useContext} from 'react';
-import {ImageProps, StyleSheet, View} from 'react-native';
+import {ImageProps, StyleSheet} from 'react-native';
 import ThemeContext from '../../context/ThemeContext';
 
 const ForwardIcon = (props?: Partial<ImageProps>) => (
@@ -40,6 +38,15 @@ const DrawerContent: React.FC<Props> = ({navigation, state}) => {
   const uiTheme = useTheme();
   const {theme, toggleTheme} = useContext(ThemeContext);
 
+  const navToTradePoint = () => navigation.navigate('TradePoint');
+  const navToMain = () => navigation.navigate('Main');
+  const navToConReport = () => navigation.navigate('ConReport');
+  const navToTrade = () => navigation.navigate('Trade');
+  const navToReports = () => navigation.navigate('Reports');
+  const navToRemainders = () => navigation.navigate('Remainders');
+  const navToFriends = () => navigation.navigate('Friends');
+  const navToProfile = () => navigation.navigate('Profile');
+
   const renderHeader = useCallback(
     () => (
       <Layout level="2" style={styles.header}>
@@ -57,6 +64,7 @@ const DrawerContent: React.FC<Props> = ({navigation, state}) => {
     () => (
       <>
         <DrawerItem
+          onPress={navToProfile}
           title="Профиль"
           accessoryLeft={PersonIcon}
           style={{
@@ -72,13 +80,17 @@ const DrawerContent: React.FC<Props> = ({navigation, state}) => {
 
   return (
     <Drawer header={renderHeader} footer={renderFooter}>
-      <DrawerItem title="Выбрать торговую точку" accessoryRight={ForwardIcon} />
-      <DrawerItem title="Главная" />
-      <DrawerItem title="Сводный отчет" />
-      <DrawerItem title="Торговля" />
-      <DrawerItem title="Отчеты" />
-      <DrawerItem title="Товарные остатки" />
-      <DrawerItem title="Список друзей" />
+      <DrawerItem
+        title="Выбрать торговую точку"
+        accessoryRight={ForwardIcon}
+        onPress={navToTradePoint}
+      />
+      <DrawerItem title="Главная" onPress={navToMain} />
+      <DrawerItem title="Сводный отчет" onPress={navToConReport} />
+      <DrawerItem title="Торговля" onPress={navToTrade} />
+      <DrawerItem title="Отчеты" onPress={navToReports} />
+      <DrawerItem title="Товарные остатки" onPress={navToRemainders} />
+      <DrawerItem title="Список друзей" onPress={navToFriends} />
     </Drawer>
   );
 };
