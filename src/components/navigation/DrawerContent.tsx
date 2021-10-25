@@ -3,12 +3,13 @@ import {
   Drawer,
   DrawerItem,
   Icon,
+  IndexPath,
   Layout,
   Text,
   TopNavigationAction,
   useTheme,
 } from '@ui-kitten/components';
-import React, {useCallback, useContext} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {ImageProps, StyleSheet} from 'react-native';
 import ThemeContext from '../../context/ThemeContext';
 
@@ -34,18 +35,44 @@ const MoonIcon = (props?: Partial<ImageProps>) => (
 
 interface Props extends DrawerContentComponentProps {}
 
-const DrawerContent: React.FC<Props> = ({navigation, state}) => {
+const DrawerContent: React.FC<Props> = ({navigation}) => {
   const uiTheme = useTheme();
   const {theme, toggleTheme} = useContext(ThemeContext);
 
-  const navToTradePoint = () => navigation.navigate('TradePoint');
-  const navToMain = () => navigation.navigate('Main');
-  const navToConReport = () => navigation.navigate('ConReport');
-  const navToTrade = () => navigation.navigate('Trade');
-  const navToReports = () => navigation.navigate('Reports');
-  const navToRemainders = () => navigation.navigate('Remainders');
-  const navToFriends = () => navigation.navigate('Friends');
-  const navToProfile = () => navigation.navigate('Profile');
+  const [index, setIndex] = useState<number>(1);
+
+  const navToTradePoint = () => {
+    navigation.navigate('TradePoint');
+    navigation.closeDrawer();
+  };
+  const navToMain = () => {
+    navigation.navigate('Main');
+    setIndex(1);
+  };
+  const navToConReport = () => {
+    navigation.navigate('ConReport');
+    setIndex(2);
+  };
+  const navToTrade = () => {
+    navigation.navigate('Trade');
+    setIndex(3);
+  };
+  const navToReports = () => {
+    navigation.navigate('Reports');
+    setIndex(4);
+  };
+  const navToRemainders = () => {
+    navigation.navigate('Remainders');
+    setIndex(5);
+  };
+  const navToFriends = () => {
+    navigation.navigate('Friends');
+    setIndex(6);
+  };
+  const navToProfile = () => {
+    navigation.navigate('Profile');
+    setIndex(7);
+  };
 
   const renderHeader = useCallback(
     () => (
@@ -71,15 +98,19 @@ const DrawerContent: React.FC<Props> = ({navigation, state}) => {
             borderBottomWidth: 1,
             borderBottomColor: uiTheme['background-basic-color-3'],
           }}
+          selected={index === 7}
         />
         <DrawerItem title="Выход" accessoryLeft={LogoutIcon} />
       </>
     ),
-    [uiTheme],
+    [uiTheme, index],
   );
 
   return (
-    <Drawer header={renderHeader} footer={renderFooter}>
+    <Drawer
+      header={renderHeader}
+      footer={renderFooter}
+      selectedIndex={new IndexPath(index)}>
       <DrawerItem
         title="Выбрать торговую точку"
         accessoryRight={ForwardIcon}
