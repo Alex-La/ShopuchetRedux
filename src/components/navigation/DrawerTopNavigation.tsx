@@ -1,5 +1,10 @@
 import React from 'react';
-import {Icon, TopNavigation, TopNavigationAction} from '@ui-kitten/components';
+import {
+  Divider,
+  Icon,
+  TopNavigation,
+  TopNavigationAction,
+} from '@ui-kitten/components';
 import {ImageProps} from 'react-native';
 import {DrawerHeaderProps} from '@react-navigation/drawer';
 
@@ -9,12 +14,17 @@ const MenuIcon = (props?: Partial<ImageProps>) => (
 
 interface Props extends DrawerHeaderProps {}
 
-const DrawerTopNavigation: React.FC<Props> = ({options, navigation}) => {
+const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
   const MenuAction = () => (
     <TopNavigationAction icon={MenuIcon} onPress={navigation.openDrawer} />
   );
 
-  return <TopNavigation accessoryLeft={MenuAction} title={options.title} />;
+  return (
+    <>
+      <TopNavigation accessoryLeft={MenuAction} title={options.title} />
+      {route.name !== 'Trade' && route.name !== 'Reports' && <Divider />}
+    </>
+  );
 };
 
 export default DrawerTopNavigation;

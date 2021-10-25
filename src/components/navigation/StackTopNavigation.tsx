@@ -1,5 +1,10 @@
 import React from 'react';
-import {Icon, TopNavigation, TopNavigationAction} from '@ui-kitten/components';
+import {
+  Divider,
+  Icon,
+  TopNavigation,
+  TopNavigationAction,
+} from '@ui-kitten/components';
 import {ImageProps} from 'react-native';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 
@@ -14,7 +19,12 @@ const StackTopNavigation: React.FC<Props> = ({options, navigation}) => {
     <TopNavigationAction icon={BackIcon} onPress={navigation.goBack} />
   );
 
-  return <TopNavigation accessoryLeft={BackAction} title={options.title} />;
+  return (
+    <>
+      <TopNavigation accessoryLeft={BackAction} title={options.title} />
+      <Divider />
+    </>
+  );
 };
 
 export default StackTopNavigation;

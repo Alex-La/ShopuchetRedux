@@ -18,3 +18,18 @@ export type DrawerNavigator = {
   Friends: undefined;
   Profile: undefined;
 };
+
+export type TradeTopTabNavigator = {
+  Sales: undefined;
+  Incomes: undefined;
+  Returns: undefined;
+};
+
+export type ReportsTopTabNavigator = {
+  SalesByProducts: undefined;
+  SalesByGroups: undefined;
+  SalesByMonthes: undefined;
+  ReturnsByProducts: undefined;
+  TopSellingProducts: undefined;
+  AvgReceipt: undefined;
+};
