@@ -1,10 +1,13 @@
 import {combineReducers} from 'redux';
 
-import {token} from './authReducer';
-import {Token} from '../types/auth.types';
+import {auth} from './authReducer';
+import {Auth} from '../types/auth.types';
 
-type RootReducer = {token: Token};
+import {fetch} from './fetchReducer';
+import {Fetch} from '../types/fetch.types';
 
-const rootReducer = combineReducers<RootReducer>({token});
+type RootReducer = {auth: Auth; fetch: Fetch};
+
+const rootReducer = combineReducers<RootReducer>({auth, fetch});
 
 export default rootReducer;

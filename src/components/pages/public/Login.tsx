@@ -20,8 +20,9 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PublicStackNavigator} from '../../../utils/navigation.types';
 
 import {useAppDispatch} from '../../../redux';
-import {SetToken} from '../../../redux/actions/authActions';
+import {SetIsAuth} from '../../../redux/actions/authActions';
 import ThemeContext from '../../../context/ThemeContext';
+import {SetIsAuthAction} from '../../../redux/types/auth.types';
 
 const Email = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="email-outline" />
@@ -113,7 +114,9 @@ const Login: React.FC<Props> = ({navigation}) => {
           <TouchableOpacity style={styles.forgot} onPress={navToForgot}>
             <Text status="primary">Забыли пароль?</Text>
           </TouchableOpacity>
-          <Button style={styles.login} onPress={() => dispatch(SetToken(true))}>
+          <Button
+            style={styles.login}
+            onPress={() => dispatch<SetIsAuthAction>(SetIsAuth(true))}>
             ВХОД
           </Button>
           <Button

@@ -10,13 +10,13 @@ import Private from './Private';
 import {useAppSelector} from '../redux';
 
 const Navigator: React.FC = () => {
-  const token = useAppSelector(state => state.token);
+  const isAuth = useAppSelector(state => state.auth.isAuth);
 
   return (
     <ErrorBoundary>
       <SafeAreaProvider>
         <NavigationContainer>
-          {token ? <Private /> : <Public />}
+          {isAuth ? <Private /> : <Public />}
         </NavigationContainer>
       </SafeAreaProvider>
     </ErrorBoundary>

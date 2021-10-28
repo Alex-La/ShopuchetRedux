@@ -1,12 +1,16 @@
-export type Token = boolean;
+type IsAuth = boolean;
 
-export enum AUTH_ACTION_TYPES {
-  SET_TOKEN = 'AUTH_ACTION/SET_TOKEN',
-}
-
-export type SetTokenAction = {
-  type: string;
-  token: Token;
+export type Auth = {
+  isAuth: IsAuth;
 };
 
-export type AuthActions = SetTokenAction;
+export enum AUTH_ACTION_TYPES {
+  SET_IS_AUTH = 'AUTH_ACTION/SET_IS_AUTH',
+}
+
+export type SetIsAuthAction = {
+  type: string;
+  payload: IsAuth;
+};
+
+export type AuthActions = SetIsAuthAction;

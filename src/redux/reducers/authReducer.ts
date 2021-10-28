@@ -1,17 +1,18 @@
 import {
   AuthActions,
   AUTH_ACTION_TYPES,
-  SetTokenAction,
-  Token,
+  SetIsAuthAction,
+  Auth,
 } from '../types/auth.types';
 
-const initialState: Token = false;
+const initialState: Auth = {
+  isAuth: false,
+};
 
-export const token = (state: Token = initialState, action: AuthActions) => {
+export const auth = (state: Auth = initialState, action: AuthActions): Auth => {
   switch (action.type) {
-    case AUTH_ACTION_TYPES.SET_TOKEN:
-      const {token} = action as SetTokenAction;
-      return token;
+    case AUTH_ACTION_TYPES.SET_IS_AUTH:
+      return {isAuth: action.payload};
     default:
       return state;
   }
