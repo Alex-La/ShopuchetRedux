@@ -1,9 +1,4 @@
-import {
-  AuthActions,
-  AUTH_ACTION_TYPES,
-  SetIsAuthAction,
-  Auth,
-} from '../types/auth.types';
+import {AuthActions, AUTH_ACTION_TYPES, Auth} from '../types/auth.types';
 
 const initialState: Auth = {
   isAuth: false,

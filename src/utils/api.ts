@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {Tokens} from './api.types';
 
-const baseUrl = 'https://api.shopuchet.kz/';
+const baseUrl = 'https://api.shopuchet.kz';
 
 axios.interceptors.request.use(async config => {
   const accessToken = await AsyncStorage.getItem('accessToken');
@@ -43,3 +43,12 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+const api = {
+  login: (username: string, password: string) =>
+    axios.get<Tokens>(
+      `${baseUrl}/logon-oauth2?username=${username}&password=${password}`,
+    ),
+};
+
+export default api;

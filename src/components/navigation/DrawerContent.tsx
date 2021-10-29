@@ -11,7 +11,9 @@ import {
 } from '@ui-kitten/components';
 import React, {useCallback, useContext, useState} from 'react';
 import {ImageProps, StyleSheet} from 'react-native';
+import {useDispatch} from 'react-redux';
 import ThemeContext from '../../context/ThemeContext';
+import {logout} from '../../redux/actions/authActions';
 
 const ForwardIcon = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="arrow-ios-forward" />
@@ -36,6 +38,8 @@ const MoonIcon = (props?: Partial<ImageProps>) => (
 interface Props extends DrawerContentComponentProps {}
 
 const DrawerContent: React.FC<Props> = ({navigation}) => {
+  const dispatch = useDispatch();
+
   const uiTheme = useTheme();
   const {theme, toggleTheme} = useContext(ThemeContext);
 
@@ -74,6 +78,8 @@ const DrawerContent: React.FC<Props> = ({navigation}) => {
     setIndex(7);
   };
 
+  const logOut = () => dispatch(logout());
+
   const renderHeader = useCallback(
     () => (
       <Layout level="2" style={styles.header}>
@@ -100,7 +106,7 @@ const DrawerContent: React.FC<Props> = ({navigation}) => {
           }}
           selected={index === 7}
         />
-        <DrawerItem title="Выход" accessoryLeft={LogoutIcon} />
+        <DrawerItem title="Выход" accessoryLeft={LogoutIcon} onPress={logOut} />
       </>
     ),
     [uiTheme, index],

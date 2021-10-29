@@ -19,10 +19,9 @@ import {
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PublicStackNavigator} from '../../../utils/navigation.types';
 
-import {useAppDispatch} from '../../../redux';
-import {SetIsAuth} from '../../../redux/actions/authActions';
+import {login} from '../../../redux/actions/authActions';
 import ThemeContext from '../../../context/ThemeContext';
-import {SetIsAuthAction} from '../../../redux/types/auth.types';
+import {useDispatch} from 'react-redux';
 
 const Email = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="email-outline" />
@@ -45,7 +44,7 @@ type Props = {
 };
 
 const Login: React.FC<Props> = ({navigation}) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const {theme, toggleTheme} = useContext(ThemeContext);
 
   const [email, setEmail] = useState<string>('');
@@ -74,6 +73,9 @@ const Login: React.FC<Props> = ({navigation}) => {
     ),
     [secureTextEntry],
   );
+
+  const logIn = () => dispatch(login(email, password));
+
   //--------------------
 
   const ThemeAction = useCallback(
@@ -114,9 +116,7 @@ const Login: React.FC<Props> = ({navigation}) => {
           <TouchableOpacity style={styles.forgot} onPress={navToForgot}>
             <Text status="primary">Забыли пароль?</Text>
           </TouchableOpacity>
-          <Button
-            style={styles.login}
-            onPress={() => dispatch<SetIsAuthAction>(SetIsAuth(true))}>
+          <Button style={styles.login} onPress={logIn}>
             ВХОД
           </Button>
           <Button
