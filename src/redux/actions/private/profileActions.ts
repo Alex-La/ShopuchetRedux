@@ -1,16 +1,10 @@
 import {ThunkAction} from 'redux-thunk';
 import api from '../../../utils/api';
 import {RootState} from '../../store';
-import {SetAppLoadingAction} from '../../types/fetch.types';
+import {SetLoadingAction} from '../../types/fetch.types';
 import {GetUserAction} from '../../types/private/private.types';
-import {PROFILE_ACTION_TYPES} from '../../types/private/profile.types';
-import {onError} from '../fetchActions';
+import {onError, setLoading} from '../fetchActions';
 import {getUser} from './privateActions';
-
-const setUpdateLoading = (loading: boolean): SetAppLoadingAction => ({
-  type: PROFILE_ACTION_TYPES.SET_UPDATE_LOADING,
-  payload: loading,
-});
 
 export const updateUser =
   (
@@ -24,10 +18,10 @@ export const updateUser =
     Promise<string>,
     RootState,
     unknown,
-    SetAppLoadingAction | GetUserAction
+    SetLoadingAction | GetUserAction
   > =>
   async dispatch => {
-    dispatch(setUpdateLoading(true));
+    dispatch(setLoading(true));
     return await new Promise(resolve =>
       api
         .updateUser(fn, nm, '', phone, oldpwd, newpwd)
@@ -35,11 +29,11 @@ export const updateUser =
           if (res.status === 200) {
             dispatch(getUser({fn, nm, phone, login, ft: ''}));
             resolve(res.data);
-            dispatch(setUpdateLoading(false));
+            dispatch(setLoading(false));
           }
         })
         .catch(e => {
-          dispatch(setUpdateLoading(false));
+          dispatch(setLoading(false));
           dispatch(onError(e.response.status, e.response.data));
         }),
     );

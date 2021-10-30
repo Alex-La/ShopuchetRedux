@@ -35,3 +35,10 @@ export type MainData = {
   week: MainDataObject;
   summ: number;
 };
+
+export type Friend = {
+  usersId: number;
+  login: string;
+  gTochkaId: number;
+  nameGTochka: string;
+};

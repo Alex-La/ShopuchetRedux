@@ -26,7 +26,7 @@ type Props = {
 
 const Edit: React.FC<Props> = ({navigation, route}) => {
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(state => state.profile.updateLoading);
+  const loading = useAppSelector(state => state.fetch.loading);
 
   const [name, setName] = useState<string>(route.params.nm);
   const [surname, setSurname] = useState<string>(route.params.fn);

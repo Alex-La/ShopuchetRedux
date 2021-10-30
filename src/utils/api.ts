@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {MainData, Tokens, TradePoints, User} from './api.types';
+import {Friend, MainData, Tokens, TradePoints, User} from './api.types';
 
 const baseUrl = 'https://api.shopuchet.kz';
 
@@ -80,6 +80,7 @@ const api = {
         oldpwd ? `&oldpwd=${oldpwd}` : ''
       }${newpwd ? `&newpwd=${newpwd}` : ''}`,
     ),
+  getFriends: () => axiosInstance.get<Friend[]>('/api/readusers'),
 };
 
 export default api;

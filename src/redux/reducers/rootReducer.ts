@@ -12,15 +12,15 @@ import {Private} from '../types/private/private.types';
 import {main} from './private/mainReducer';
 import {Main} from '../types/private/main.types';
 
-import {profile} from './private/profileReducer';
-import {Profile} from '../types/private/profile.types';
+import {friends} from './private/friendsReducer';
+import {Friends} from '../types/private/friends.types';
 
 type RootReducer = {
   auth: Auth;
   fetch: Fetch;
   private: Private;
   main: Main;
-  profile: Profile;
+  friends: Friends;
 };
 
 const rootReducer = combineReducers<RootReducer>({
@@ -28,7 +28,7 @@ const rootReducer = combineReducers<RootReducer>({
   fetch,
   private: privateState,
   main,
-  profile,
+  friends,
 });
 
 export default rootReducer;
