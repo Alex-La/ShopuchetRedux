@@ -1,8 +1,22 @@
-import {Layout} from '@ui-kitten/components';
 import React from 'react';
 
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {ProfileStackNavigator} from '../../../../../utils/navigation.types';
+
+import Display from './Display';
+import Edit from './Edit';
+
+const Stack = createNativeStackNavigator<ProfileStackNavigator>();
+
 const Profile: React.FC = () => {
-  return <Layout style={{flex: 1}}></Layout>;
+  return (
+    <Stack.Navigator
+      initialRouteName="Display"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Display" component={Display} />
+      <Stack.Screen name="Edit" component={Edit} />
+    </Stack.Navigator>
+  );
 };
 
 export default Profile;

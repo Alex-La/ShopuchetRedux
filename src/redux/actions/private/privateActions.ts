@@ -23,7 +23,7 @@ export const setTradePoint = (tradePoint: TradePoint): SetTradePointAction => ({
   payload: tradePoint,
 });
 
-const getUser = (user: User): GetUserAction => ({
+export const getUser = (user: User): GetUserAction => ({
   type: PRIVATE_ACTION_TYPES.GET_USER,
   payload: user,
 });

@@ -1,3 +1,5 @@
+import {User} from './api.types';
+
 export type PublicStackNavigator = {
   Login: undefined;
   Registration: undefined;
@@ -32,4 +34,9 @@ export type ReportsTopTabNavigator = {
   ReturnsByProducts: undefined;
   TopSellingProducts: undefined;
   AvgReceipt: undefined;
+};
+
+export type ProfileStackNavigator = {
+  Display: undefined;
+  Edit: User;
 };

@@ -67,6 +67,17 @@ const api = {
   getUser: () => axiosInstance.get<User>('/api/getuser'),
   getMain: (gtochkaid: number) =>
     axiosInstance.get<MainData>(`/api/readmain?gtochkaid=${gtochkaid}`),
+  updateUser: (
+    fn: string,
+    nm: string,
+    ft: string,
+    phone: string,
+    oldpwd: string,
+    newpwd: string,
+  ) =>
+    axiosInstance.post<string>(
+      `/api/edituser?fn=${fn}&nm=${nm}&ft=${ft}&phone=${phone}&oldpwd=${oldpwd}&newpwd=${newpwd}`,
+    ),
 };
 
 export default api;
