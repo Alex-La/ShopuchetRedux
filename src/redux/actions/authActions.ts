@@ -21,10 +21,12 @@ export const logout =
   > =>
   dispatch => {
     dispatch(setAppLoading(true));
-    AsyncStorage.removeItem('accessToken').then(() => {
-      dispatch(setIsAuth(false));
-      dispatch(setAppLoading(false));
-    });
+    AsyncStorage.removeItem('accessToken').then(() =>
+      AsyncStorage.removeItem('refreshToken').then(() => {
+        dispatch(setIsAuth(false));
+        dispatch(setAppLoading(false));
+      }),
+    );
   };
 
 export const login =

@@ -2,7 +2,7 @@ import {TradePoint, TradePoints, User} from '../../../utils/api.types';
 
 export type Private = {
   tradePoints: TradePoints;
-  tradePoint: TradePoint;
+  tradePoint?: TradePoint;
   user: User;
 };
 

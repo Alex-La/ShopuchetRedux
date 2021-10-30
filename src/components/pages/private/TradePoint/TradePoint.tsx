@@ -42,11 +42,13 @@ const TradePoint: React.FC<Props> = ({navigation}) => {
           title={item.name}
           accessoryLeft={CartIcon}
           accessoryRight={
-            currentTradePoint.gTochkaId === item.gTochkaId ? (
-              CheckIcon
-            ) : (
-              <Fragment />
-            )
+            currentTradePoint ? (
+              currentTradePoint.gTochkaId === item.gTochkaId ? (
+                CheckIcon
+              ) : (
+                <Fragment />
+              )
+            ) : undefined
           }
           onPress={() => setCurentTradePoint(item)}
         />
