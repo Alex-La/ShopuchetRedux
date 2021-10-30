@@ -49,7 +49,10 @@ axiosInstance.interceptors.response.use(
       });
     }
 
-    if (error.response.status === 401) AsyncStorage.clear();
+    if (error.response.status === 401)
+      await AsyncStorage.removeItem('accessToken').then(() =>
+        AsyncStorage.removeItem('refreshToken'),
+      );
 
     return Promise.reject(error);
   },
