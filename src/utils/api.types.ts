@@ -21,3 +21,17 @@ export type User = {
   phone: string;
   login: string;
 };
+
+export type MainDataObject = {
+  avg: number;
+  cnt: number;
+  income: number;
+  summ: number;
+};
+
+export type MainData = {
+  day: MainDataObject;
+  month: MainDataObject;
+  week: MainDataObject;
+  summ: number;
+};

@@ -10,6 +10,7 @@ import {
   PRIVATE_ACTION_TYPES,
   SetTradePointAction,
 } from '../../types/private/private.types';
+import {setIsAuth} from '../authActions';
 import {onError, setAppLoading} from '../fetchActions';
 
 const getTradePoints = (tradePoints: TradePoints): GetTradePointsAction => ({
@@ -45,6 +46,7 @@ export const getPrivateData =
           .then(res => {
             dispatch(getTradePoints(res.data));
             dispatch(setTradePoint(res.data[0]));
+            dispatch(setIsAuth(true));
             dispatch(setAppLoading(false));
           })
           .catch(e => {
