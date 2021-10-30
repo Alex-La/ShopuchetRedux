@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Tokens, TradePoints} from './api.types';
+import {Tokens, TradePoints, User} from './api.types';
 
 const baseUrl = 'https://api.shopuchet.kz';
 
@@ -54,6 +54,7 @@ const api = {
       `/logon-oauth2?username=${username}&password=${password}`,
     ),
   getTradePoints: () => axiosInstance.get<TradePoints>(`/api/readgtochka`),
+  getUser: () => axiosInstance.get<User>('/api/getuser'),
 };
 
 export default api;

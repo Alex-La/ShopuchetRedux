@@ -10,13 +10,10 @@ import Private from './Private';
 import {useAppDispatch, useAppSelector} from '../redux';
 import {checkToken} from '../redux/actions/authActions';
 
-import Preloader from '../components/loaders/Preloader';
-
 const Navigator: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const isAuth = useAppSelector(state => state.auth.isAuth);
-  const loading = useAppSelector(state => state.fetch.appLoading);
 
   useEffect(() => {
     dispatch(checkToken());
@@ -25,13 +22,9 @@ const Navigator: React.FC = () => {
   return (
     <ErrorBoundary>
       <SafeAreaProvider>
-        {loading ? (
-          <Preloader />
-        ) : (
-          <NavigationContainer>
-            {isAuth ? <Private /> : <Public />}
-          </NavigationContainer>
-        )}
+        <NavigationContainer>
+          {isAuth ? <Private /> : <Public />}
+        </NavigationContainer>
       </SafeAreaProvider>
     </ErrorBoundary>
   );

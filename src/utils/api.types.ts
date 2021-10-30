@@ -13,3 +13,11 @@ export type TradePoint = {
 };
 
 export type TradePoints = TradePoint[];
+
+export type User = {
+  fn: string;
+  nm: string;
+  ft: string;
+  phone: string;
+  login: string;
+};
