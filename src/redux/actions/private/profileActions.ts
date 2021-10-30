@@ -38,6 +38,9 @@ export const updateUser =
             dispatch(setUpdateLoading(false));
           }
         })
-        .catch(e => onError(e.response.status, e.response.data)),
+        .catch(e => {
+          dispatch(setUpdateLoading(false));
+          dispatch(onError(e.response.status, e.response.data));
+        }),
     );
   };

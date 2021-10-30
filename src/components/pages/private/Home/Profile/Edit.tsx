@@ -112,7 +112,7 @@ const Edit: React.FC<Props> = ({navigation, route}) => {
           onChangeText={t => setNewPassword(t)}
         />
       </View>
-      <Button style={{marginTop: 30}} onPress={goBack}>
+      <Button style={{marginTop: 30}} onPress={update}>
         Сохранить
       </Button>
     </Layout>

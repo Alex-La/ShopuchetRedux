@@ -28,8 +28,12 @@ export const getMainData =
     api
       .getMain(gtochkaid)
       .then(res => {
+        console.log(res);
         dispatch(dispatchMainData(res.data));
         dispatch(setLoading(false));
       })
-      .catch(e => onError(e.response.status, e.response.data));
+      .catch(e => {
+        dispatch(setLoading(false));
+        dispatch(onError(e.response.status, e.response.data));
+      });
   };

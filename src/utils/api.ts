@@ -76,7 +76,9 @@ const api = {
     newpwd: string,
   ) =>
     axiosInstance.post<string>(
-      `/api/edituser?fn=${fn}&nm=${nm}&ft=${ft}&phone=${phone}&oldpwd=${oldpwd}&newpwd=${newpwd}`,
+      `/api/edituser?fn=${fn}&nm=${nm}&ft=${ft}&phone=${phone}${
+        oldpwd ? `&oldpwd=${oldpwd}` : ''
+      }${newpwd ? `&newpwd=${newpwd}` : ''}`,
     ),
 };
 

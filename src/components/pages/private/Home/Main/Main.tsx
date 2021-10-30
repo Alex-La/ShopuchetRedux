@@ -15,11 +15,11 @@ const Main: React.FC = () => {
   const loading = useAppSelector(state => state.fetch.loading);
 
   useEffect(() => {
-    if (tradePoint) dispatch(getMainData(tradePoint.gTochkaId));
+    dispatch(getMainData(tradePoint ? tradePoint.gTochkaId : 0));
   }, [tradePoint]);
 
   const onRefresh = () =>
-    tradePoint && dispatch(getMainData(tradePoint.gTochkaId));
+    dispatch(getMainData(tradePoint ? tradePoint.gTochkaId : 0));
 
   return (
     <Layout style={styles.wrap}>
