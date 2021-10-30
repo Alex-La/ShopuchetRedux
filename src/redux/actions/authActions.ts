@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ThunkAction} from 'redux-thunk';
 import api from '../../utils/api';
 import {show} from '../../utils/snackbar';
-import {AppDispatch, RootState} from '../store';
+import {RootState} from '../store';
 import {AUTH_ACTION_TYPES, SetIsAuthAction} from '../types/auth.types';
 import {SetAppLoadingAction} from '../types/fetch.types';
 import {setAppLoading} from './fetchActions';

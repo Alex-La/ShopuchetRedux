@@ -1,17 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Tokens} from './api.types';
+import {Tokens, TradePoints} from './api.types';
 
 const baseUrl = 'https://api.shopuchet.kz';
 
-axios.interceptors.request.use(async config => {
+const axiosInstance = axios.create({baseURL: baseUrl});
+
+axiosInstance.interceptors.request.use(async config => {
   const accessToken = await AsyncStorage.getItem('accessToken');
   if (accessToken && config.headers)
     config.headers['X-Auth-Token'] = accessToken;
   return config;
 });
 
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
@@ -26,9 +28,9 @@ axios.interceptors.response.use(
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
-      return axios
+      return axiosInstance
         .post<Tokens>(
-          `${baseUrl}/refresh-tokens?access-token=${accessToken}&refresh-token=${refreshToken}`,
+          `/refresh-tokens?access-token=${accessToken}&refresh-token=${refreshToken}`,
         )
         .then(res => {
           if (res.status === 200) {
@@ -40,15 +42,18 @@ axios.interceptors.response.use(
         });
     }
 
+    if (error.response.status === 401) AsyncStorage.clear();
+
     return Promise.reject(error);
   },
 );
 
 const api = {
   login: (username: string, password: string) =>
-    axios.get<Tokens>(
-      `${baseUrl}/logon-oauth2?username=${username}&password=${password}`,
+    axiosInstance.get<Tokens>(
+      `/logon-oauth2?username=${username}&password=${password}`,
     ),
+  getTradePoints: () => axiosInstance.get<TradePoints>(`/api/readgtochka`),
 };
 
 export default api;

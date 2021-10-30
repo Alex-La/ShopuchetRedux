@@ -7,13 +7,13 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Public from './Public';
 import Private from './Private';
 
-import {useAppSelector} from '../redux';
+import {useAppDispatch, useAppSelector} from '../redux';
 import {checkToken} from '../redux/actions/authActions';
+
 import Preloader from '../components/loaders/Preloader';
-import {useDispatch} from 'react-redux';
 
 const Navigator: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const isAuth = useAppSelector(state => state.auth.isAuth);
   const loading = useAppSelector(state => state.fetch.appLoading);

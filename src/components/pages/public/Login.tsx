@@ -21,7 +21,7 @@ import {PublicStackNavigator} from '../../../utils/navigation.types';
 
 import {login} from '../../../redux/actions/authActions';
 import ThemeContext from '../../../context/ThemeContext';
-import {useDispatch} from 'react-redux';
+import {useAppDispatch} from '../../../redux';
 
 const Email = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="email-outline" />
@@ -44,7 +44,7 @@ type Props = {
 };
 
 const Login: React.FC<Props> = ({navigation}) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {theme, toggleTheme} = useContext(ThemeContext);
 
   const [email, setEmail] = useState<string>('');

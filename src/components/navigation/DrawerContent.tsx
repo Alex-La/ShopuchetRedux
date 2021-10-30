@@ -11,8 +11,9 @@ import {
 } from '@ui-kitten/components';
 import React, {useCallback, useContext, useState} from 'react';
 import {ImageProps, StyleSheet} from 'react-native';
-import {useDispatch} from 'react-redux';
 import ThemeContext from '../../context/ThemeContext';
+
+import {useAppDispatch} from '../../redux';
 import {logout} from '../../redux/actions/authActions';
 
 const ForwardIcon = (props?: Partial<ImageProps>) => (
@@ -38,7 +39,7 @@ const MoonIcon = (props?: Partial<ImageProps>) => (
 interface Props extends DrawerContentComponentProps {}
 
 const DrawerContent: React.FC<Props> = ({navigation}) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const uiTheme = useTheme();
   const {theme, toggleTheme} = useContext(ThemeContext);
