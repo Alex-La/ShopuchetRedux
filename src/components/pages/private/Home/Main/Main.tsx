@@ -1,26 +1,40 @@
-import {Divider, Layout, Text} from '@ui-kitten/components';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {Divider, Layout, Text} from '@ui-kitten/components';
+
 import RefreshScrollView from '../../../../loaders/RefreshScrollView';
 import InfoItem from './InfoItem';
 
+import {useAppDispatch, useAppSelector} from '../../../../../redux';
+import {getMainData} from '../../../../../redux/actions/private/mainActions';
+
 const Main: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const mainData = useAppSelector(state => state.main.mainData);
+  const tradePoint = useAppSelector(state => state.private.tradePoint);
+  const loading = useAppSelector(state => state.fetch.loading);
+
+  useEffect(() => {
+    dispatch(getMainData(tradePoint.gTochkaId));
+  }, [tradePoint]);
+
+  const onRefresh = () => dispatch(getMainData(tradePoint.gTochkaId));
+
   return (
     <Layout style={styles.wrap}>
-      <RefreshScrollView refreshing={false} onRefresh={() => {}}>
+      <RefreshScrollView refreshing={loading} onRefresh={onRefresh}>
         <View style={styles.row}>
           <Text category="h6" status="primary">
             В кассе на сегодня:
           </Text>
           <Text category="h6" status="primary">
-            69509.05
+            {mainData.summ}
           </Text>
         </View>
         <Divider style={{marginTop: 16}} />
-
-        <InfoItem title="Сегодня" />
-        <InfoItem title="За последние 7 дней" />
-        <InfoItem title="За последние 30 дней" />
+        <InfoItem title="Сегодня" info={mainData.day} />
+        <InfoItem title="За последние 7 дней" info={mainData.week} />
+        <InfoItem title="За последние 30 дней" info={mainData.month} />
       </RefreshScrollView>
     </Layout>
   );
