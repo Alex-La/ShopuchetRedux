@@ -28,18 +28,25 @@ axiosInstance.interceptors.response.use(
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
-      return axiosInstance
-        .post<Tokens>(
-          `/refresh-tokens?access-token=${accessToken}&refresh-token=${refreshToken}`,
-        )
-        .then(res => {
-          if (res.status === 200) {
-            console.log(res);
-            AsyncStorage.setItem('accessToken', res.data['X-Auth-Token']);
-            AsyncStorage.setItem('refreshToken', res.data['Refresh-Token']);
-            return axios(originalRequest);
-          }
-        });
+      return await new Promise(resolve => {
+        axiosInstance
+          .post<Tokens>(
+            `/refresh-tokens?access-token=${accessToken}&refresh-token=${refreshToken}`,
+          )
+          .then(res => {
+            if (res.status === 200) {
+              AsyncStorage.setItem(
+                'accessToken',
+                res.data['X-Auth-Token'],
+              ).then(() => {
+                AsyncStorage.setItem(
+                  'refreshToken',
+                  res.data['Refresh-Token'],
+                ).then(() => resolve(axios(originalRequest)));
+              });
+            }
+          });
+      });
     }
 
     if (error.response.status === 401) AsyncStorage.clear();

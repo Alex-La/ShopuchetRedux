@@ -6,7 +6,6 @@ import {SetAppLoadingAction} from '../../types/fetch.types';
 import {
   GetTradePointsAction,
   GetUserAction,
-  Private,
   PrivateActions,
   PRIVATE_ACTION_TYPES,
   SetTradePointAction,
