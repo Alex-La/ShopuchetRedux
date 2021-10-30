@@ -12,21 +12,6 @@ export const setIsAuth = (isAuth: boolean): SetIsAuthAction => ({
   payload: isAuth,
 });
 
-export const checkToken =
-  (): ThunkAction<
-    void,
-    RootState,
-    unknown,
-    SetAppLoadingAction | SetIsAuthAction
-  > =>
-  dispatch => {
-    dispatch(setAppLoading(true));
-    AsyncStorage.getItem('accessToken').then(at => {
-      if (at) dispatch(setIsAuth(true));
-      dispatch(setAppLoading(false));
-    });
-  };
-
 export const logout =
   (): ThunkAction<
     void,
