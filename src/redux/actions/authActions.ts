@@ -36,7 +36,7 @@ export const logout =
   > =>
   dispatch => {
     dispatch(setAppLoading(true));
-    AsyncStorage.clear().then(() => {
+    AsyncStorage.removeItem('accessToken').then(() => {
       dispatch(setIsAuth(false));
       dispatch(setAppLoading(false));
     });

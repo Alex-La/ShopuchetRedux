@@ -11,6 +11,7 @@ export const setAppLoading = (loading: boolean): SetAppLoadingAction => ({
 
 export const onError =
   (status: number, text?: string) => (dispatch: AppDispatch) => {
+    console.log(status);
     dispatch<SetAppLoadingAction>(setAppLoading(false));
     if (status === 401) dispatch<SetIsAuthAction>(setIsAuth(false));
     else if (text) show({text, type: 'error'});
