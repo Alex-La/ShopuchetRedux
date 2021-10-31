@@ -81,6 +81,8 @@ const api = {
       }${newpwd ? `&newpwd=${newpwd}` : ''}`,
     ),
   getFriends: () => axiosInstance.get<Friend[]>('/api/readusers'),
+  linkUser: (login: string, gtochkaids: string) =>
+    axiosInstance.post<string>(`/api/linkuser?login=${login}${gtochkaids}`),
 };
 
 export default api;

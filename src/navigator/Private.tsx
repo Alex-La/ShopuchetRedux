@@ -8,6 +8,7 @@ import {PrivateStackNavigator} from '../utils/navigation.types';
 import Home from '../components/pages/private/Home/Home';
 import TradePoint from '../components/pages/private/TradePoint/TradePoint';
 import StackTopNavigation from '../components/navigation/StackTopNavigation';
+import AddFriendModal from '../components/modals/AddFriendModal';
 
 const Stack = createNativeStackNavigator<PrivateStackNavigator>();
 
@@ -16,10 +17,9 @@ const Private: React.FC = () => {
 
   return (
     <Layout style={{paddingTop: top, paddingBottom: bottom, flex: 1}}>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{header: props => <StackTopNavigation {...props} />}}>
-        <Stack.Group>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Group
+          screenOptions={{header: props => <StackTopNavigation {...props} />}}>
           <Stack.Screen
             name="Home"
             component={Home}
@@ -30,6 +30,13 @@ const Private: React.FC = () => {
             component={TradePoint}
             options={{title: 'Торговая точка'}}
           />
+        </Stack.Group>
+        <Stack.Group
+          screenOptions={{
+            presentation: 'transparentModal',
+            headerShown: false,
+          }}>
+          <Stack.Screen name="AddFriendModal" component={AddFriendModal} />
         </Stack.Group>
       </Stack.Navigator>
     </Layout>

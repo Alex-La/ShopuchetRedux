@@ -9,6 +9,7 @@ export type PublicStackNavigator = {
 export type PrivateStackNavigator = {
   Home: undefined;
   TradePoint: undefined;
+  AddFriendModal: undefined;
 };
 
 export type DrawerNavigator = {

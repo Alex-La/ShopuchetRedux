@@ -34,3 +34,24 @@ export const loadFriends =
         dispatch(onError(e.response.status, e.response.data));
       });
   };
+
+export const linkUser =
+  (
+    login: string,
+    gtochkaids: string,
+  ): ThunkAction<Promise<string>, RootState, unknown, SetLoadingAction> =>
+  async dispatch => {
+    dispatch(setLoading(true));
+    return await new Promise(resolve =>
+      api
+        .linkUser(login, gtochkaids)
+        .then(res => {
+          dispatch(loadFriends());
+          resolve(res.data);
+        })
+        .catch(e => {
+          dispatch(onError(e.response.status, e.response.data));
+          dispatch(setLoading(false));
+        }),
+    );
+  };
