@@ -4,7 +4,7 @@ import {
   FRIENDS_ACTION_TYPES,
 } from '../../types/private/friends.types';
 
-const initialState: Friends = [];
+export const initialState: Friends = [];
 
 export const friends = (
   state: Friends = initialState,

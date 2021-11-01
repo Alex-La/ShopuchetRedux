@@ -7,10 +7,15 @@ import {
   AUTH_ACTION_TYPES,
   SetIsAuthAction,
   SetUserAction,
+  UserLogoutAction,
 } from '../types/auth.types';
 import {SetAppLoadingAction} from '../types/fetch.types';
 import {handleError, setAppLoading} from './fetchActions';
 import {getTradePoints} from './private/mainActions';
+
+const userLogout = (): UserLogoutAction => ({
+  type: AUTH_ACTION_TYPES.USER_LOGOUT,
+});
 
 export const setIsAuth = (isAuth: boolean): SetIsAuthAction => ({
   type: AUTH_ACTION_TYPES.SET_IS_AUTH,
@@ -50,7 +55,7 @@ export const logout =
     void,
     RootState,
     unknown,
-    SetAppLoadingAction | SetIsAuthAction
+    SetAppLoadingAction | SetIsAuthAction | UserLogoutAction
   > =>
   dispatch => {
     dispatch(setAppLoading(true));
@@ -58,6 +63,7 @@ export const logout =
       AsyncStorage.removeItem('refreshToken').then(() => {
         dispatch(setIsAuth(false));
         dispatch(setAppLoading(false));
+        dispatch(userLogout());
       }),
     );
   };

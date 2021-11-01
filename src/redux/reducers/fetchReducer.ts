@@ -1,6 +1,6 @@
 import {Fetch, FetchActions, FETCH_ACTION_TYPES} from '../types/fetch.types';
 
-const initialState: Fetch = {appLoading: false, loading: false};
+export const initialState: Fetch = {appLoading: false, loading: false};
 
 export const fetch = (
   state: Fetch = initialState,

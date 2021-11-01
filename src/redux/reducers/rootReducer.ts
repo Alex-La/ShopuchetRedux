@@ -1,15 +1,18 @@
-import {combineReducers} from 'redux';
+import {AnyAction, combineReducers} from 'redux';
 
-import {auth} from './authReducer';
+import {auth, initialState as authInitialState} from './authReducer';
 import {Auth} from '../types/auth.types';
 
-import {fetch} from './fetchReducer';
+import {fetch, initialState as fetchInitialState} from './fetchReducer';
 import {Fetch} from '../types/fetch.types';
 
-import {main} from './private/mainReducer';
+import {main, initialState as mainInitialState} from './private/mainReducer';
 import {Main} from '../types/private/main.types';
 
-import {friends} from './private/friendsReducer';
+import {
+  friends,
+  initialState as friendsInitialState,
+} from './private/friendsReducer';
 import {Friends} from '../types/private/friends.types';
 
 type RootReducer = {
@@ -19,11 +22,24 @@ type RootReducer = {
   friends: Friends;
 };
 
-const rootReducer = combineReducers<RootReducer>({
+const initialRootState: RootReducer = {
+  auth: authInitialState,
+  fetch: fetchInitialState,
+  main: mainInitialState,
+  friends: friendsInitialState,
+};
+
+const appReducer = combineReducers<RootReducer>({
   auth,
   fetch,
   main,
   friends,
 });
+
+const rootReducer = (state: RootReducer, action: AnyAction) => {
+  if (action.type === 'AUTH_ACTION/USER_LOGOUT')
+    return appReducer(initialRootState, action);
+  return appReducer(state, action);
+};
 
 export default rootReducer;

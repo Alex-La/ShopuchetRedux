@@ -29,7 +29,7 @@ const initialMainData: MainData = {
   month: mainDataObject,
 };
 
-const initialState: Main = {
+export const initialState: Main = {
   tradePoints: [],
   tradePoint: initialTradePoint,
   mainData: initialMainData,

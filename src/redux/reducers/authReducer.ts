@@ -15,7 +15,7 @@ const initialUser: User = {
   login: '',
 };
 
-const initialState: Auth = {
+export const initialState: Auth = {
   isAuth: false,
   user: initialUser,
 };

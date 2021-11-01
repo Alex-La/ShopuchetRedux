@@ -10,6 +10,7 @@ export type Auth = {
 export enum AUTH_ACTION_TYPES {
   SET_IS_AUTH = 'AUTH_ACTION/SET_IS_AUTH',
   SET_USER = 'AUTH_ACTION/SET_USER',
+  USER_LOGOUT = 'AUTH_ACTION/USER_LOGOUT',
 }
 
 export type SetIsAuthAction = {
@@ -22,4 +23,8 @@ export type SetUserAction = {
   payload: User;
 };
 
-export type AuthActions = SetIsAuthAction | SetUserAction;
+export type UserLogoutAction = {
+  type: string;
+};
+
+export type AuthActions = SetIsAuthAction | SetUserAction | UserLogoutAction;
