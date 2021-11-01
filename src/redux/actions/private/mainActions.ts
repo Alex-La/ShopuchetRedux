@@ -1,18 +1,54 @@
 import {ThunkAction} from 'redux-thunk';
 import api from '../../../utils/api';
-import {MainData} from '../../../utils/api.types';
+import {MainData, TradePoint, TradePoints} from '../../../utils/api.types';
 import {RootState} from '../../store';
-import {SetLoadingAction} from '../../types/fetch.types';
+import {SetAppLoadingAction, SetLoadingAction} from '../../types/fetch.types';
 import {
-  GetMainDataAction,
+  SetMainDataAction,
   MAIN_ACTION_TYPES,
+  SetTradePointsAction,
+  SetTradePointAction,
 } from '../../types/private/main.types';
-import {onError, setLoading} from '../fetchActions';
+import {handleError, setAppLoading, setLoading} from '../fetchActions';
 
-const dispatchMainData = (data: MainData): GetMainDataAction => ({
-  type: MAIN_ACTION_TYPES.GET_MAIN_DATA,
+const setTradePoints = (tradePoints: TradePoints): SetTradePointsAction => ({
+  type: MAIN_ACTION_TYPES.SET_TRADE_POINTS,
+  payload: tradePoints,
+});
+
+export const setTradePoint = (
+  tradePoint: TradePoint | undefined,
+): SetTradePointAction => ({
+  type: MAIN_ACTION_TYPES.SET_TRADE_POINT,
+  payload: tradePoint,
+});
+
+const setMainData = (data: MainData): SetMainDataAction => ({
+  type: MAIN_ACTION_TYPES.SET_MAIN_DATA,
   payload: data,
 });
+
+export const getTradePoints =
+  (): ThunkAction<
+    void,
+    RootState,
+    unknown,
+    SetAppLoadingAction | SetTradePointsAction | SetTradePointAction
+  > =>
+  dispatch => {
+    dispatch(setAppLoading(true));
+    api
+      .getTradePoints()
+      .then(res => {
+        dispatch(setTradePoints(res.data));
+        dispatch(setTradePoint(res.data[0] || null));
+        dispatch(setAppLoading(false));
+      })
+      .catch(e => {
+        dispatch(setAppLoading(false));
+        dispatch(handleError(e.response));
+      });
+  };
 
 export const getMainData =
   (
@@ -21,19 +57,18 @@ export const getMainData =
     void,
     RootState,
     unknown,
-    GetMainDataAction | SetLoadingAction
+    SetMainDataAction | SetLoadingAction
   > =>
   dispatch => {
     dispatch(setLoading(true));
     api
       .getMain(gtochkaid)
       .then(res => {
-        console.log(res);
-        dispatch(dispatchMainData(res.data));
+        dispatch(setMainData(res.data));
         dispatch(setLoading(false));
       })
       .catch(e => {
         dispatch(setLoading(false));
-        dispatch(onError(e.response.status, e.response.data));
+        dispatch(handleError(e.response));
       });
   };

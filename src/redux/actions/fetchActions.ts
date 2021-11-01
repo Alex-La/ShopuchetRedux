@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AxiosResponse} from 'axios';
 import {show} from '../../utils/snackbar';
 import {AppDispatch} from '../store';
 import {
@@ -5,6 +7,7 @@ import {
   SetAppLoadingAction,
   SetLoadingAction,
 } from '../types/fetch.types';
+import {setIsAuth} from './authActions';
 
 export const setAppLoading = (loading: boolean): SetAppLoadingAction => ({
   type: FETCH_ACTION_TYPES.SET_APP_LOADING,
@@ -16,9 +19,14 @@ export const setLoading = (loading: boolean): SetLoadingAction => ({
   payload: loading,
 });
 
-export const onError =
-  (status: number, text?: string) => (dispatch: AppDispatch) => {
-    console.log(status);
-    dispatch<SetAppLoadingAction>(setAppLoading(false));
-    if (status !== 401 && text) show({text, type: 'error'});
+export const handleError =
+  (response: AxiosResponse<string>) => (dispatch: AppDispatch) => {
+    console.log('Handle error log:', response.status, response.data);
+    if (response.status === 401)
+      return AsyncStorage.removeItem('accessToken').then(() =>
+        AsyncStorage.removeItem('refreshToken').then(() =>
+          dispatch(setIsAuth(false)),
+        ),
+      );
+    show({text: response.data, type: 'error'});
   };

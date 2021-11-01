@@ -11,7 +11,7 @@ import {getMainData} from '../../../../../redux/actions/private/mainActions';
 const Main: React.FC = () => {
   const dispatch = useAppDispatch();
   const mainData = useAppSelector(state => state.main.mainData);
-  const tradePoint = useAppSelector(state => state.private.tradePoint);
+  const tradePoint = useAppSelector(state => state.main.tradePoint);
   const loading = useAppSelector(state => state.fetch.loading);
 
   useEffect(() => {

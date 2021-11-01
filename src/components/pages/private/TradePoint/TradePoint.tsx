@@ -6,8 +6,8 @@ import {PrivateStackNavigator} from '../../../../utils/navigation.types';
 
 import {useAppDispatch, useAppSelector} from '../../../../redux';
 import {ImageProps, ViewProps} from 'react-native';
-import {setTradePoint} from '../../../../redux/actions/private/privateActions';
 import {TradePoint as TTradePoint} from '../../../../utils/api.types';
+import {setTradePoint} from '../../../../redux/actions/private/mainActions';
 
 const CartIcon = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="shopping-cart-outline" />
@@ -22,8 +22,8 @@ type Props = {
 };
 
 const TradePoint: React.FC<Props> = ({navigation}) => {
-  const currentTradePoint = useAppSelector(state => state.private.tradePoint);
-  const tradePoints = useAppSelector(state => state.private.tradePoints);
+  const currentTradePoint = useAppSelector(state => state.main.tradePoint);
+  const tradePoints = useAppSelector(state => state.main.tradePoints);
 
   const dispatch = useAppDispatch();
 

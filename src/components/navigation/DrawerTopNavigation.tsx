@@ -18,9 +18,7 @@ const MenuIcon = (props?: Partial<ImageProps>) => (
 interface Props extends DrawerHeaderProps {}
 
 const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
-  const subtitle = useAppSelector(state =>
-    state.private.tradePoint ? state.private.tradePoint.name : '',
-  );
+  const subtitle = useAppSelector(state => state.main.tradePoint?.name);
 
   const MenuAction = () => (
     <TopNavigationAction icon={MenuIcon} onPress={navigation.openDrawer} />

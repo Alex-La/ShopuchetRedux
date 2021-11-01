@@ -1,16 +1,49 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ThunkAction} from 'redux-thunk';
 import api from '../../utils/api';
-import {show} from '../../utils/snackbar';
+import {User} from '../../utils/api.types';
 import {RootState} from '../store';
-import {AUTH_ACTION_TYPES, SetIsAuthAction} from '../types/auth.types';
+import {
+  AUTH_ACTION_TYPES,
+  SetIsAuthAction,
+  SetUserAction,
+} from '../types/auth.types';
 import {SetAppLoadingAction} from '../types/fetch.types';
-import {setAppLoading} from './fetchActions';
+import {handleError, setAppLoading} from './fetchActions';
+import {getTradePoints} from './private/mainActions';
 
 export const setIsAuth = (isAuth: boolean): SetIsAuthAction => ({
   type: AUTH_ACTION_TYPES.SET_IS_AUTH,
   payload: isAuth,
 });
+
+export const setUser = (user: User): SetUserAction => ({
+  type: AUTH_ACTION_TYPES.SET_USER,
+  payload: user,
+});
+
+export const getUser =
+  (): ThunkAction<
+    void,
+    RootState,
+    unknown,
+    SetUserAction | SetAppLoadingAction
+  > =>
+  dispatch => {
+    dispatch(setAppLoading(true));
+    api
+      .getUser()
+      .then(res => {
+        dispatch(setUser(res.data));
+        dispatch(getTradePoints());
+        dispatch(setIsAuth(true));
+      })
+      .catch(e => {
+        console.log(e.status);
+        dispatch(setAppLoading(false));
+        dispatch(handleError(e.response));
+      });
+  };
 
 export const logout =
   (): ThunkAction<
@@ -47,14 +80,13 @@ export const login =
         AsyncStorage.setItem('accessToken', res.data['X-Auth-Token']).then(() =>
           AsyncStorage.setItem('refreshToken', res.data['Refresh-Token']).then(
             () => {
-              dispatch(setIsAuth(true));
-              dispatch(setAppLoading(false));
+              dispatch(getUser());
             },
           ),
         );
       })
       .catch(e => {
         dispatch(setAppLoading(false));
-        show({text: e.response.data, type: 'error'});
+        dispatch(handleError(e.response));
       });
   };

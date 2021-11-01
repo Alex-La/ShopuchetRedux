@@ -44,7 +44,7 @@ interface ExtendTradePoint extends TradePoint {
 
 const AddFriendModal: React.FC<Props> = ({navigation}) => {
   const dispatch = useAppDispatch();
-  const tradePoints = useAppSelector(state => state.private.tradePoints);
+  const tradePoints = useAppSelector(state => state.main.tradePoints);
 
   const styles = useStyleSheet(Styles);
   const goBack = () => navigation.goBack();

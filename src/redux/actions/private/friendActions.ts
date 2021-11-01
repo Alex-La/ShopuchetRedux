@@ -7,7 +7,7 @@ import {
   FRIENDS_ACTION_TYPES,
   GetFriendsAction,
 } from '../../types/private/friends.types';
-import {onError, setLoading} from '../fetchActions';
+import {handleError, setLoading} from '../fetchActions';
 
 const getFriends = (friends: Friends): GetFriendsAction => ({
   type: FRIENDS_ACTION_TYPES.GET_FRIENDS,
@@ -31,7 +31,7 @@ export const loadFriends =
       })
       .catch(e => {
         dispatch(setLoading(false));
-        dispatch(onError(e.response.status, e.response.data));
+        dispatch(handleError(e.response));
       });
   };
 
@@ -50,7 +50,7 @@ export const linkUser =
           resolve(res.data);
         })
         .catch(e => {
-          dispatch(onError(e.response.status, e.response.data));
+          dispatch(handleError(e.response));
           dispatch(setLoading(false));
         }),
     );

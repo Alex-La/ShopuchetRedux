@@ -11,16 +11,15 @@ axiosInstance.interceptors.request.use(async config => {
   if (accessToken && config.headers)
     config.headers['X-Auth-Token'] = accessToken;
   return config;
-});
+}, Promise.reject);
 
 axiosInstance.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
+
     const accessToken = await AsyncStorage.getItem('accessToken');
     const refreshToken = await AsyncStorage.getItem('refreshToken');
-
-    console.log(error);
 
     if (
       refreshToken &&
@@ -28,32 +27,21 @@ axiosInstance.interceptors.response.use(
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
-      return await new Promise(resolve => {
-        axiosInstance
-          .post<Tokens>(
-            `/refresh-tokens?access-token=${accessToken}&refresh-token=${refreshToken}`,
-          )
-          .then(res => {
-            if (res.status === 200) {
-              AsyncStorage.setItem(
-                'accessToken',
-                res.data['X-Auth-Token'],
-              ).then(() => {
-                AsyncStorage.setItem(
-                  'refreshToken',
-                  res.data['Refresh-Token'],
-                ).then(() => resolve(axios(originalRequest)));
-              });
-            }
-          });
-      });
-    }
-
-    if (error.response.status === 401)
-      await AsyncStorage.removeItem('accessToken').then(() =>
-        AsyncStorage.removeItem('refreshToken'),
+      const refreshRequest = await axiosInstance.post<Tokens>(
+        `/refresh-tokens?access-token=${accessToken}&refresh-token=${refreshToken}`,
       );
-
+      if (refreshRequest.status === 200) {
+        await AsyncStorage.setItem(
+          'accessToken',
+          refreshRequest.data['X-Auth-Token'],
+        );
+        await AsyncStorage.setItem(
+          'refreshToken',
+          refreshRequest.data['Refresh-Token'],
+        );
+        return axiosInstance(originalRequest);
+      }
+    }
     return Promise.reject(error);
   },
 );

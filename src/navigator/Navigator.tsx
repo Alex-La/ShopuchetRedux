@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Preloader from '../components/loaders/Preloader';
 
 import ErrorBoundary from '../components/loaders/ErrorBoundary';
@@ -9,24 +9,15 @@ import Public from './Public';
 import Private from './Private';
 
 import {useAppDispatch, useAppSelector} from '../redux';
-import {getPrivateData} from '../redux/actions/private/privateActions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {setIsAuth} from '../redux/actions/authActions';
+import {getUser} from '../redux/actions/authActions';
 
 const Navigator: React.FC = () => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector(state => state.fetch.appLoading);
-
   const isAuth = useAppSelector(state => state.auth.isAuth);
 
   useEffect(() => {
-    if (isAuth) dispatch(getPrivateData());
-  }, [isAuth]);
-
-  useEffect(() => {
-    AsyncStorage.getItem('accessToken').then(token => {
-      if (!!token) dispatch(setIsAuth(true));
-    });
+    dispatch(getUser());
   }, []);
 
   return (

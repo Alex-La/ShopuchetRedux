@@ -12,7 +12,7 @@ type Props = {
 };
 
 const Display: React.FC<Props> = ({navigation}) => {
-  const user = useAppSelector(state => state.private.user);
+  const user = useAppSelector(state => state.auth.user);
 
   const theme = useTheme();
 
