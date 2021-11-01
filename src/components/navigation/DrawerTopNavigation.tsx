@@ -9,6 +9,7 @@ import {ImageProps} from 'react-native';
 import {DrawerHeaderProps} from '@react-navigation/drawer';
 
 import {useAppSelector} from '../../redux';
+import Chart from '../icons/Chart';
 
 const MenuIcon = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="menu-outline" />
@@ -25,11 +26,16 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
     <TopNavigationAction icon={MenuIcon} onPress={navigation.openDrawer} />
   );
 
+  const ChartAction = () => (
+    <TopNavigationAction icon={<Chart def={true} />} onPress={() => {}} />
+  );
+
   return (
     <>
       <TopNavigation
         alignment="center"
         accessoryLeft={MenuAction}
+        accessoryRight={route.name === 'Remainders' ? ChartAction : undefined}
         title={options.title}
         subtitle={
           route.name !== 'Friends' && route.name !== 'Profile'
