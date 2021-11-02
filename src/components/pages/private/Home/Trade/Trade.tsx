@@ -1,33 +1,17 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useTheme, Text} from '@ui-kitten/components';
 import Preloader from '../../../../loaders/Preloader';
 
-import {DrawerNavigationProp} from '@react-navigation/drawer';
-import DrawerTopNavigation from '../../../../navigation/DrawerTopNavigation';
-
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {
-  DrawerNavigator,
-  TradeTopTabNavigator,
-} from '../../../../../utils/navigation.types';
+import {TradeTopTabNavigator} from '../../../../../utils/navigation.types';
 
 import Sales from './Tabs/Sales';
 import Incomes from './Tabs/Incomes';
 import Returnes from './Tabs/Returnes';
 
-type Props = {
-  navigation: DrawerNavigationProp<DrawerNavigator, 'Trade'>;
-};
-
 const TopTab = createMaterialTopTabNavigator<TradeTopTabNavigator>();
 
-const Trade: React.FC<Props> = ({navigation}) => {
-  useEffect(() => {
-    navigation.setOptions({
-      header: props => <DrawerTopNavigation {...props} divider={false} />,
-    });
-  }, []);
-
+const Trade: React.FC = () => {
   const theme = useTheme();
 
   const renderLabel = (text: string, focused: boolean) => (

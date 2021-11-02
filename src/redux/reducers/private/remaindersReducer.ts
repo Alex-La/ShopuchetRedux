@@ -19,6 +19,7 @@ export const remainders = (
     case REMAINDERS_ACTION_TYPES.SET_REMAINDERS:
       return {...state, remainders: (action as SetRemaindersAction).payload};
     case REMAINDERS_ACTION_TYPES.SORT_REMAINDERS:
+      console.log(action.payload);
       return {
         remainders: state.remainders.reverse(),
         reverse: (action as SortRemaindersAction).payload,

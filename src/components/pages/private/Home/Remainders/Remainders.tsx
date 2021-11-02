@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {
   Button,
@@ -9,52 +9,25 @@ import {
   List,
   Text,
   Tooltip,
-  TopNavigationAction,
 } from '@ui-kitten/components';
-
-import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {DrawerNavigator} from '../../../../../utils/navigation.types';
-import DrawerTopNavigation from '../../../../navigation/DrawerTopNavigation';
-import Sort from '../../../../icons/Sort';
 
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
 import {even} from '../../../../../utils';
-import {getRemainders} from '../../../../../redux/actions/private/remaindersActions';
-import usePrevious from '../../../../../hooks/previous.hook';
+import {
+  getRemainders,
+  setRemainders,
+} from '../../../../../redux/actions/private/remaindersActions';
 import {useFocusEffect} from '@react-navigation/core';
 
-type Props = {
-  navigation: DrawerNavigationProp<DrawerNavigator, 'Remainders'>;
-};
-
-const Remainders: React.FC<Props> = ({navigation}) => {
+const Remainders: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const tradePoint = useAppSelector(state => state.main.tradePoint);
-  const reverse = useAppSelector(state => state.remainders.reverse);
   const remainders = useAppSelector(state => state.remainders.remainders);
   const loading = useAppSelector(state => state.fetch.loading);
 
-  const prevTradePointId = usePrevious<number>(tradePoint?.gTochkaId);
-
   const [cnt, setCnt] = useState<string>('');
   const [filter, setFilter] = useState<string>('');
-
-  const renderRightAction = () => (
-    <TopNavigationAction icon={<Sort def={!reverse} />} />
-  );
-
-  useEffect(() => {
-    navigation.setOptions({
-      header: props => (
-        <DrawerTopNavigation
-          {...props}
-          accessoryRight={renderRightAction}
-          subtitle={tradePoint?.name}
-        />
-      ),
-    });
-  }, [tradePoint]);
 
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -67,9 +40,9 @@ const Remainders: React.FC<Props> = ({navigation}) => {
 
   useFocusEffect(
     useCallback(() => {
-      if (tradePoint?.gTochkaId && tradePoint?.gTochkaId !== prevTradePointId)
-        fetchRemainders();
-    }, [tradePoint?.gTochkaId]),
+      fetchRemainders();
+      return () => dispatch(setRemainders([]));
+    }, [tradePoint]),
   );
 
   return (
@@ -151,11 +124,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tableHead: {
+    flex: 1,
     flexDirection: 'row',
     paddingHorizontal: 16,
     paddingVertical: 8,
   },
-  item: {flex: 4},
+  item: {flex: 3},
   remainder: {flex: 1, textAlign: 'right'},
 });
 

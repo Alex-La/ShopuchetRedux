@@ -1,10 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Divider, Layout, Text} from '@ui-kitten/components';
-
-import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {DrawerNavigator} from '../../../../../utils/navigation.types';
-import DrawerTopNavigation from '../../../../navigation/DrawerTopNavigation';
 
 import RefreshScrollView from '../../../../loaders/RefreshScrollView';
 import InfoItem from './InfoItem';
@@ -14,25 +10,13 @@ import {getMainData} from '../../../../../redux/actions/private/mainActions';
 import {useFocusEffect} from '@react-navigation/core';
 import usePrevious from '../../../../../hooks/previous.hook';
 
-type Props = {
-  navigation: DrawerNavigationProp<DrawerNavigator, 'Main'>;
-};
-
-const Main: React.FC<Props> = ({navigation}) => {
+const Main: React.FC = () => {
   const dispatch = useAppDispatch();
   const mainData = useAppSelector(state => state.main.mainData);
   const tradePoint = useAppSelector(state => state.main.tradePoint);
   const loading = useAppSelector(state => state.fetch.loading);
 
   const prevTradePointId = usePrevious<number>(tradePoint?.gTochkaId);
-
-  useEffect(() => {
-    navigation.setOptions({
-      header: props => (
-        <DrawerTopNavigation {...props} subtitle={tradePoint?.name} />
-      ),
-    });
-  }, [tradePoint]);
 
   useFocusEffect(
     React.useCallback(() => {

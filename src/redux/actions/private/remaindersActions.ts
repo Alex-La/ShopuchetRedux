@@ -10,12 +10,14 @@ import {
 } from '../../types/private/remainders.types';
 import {handleError, setLoading} from '../fetchActions';
 
-const setRemainders = (remainders: Remainder[]): SetRemaindersAction => ({
+export const setRemainders = (
+  remainders: Remainder[],
+): SetRemaindersAction => ({
   type: REMAINDERS_ACTION_TYPES.SET_REMAINDERS,
   payload: remainders,
 });
 
-export const SortRemainders = (reverse: boolean): SortRemaindersAction => ({
+export const sortRemainders = (reverse: boolean): SortRemaindersAction => ({
   type: REMAINDERS_ACTION_TYPES.SORT_REMAINDERS,
   payload: reverse,
 });
