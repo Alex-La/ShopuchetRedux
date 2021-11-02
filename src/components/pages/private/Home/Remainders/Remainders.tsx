@@ -18,6 +18,8 @@ import {
   setRemainders,
 } from '../../../../../redux/actions/private/remaindersActions';
 import {useFocusEffect} from '@react-navigation/core';
+import usePrevious from '../../../../../hooks/previous.hook';
+import ListItem from './ListItem';
 
 const Remainders: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +27,8 @@ const Remainders: React.FC = () => {
   const tradePoint = useAppSelector(state => state.main.tradePoint);
   const remainders = useAppSelector(state => state.remainders.remainders);
   const loading = useAppSelector(state => state.fetch.loading);
+
+  const prevTradePointId = usePrevious<number>(tradePoint?.gTochkaId);
 
   const [cnt, setCnt] = useState<string>('');
   const [filter, setFilter] = useState<string>('');
@@ -40,9 +44,9 @@ const Remainders: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchRemainders();
-      return () => dispatch(setRemainders([]));
-    }, [tradePoint]),
+      if (tradePoint?.gTochkaId && tradePoint.gTochkaId !== prevTradePointId)
+        fetchRemainders();
+    }, [tradePoint?.gTochkaId, prevTradePointId]),
   );
 
   return (
@@ -101,19 +105,7 @@ const Remainders: React.FC = () => {
         onRefresh={fetchRemainders}
         ItemSeparatorComponent={Divider}
         data={remainders}
-        renderItem={({item, index}) => (
-          <Layout style={styles.tableHead} level={even(index) ? '2' : '1'}>
-            <View style={[styles.item]}>
-              <Text numberOfLines={1}>{item.groupName}</Text>
-              <Text category="label" appearance="hint" numberOfLines={1}>
-                {item.name}
-              </Text>
-            </View>
-            <View style={{justifyContent: 'flex-end'}}>
-              <Text category="label">{item.amount}</Text>
-            </View>
-          </Layout>
-        )}
+        renderItem={ListItem}
       />
     </Layout>
   );
