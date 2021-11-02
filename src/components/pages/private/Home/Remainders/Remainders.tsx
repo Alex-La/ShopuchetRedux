@@ -1,111 +1,94 @@
 import React, {useCallback, useState} from 'react';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import {
-  Button,
-  Divider,
-  Icon,
-  Input,
-  Layout,
-  List,
-  Text,
-  Tooltip,
-} from '@ui-kitten/components';
+import {ListRenderItemInfo, StyleSheet, View} from 'react-native';
+import {Divider, Layout, List, Text} from '@ui-kitten/components';
+
+import Filter from './Filter';
 
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
-import {even} from '../../../../../utils';
+import {useFocusEffect} from '@react-navigation/core';
+import usePrevious from '../../../../../hooks/previous.hook';
 import {
   getRemainders,
   setRemainders,
 } from '../../../../../redux/actions/private/remaindersActions';
-import {useFocusEffect} from '@react-navigation/core';
-import usePrevious from '../../../../../hooks/previous.hook';
-import ListItem from './ListItem';
+import {Remainder} from '../../../../../utils/api.types';
+import {even} from '../../../../../utils';
 
 const Remainders: React.FC = () => {
   const dispatch = useAppDispatch();
-
-  const tradePoint = useAppSelector(state => state.main.tradePoint);
+  const currentGTochkaId = useAppSelector(
+    state => state.main.tradePoint?.gTochkaId,
+  );
+  const prevGTochkaId = usePrevious<number>(currentGTochkaId);
   const remainders = useAppSelector(state => state.remainders.remainders);
   const loading = useAppSelector(state => state.fetch.loading);
-
-  const prevTradePointId = usePrevious<number>(tradePoint?.gTochkaId);
 
   const [cnt, setCnt] = useState<string>('');
   const [filter, setFilter] = useState<string>('');
 
-  const [visible, setVisible] = useState<boolean>(false);
-
-  const toggle = () => setVisible(!visible);
-
-  const fetchRemainders = useCallback(() => {
-    if (tradePoint)
-      dispatch(getRemainders(tradePoint.gTochkaId, Number(cnt), filter));
-  }, [tradePoint, cnt, filter]);
+  const loadRemainders = useCallback(() => {
+    if (currentGTochkaId)
+      dispatch(getRemainders(currentGTochkaId, 30, Number(cnt), filter));
+  }, [currentGTochkaId, cnt, filter]);
 
   useFocusEffect(
     useCallback(() => {
-      if (tradePoint?.gTochkaId && tradePoint.gTochkaId !== prevTradePointId)
-        fetchRemainders();
-    }, [tradePoint?.gTochkaId, prevTradePointId]),
+      if (currentGTochkaId) loadRemainders();
+      return () => dispatch(setRemainders([]));
+    }, [currentGTochkaId, prevGTochkaId]),
+  );
+
+  const keyExtractor = useCallback<(item: Remainder) => string>(
+    item => item.gProductId.toString(),
+    [],
+  );
+
+  const RenderItem = useCallback<
+    (props: ListRenderItemInfo<Remainder>) => JSX.Element
+  >(
+    ({item, index}) => {
+      const level = even(index) ? '2' : '1';
+      return (
+        <Layout key={index} level={level} style={styles.tableHead}>
+          <View style={{flex: 4}}>
+            <Text>{item.groupName}</Text>
+            <Text category="c1" appearance="hint" numberOfLines={1}>
+              {item.name}
+            </Text>
+          </View>
+          <View style={styles.tableRemainder}>
+            <Text category="c1" appearance="hint">
+              {item.amount.toFixed(1)}
+            </Text>
+          </View>
+        </Layout>
+      );
+    },
+    [remainders],
   );
 
   return (
     <Layout style={styles.wrap}>
-      <View style={{padding: 16}}>
-        <Text style={{textAlign: 'center'}}>Фильтр</Text>
-        <Input
-          value={cnt}
-          onChangeText={setCnt}
-          keyboardType="number-pad"
-          selectTextOnFocus
-          style={{marginTop: 8}}
-          placeholder="Остаток"
-          accessoryRight={props => (
-            <Tooltip
-              placement={'bottom end'}
-              anchor={() => (
-                <TouchableOpacity onPress={toggle}>
-                  <Icon {...props} name="info-outline" />
-                </TouchableOpacity>
-              )}
-              visible={visible}
-              onBackdropPress={() => setVisible(false)}>
-              Показать товары с остатком меньше указанного
-            </Tooltip>
-          )}
-        />
-        <Input
-          value={filter}
-          onChangeText={setFilter}
-          selectTextOnFocus
-          style={{marginTop: 16}}
-          placeholder="Товар"
-        />
-        <Button
-          disabled={loading}
-          onPress={fetchRemainders}
-          style={{marginTop: 16}}>
-          Поиск
-        </Button>
-      </View>
+      <Filter cnt={cnt} setCnt={setCnt} filter={filter} setFilter={setFilter} />
       <Divider />
 
       <View style={styles.tableHead}>
-        <Text style={styles.item} appearance="hint">
+        <Text appearance="hint" style={{flex: 4}}>
           Товар
         </Text>
-        <Text style={styles.remainder} appearance="hint">
+        <Text appearance="hint" style={styles.tableHeadRemainder}>
           Остаток
         </Text>
       </View>
+
       <Divider />
 
       <List
         refreshing={loading}
-        onRefresh={fetchRemainders}
-        ItemSeparatorComponent={Divider}
+        onRefresh={loadRemainders}
         data={remainders}
-        renderItem={ListItem}
+        renderItem={RenderItem}
+        keyExtractor={keyExtractor}
       />
     </Layout>
   );
@@ -116,10 +99,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tableHead: {
-    flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 16,
     paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  tableHeadRemainder: {flex: 1, textAlign: 'right'},
+  tableRemainder: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   item: {flex: 3},
   remainder: {flex: 1, textAlign: 'right'},

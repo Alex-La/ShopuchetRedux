@@ -13,6 +13,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import {
   ImageProps,
+  ListRenderItemInfo,
   TouchableWithoutFeedback,
   View,
   ViewProps,
@@ -96,13 +97,8 @@ const AddFriendModal: React.FC<Props> = ({navigation}) => {
             style={{marginTop: 10}}
             ItemSeparatorComponent={Divider}
             data={extendTradePoints}
-            renderItem={({item, index}) => (
-              <ListItem
-                key={index}
-                title={item.name}
-                accessoryRight={item.active ? CheckIcon : undefined}
-                onPress={() => setActive(index)}
-              />
+            renderItem={props => (
+              <RenderItem {...props} setActive={setActive} key={props.index} />
             )}
           />
           <Button style={{marginTop: 20}} onPress={addFriend}>
@@ -113,6 +109,19 @@ const AddFriendModal: React.FC<Props> = ({navigation}) => {
     </TouchableWithoutFeedback>
   );
 };
+
+interface ItemProps extends ListRenderItemInfo<ExtendTradePoint> {
+  setActive: (index: number) => void;
+}
+
+const RenderItem: React.FC<ItemProps> = ({item, index, setActive}) => (
+  <ListItem
+    key={index}
+    title={item.name}
+    accessoryRight={item.active ? CheckIcon : undefined}
+    onPress={() => setActive(index)}
+  />
+);
 
 const Styles = StyleService.create({
   wrap: {

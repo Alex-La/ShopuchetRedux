@@ -25,8 +25,9 @@ export const sortRemainders = (reverse: boolean): SortRemaindersAction => ({
 export const getRemainders =
   (
     gtochkaid: number,
-    cnt: number,
-    filter: string,
+    limit?: number,
+    cnt?: number,
+    filter?: string,
   ): ThunkAction<
     void,
     RootState,
@@ -36,7 +37,7 @@ export const getRemainders =
   dispatch => {
     dispatch(setLoading(true));
     api
-      .getRemainders(gtochkaid, cnt, filter)
+      .getRemainders(gtochkaid, limit || 50, cnt || 0, filter || '')
       .then(res => {
         dispatch(setRemainders(res.data));
         dispatch(setLoading(false));

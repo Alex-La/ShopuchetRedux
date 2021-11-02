@@ -79,9 +79,14 @@ const api = {
   getFriends: () => axiosInstance.get<Friend[]>('/api/readusers'),
   linkUser: (login: string, gtochkaids: string) =>
     axiosInstance.post<string>(`/api/linkuser?login=${login}${gtochkaids}`),
-  getRemainders: (gtochkaid: number, cnt: number, filter: string) =>
+  getRemainders: (
+    gtochkaid: number,
+    limit: number,
+    cnt: number,
+    filter: string,
+  ) =>
     axiosInstance.get<Remainder[]>(
-      `/api/remainders?gtochkaid=${gtochkaid}&cnt=${cnt}&filter=${filter}`,
+      `/api/remainders?gtochkaid=${gtochkaid}&cnt=${cnt}&filter=${filter}&limit=${limit}`,
     ),
 };
 

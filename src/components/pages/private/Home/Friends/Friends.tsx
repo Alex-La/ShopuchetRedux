@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View} from 'react-native';
+import {ListRenderItemInfo, View} from 'react-native';
 import {Button, Divider, Layout, List, ListItem} from '@ui-kitten/components';
 
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
@@ -7,6 +7,7 @@ import {loadFriends} from '../../../../../redux/actions/private/friendActions';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PrivateStackNavigator} from '../../../../../utils/navigation.types';
+import {Friend} from '../../../../../utils/api.types';
 
 type Props = {
   navigation: NativeStackNavigationProp<PrivateStackNavigator>;
@@ -32,14 +33,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
         onRefresh={onRefresh}
         ItemSeparatorComponent={Divider}
         data={friends}
-        renderItem={({item, index}) => (
-          <ListItem
-            key={index}
-            title={item.login}
-            description={item.nameGTochka}
-            disabled
-          />
-        )}
+        renderItem={RenderItem}
       />
       <Divider />
       <View style={{paddingVertical: 18, paddingHorizontal: 27}}>
@@ -48,5 +42,14 @@ const Friends: React.FC<Props> = ({navigation}) => {
     </Layout>
   );
 };
+
+const RenderItem: React.FC<ListRenderItemInfo<Friend>> = ({item, index}) => (
+  <ListItem
+    key={index}
+    title={item.login}
+    description={item.nameGTochka}
+    disabled
+  />
+);
 
 export default Friends;
