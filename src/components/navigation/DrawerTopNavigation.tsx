@@ -4,28 +4,28 @@ import {
   Icon,
   TopNavigation,
   TopNavigationAction,
+  TopNavigationProps,
 } from '@ui-kitten/components';
 import {ImageProps} from 'react-native';
 import {DrawerHeaderProps} from '@react-navigation/drawer';
-
-import {useAppSelector} from '../../redux';
-import Chart from '../icons/Chart';
 
 const MenuIcon = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="menu-outline" />
 );
 
-interface Props extends DrawerHeaderProps {}
+interface Props extends DrawerHeaderProps, TopNavigationProps {
+  divider?: boolean;
+}
 
-const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
-  const subtitle = useAppSelector(state => state.main.tradePoint?.name);
-
+const DrawerTopNavigation: React.FC<Props> = ({
+  options,
+  navigation,
+  subtitle,
+  accessoryRight,
+  divider = true,
+}) => {
   const MenuAction = () => (
     <TopNavigationAction icon={MenuIcon} onPress={navigation.openDrawer} />
-  );
-
-  const ChartAction = () => (
-    <TopNavigationAction icon={<Chart def={true} />} onPress={() => {}} />
   );
 
   return (
@@ -33,15 +33,11 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
       <TopNavigation
         alignment="center"
         accessoryLeft={MenuAction}
-        accessoryRight={route.name === 'Remainders' ? ChartAction : undefined}
+        accessoryRight={accessoryRight}
         title={options.title}
-        subtitle={
-          route.name !== 'Friends' && route.name !== 'Profile'
-            ? subtitle
-            : undefined
-        }
+        subtitle={subtitle}
       />
-      {route.name !== 'Trade' && route.name !== 'Reports' && <Divider />}
+      {divider && <Divider />}
     </>
   );
 };
