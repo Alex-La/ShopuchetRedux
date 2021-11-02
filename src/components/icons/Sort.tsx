@@ -6,7 +6,7 @@ type Props = {
   def: boolean;
 };
 
-const Chart: React.FC<Props> = ({def}) => {
+const Sort: React.FC<Props> = ({def}) => {
   return (
     <TouchableOpacity>
       <Svg
@@ -24,4 +24,4 @@ const Chart: React.FC<Props> = ({def}) => {
   );
 };
 
-export default Chart;
+export default Sort;

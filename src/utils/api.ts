@@ -1,12 +1,20 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Friend, MainData, Tokens, TradePoints, User} from './api.types';
+import {
+  Friend,
+  MainData,
+  Remainder,
+  Tokens,
+  TradePoints,
+  User,
+} from './api.types';
 
 const baseUrl = 'https://api.shopuchet.kz';
 
 const axiosInstance = axios.create({baseURL: baseUrl});
 
 axiosInstance.interceptors.request.use(async config => {
+  console.log(config.url);
   const accessToken = await AsyncStorage.getItem('accessToken');
   if (accessToken && config.headers)
     config.headers['X-Auth-Token'] = accessToken;
@@ -71,6 +79,10 @@ const api = {
   getFriends: () => axiosInstance.get<Friend[]>('/api/readusers'),
   linkUser: (login: string, gtochkaids: string) =>
     axiosInstance.post<string>(`/api/linkuser?login=${login}${gtochkaids}`),
+  getRemainders: (gtochkaid: number, cnt: number, filter: string) =>
+    axiosInstance.get<Remainder[]>(
+      `/api/remainders?gtochkaid=${gtochkaid}&cnt=${cnt}&filter=${filter}`,
+    ),
 };
 
 export default api;

@@ -15,11 +15,18 @@ import {
 } from './private/friendsReducer';
 import {Friends} from '../types/private/friends.types';
 
+import {
+  remainders,
+  initialState as remaindersInitialState,
+} from './private/remaindersReducer';
+import {Remainders} from '../types/private/remainders.types';
+
 type RootReducer = {
   auth: Auth;
   fetch: Fetch;
   main: Main;
   friends: Friends;
+  remainders: Remainders;
 };
 
 const initialRootState: RootReducer = {
@@ -27,6 +34,7 @@ const initialRootState: RootReducer = {
   fetch: fetchInitialState,
   main: mainInitialState,
   friends: friendsInitialState,
+  remainders: remaindersInitialState,
 };
 
 const appReducer = combineReducers<RootReducer>({
@@ -34,6 +42,7 @@ const appReducer = combineReducers<RootReducer>({
   fetch,
   main,
   friends,
+  remainders,
 });
 
 const rootReducer = (state: RootReducer, action: AnyAction) => {

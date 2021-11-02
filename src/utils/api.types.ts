@@ -42,3 +42,12 @@ export type Friend = {
   gTochkaId: number;
   nameGTochka: string;
 };
+
+export type Remainder = {
+  remaindersId: number;
+  amount: number;
+  name: string;
+  groupName: string;
+  gProductId: number;
+  cost: number;
+};
