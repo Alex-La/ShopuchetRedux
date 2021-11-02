@@ -15,8 +15,8 @@ type Props = {
 
 const Friends: React.FC<Props> = ({navigation}) => {
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(state => state.fetch.loading);
-  const friends = useAppSelector(state => state.friends);
+  const loading = useAppSelector(state => state.friends.loading);
+  const friends = useAppSelector(state => state.friends.friends);
 
   useEffect(() => {
     dispatch(loadFriends());

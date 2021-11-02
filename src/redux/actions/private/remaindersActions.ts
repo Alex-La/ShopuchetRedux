@@ -2,13 +2,18 @@ import {ThunkAction} from 'redux-thunk';
 import api from '../../../utils/api';
 import {Remainder} from '../../../utils/api.types';
 import {RootState} from '../../store';
-import {SetLoadingAction} from '../../types/fetch.types';
 import {
   REMAINDERS_ACTION_TYPES,
+  SetLoadingAction,
   SetRemaindersAction,
   SortRemaindersAction,
 } from '../../types/private/remainders.types';
-import {handleError, setLoading} from '../fetchActions';
+import {handleError} from '../fetchActions';
+
+const setLoading = (loading: boolean): SetLoadingAction => ({
+  type: REMAINDERS_ACTION_TYPES.SET_LOADING,
+  payload: loading,
+});
 
 export const setRemainders = (
   remainders: Remainder[],

@@ -3,6 +3,7 @@ import {
   Main,
   MainActions,
   MAIN_ACTION_TYPES,
+  SetLoadingAction,
   SetMainDataAction,
   SetTradePointAction,
   SetTradePointsAction,
@@ -30,6 +31,7 @@ const initialMainData: MainData = {
 };
 
 export const initialState: Main = {
+  loading: false,
   tradePoints: [],
   tradePoint: initialTradePoint,
   mainData: initialMainData,
@@ -37,6 +39,8 @@ export const initialState: Main = {
 
 export const main = (state: Main = initialState, action: MainActions): Main => {
   switch (action.type) {
+    case MAIN_ACTION_TYPES.SET_LOADING:
+      return {...state, loading: (action as SetLoadingAction).payload};
     case MAIN_ACTION_TYPES.SET_TRADE_POINTS:
       return {...state, tradePoints: (action as SetTradePointsAction).payload};
     case MAIN_ACTION_TYPES.SET_TRADE_POINT:

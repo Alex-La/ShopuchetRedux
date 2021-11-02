@@ -21,7 +21,7 @@ const Remainders: React.FC = () => {
   );
   const prevGTochkaId = usePrevious<number>(currentGTochkaId);
   const remainders = useAppSelector(state => state.remainders.remainders);
-  const loading = useAppSelector(state => state.fetch.loading);
+  const loading = useAppSelector(state => state.remainders.loading);
 
   const [cnt, setCnt] = useState<string>('');
   const [filter, setFilter] = useState<string>('');

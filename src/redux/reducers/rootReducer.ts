@@ -10,6 +10,12 @@ import {main, initialState as mainInitialState} from './private/mainReducer';
 import {Main} from '../types/private/main.types';
 
 import {
+  profile,
+  initialState as profileInitialState,
+} from './private/profileReducer';
+import {Profile} from '../types/private/profile.tpyes';
+
+import {
   friends,
   initialState as friendsInitialState,
 } from './private/friendsReducer';
@@ -25,6 +31,7 @@ type RootReducer = {
   auth: Auth;
   fetch: Fetch;
   main: Main;
+  profile: Profile;
   friends: Friends;
   remainders: Remainders;
 };
@@ -33,6 +40,7 @@ const initialRootState: RootReducer = {
   auth: authInitialState,
   fetch: fetchInitialState,
   main: mainInitialState,
+  profile: profileInitialState,
   friends: friendsInitialState,
   remainders: remaindersInitialState,
 };
@@ -41,6 +49,7 @@ const appReducer = combineReducers<RootReducer>({
   auth,
   fetch,
   main,
+  profile,
   friends,
   remainders,
 });

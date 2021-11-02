@@ -2,14 +2,20 @@ import {ThunkAction} from 'redux-thunk';
 import api from '../../../utils/api';
 import {MainData, TradePoint, TradePoints} from '../../../utils/api.types';
 import {RootState} from '../../store';
-import {SetAppLoadingAction, SetLoadingAction} from '../../types/fetch.types';
+import {SetAppLoadingAction} from '../../types/fetch.types';
 import {
   SetMainDataAction,
   MAIN_ACTION_TYPES,
   SetTradePointsAction,
   SetTradePointAction,
+  SetLoadingAction,
 } from '../../types/private/main.types';
-import {handleError, setAppLoading, setLoading} from '../fetchActions';
+import {handleError, setAppLoading} from '../fetchActions';
+
+const setLoading = (loading: boolean): SetLoadingAction => ({
+  type: MAIN_ACTION_TYPES.SET_LOADING,
+  payload: loading,
+});
 
 const setTradePoints = (tradePoints: TradePoints): SetTradePointsAction => ({
   type: MAIN_ACTION_TYPES.SET_TRADE_POINTS,

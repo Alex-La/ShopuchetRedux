@@ -1,15 +1,20 @@
 import {ThunkAction} from 'redux-thunk';
 import api from '../../../utils/api';
+import {Friend} from '../../../utils/api.types';
 import {RootState} from '../../store';
-import {SetLoadingAction} from '../../types/fetch.types';
 import {
-  Friends,
   FRIENDS_ACTION_TYPES,
   GetFriendsAction,
+  SetLoadingAction,
 } from '../../types/private/friends.types';
-import {handleError, setLoading} from '../fetchActions';
+import {handleError} from '../fetchActions';
 
-const getFriends = (friends: Friends): GetFriendsAction => ({
+const setLoading = (loading: boolean): SetLoadingAction => ({
+  type: FRIENDS_ACTION_TYPES.SET_LOADING,
+  payload: loading,
+});
+
+const getFriends = (friends: Friend[]): GetFriendsAction => ({
   type: FRIENDS_ACTION_TYPES.GET_FRIENDS,
   payload: friends,
 });

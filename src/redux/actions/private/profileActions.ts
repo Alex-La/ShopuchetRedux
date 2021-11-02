@@ -2,9 +2,17 @@ import {ThunkAction} from 'redux-thunk';
 import api from '../../../utils/api';
 import {RootState} from '../../store';
 import {SetUserAction} from '../../types/auth.types';
-import {SetLoadingAction} from '../../types/fetch.types';
+import {
+  PROFILE_ACTION_TYPES,
+  SetLoadingAction,
+} from '../../types/private/profile.tpyes';
 import {setUser} from '../authActions';
-import {handleError, setLoading} from '../fetchActions';
+import {handleError} from '../fetchActions';
+
+const setLoading = (loading: boolean): SetLoadingAction => ({
+  type: PROFILE_ACTION_TYPES.SET_LOADING,
+  payload: loading,
+});
 
 export const updateUser =
   (
