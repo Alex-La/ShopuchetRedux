@@ -51,3 +51,21 @@ export type Remainder = {
   gProductId: number;
   cost: number;
 };
+
+type SalesGroupsHead = {
+  cnt: number;
+  summ: number;
+  income: number;
+};
+
+type SalesGroupsDetails = {
+  name: string;
+  amount: number;
+  summ: number;
+  income: number;
+};
+
+export type SalesGroups = {
+  head: SalesGroupsHead;
+  details: SalesGroupsDetails[];
+};

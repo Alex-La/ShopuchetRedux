@@ -4,6 +4,7 @@ import {
   Friend,
   MainData,
   Remainder,
+  SalesGroups,
   Tokens,
   TradePoints,
   User,
@@ -87,6 +88,10 @@ const api = {
   ) =>
     axiosInstance.get<Remainder[]>(
       `/api/remainders?gtochkaid=${gtochkaid}&cnt=${cnt}&filter=${filter}&limit=${limit}`,
+    ),
+  getSalesByGroups: (gtochkaid: number, datebegin: string, dateend: string) =>
+    axiosInstance.get<SalesGroups>(
+      `/api/readsalesgroupproducts?gtochkaid=${gtochkaid}&datebegin=${datebegin}&dateend=${dateend}`,
     ),
 };
 
