@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   ImageProps,
   Keyboard,
@@ -16,6 +16,7 @@ import {
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PublicStackNavigator} from '../../../utils/navigation.types';
+import ThemeContext from '../../../context/ThemeContext';
 
 const Email = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="email-outline" />
@@ -30,6 +31,7 @@ type Props = {
 };
 
 const Forgot: React.FC<Props> = ({navigation}) => {
+  const {theme} = useContext(ThemeContext);
   const [email, setEmail] = useState<string>('');
 
   const handleChangeEmail = (text: string) => setEmail(text);
@@ -53,6 +55,7 @@ const Forgot: React.FC<Props> = ({navigation}) => {
             accessoryLeft={Email}
             placeholder="E-mail"
             keyboardType="email-address"
+            keyboardAppearance={theme}
             style={styles.email}
             size="large"
           />

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Button,
   Divider,
@@ -13,11 +13,12 @@ import Preloader from '../../../../loaders/Preloader';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {ProfileStackNavigator} from '../../../../../utils/navigation.types';
-import {RouteProp} from '@react-navigation/core';
+import {RouteProp, useFocusEffect} from '@react-navigation/core';
 
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
 import {updateUser} from '../../../../../redux/actions/private/profileActions';
 import {show} from '../../../../../utils/snackbar';
+import ThemeContext from '../../../../../context/ThemeContext';
 
 type Props = {
   navigation: NativeStackNavigationProp<ProfileStackNavigator, 'Edit'>;
@@ -25,6 +26,8 @@ type Props = {
 };
 
 const Edit: React.FC<Props> = ({navigation, route}) => {
+  const appTheme = useContext(ThemeContext);
+
   const dispatch = useAppDispatch();
   const loading = useAppSelector(state => state.profile.loading);
 
@@ -40,6 +43,12 @@ const Edit: React.FC<Props> = ({navigation, route}) => {
   const theme = useTheme();
 
   const goBack = () => navigation.goBack();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => goBack();
+    }, []),
+  );
 
   const RenderAcceptAction = (props: Partial<ImageProps>) => (
     <TouchableOpacity onPress={goBack}>
@@ -74,42 +83,51 @@ const Edit: React.FC<Props> = ({navigation, route}) => {
           size="large"
           placeholder="Имя"
           value={name}
-          onChangeText={t => setName(t)}
+          onChangeText={setName}
+          keyboardAppearance={appTheme.theme}
         />
         <Input
           size="large"
           placeholder="Фамилия"
           style={{marginTop: 10}}
           value={surname}
-          onChangeText={t => setSurname(t)}
+          onChangeText={setSurname}
         />
         <Input
           size="large"
           placeholder="E-mail"
           style={{marginTop: 10}}
           value={email}
-          onChangeText={t => setEmail(t)}
+          onChangeText={setEmail}
+          keyboardType={'email-address'}
+          keyboardAppearance={appTheme.theme}
         />
         <Input
           size="large"
           placeholder="Телефон"
           style={{marginTop: 10}}
           value={phone}
-          onChangeText={t => setPhone(t)}
+          onChangeText={setPhone}
+          keyboardType={'phone-pad'}
+          keyboardAppearance={appTheme.theme}
         />
         <Divider style={{marginTop: 10, marginBottom: 10}} />
         <Input
           size="large"
           placeholder="Старый пароль"
           value={oldPassword}
-          onChangeText={t => setOldPassword(t)}
+          onChangeText={setOldPassword}
+          keyboardAppearance={appTheme.theme}
+          secureTextEntry
         />
         <Input
           size="large"
           placeholder="Новый пароль"
           style={{marginTop: 10}}
           value={newPassword}
-          onChangeText={t => setNewPassword(t)}
+          onChangeText={setNewPassword}
+          keyboardAppearance={appTheme.theme}
+          secureTextEntry
         />
       </View>
       <Button style={{marginTop: 30}} onPress={update}>

@@ -10,7 +10,7 @@ import {
   StyleService,
   useStyleSheet,
 } from '@ui-kitten/components';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   ImageProps,
   ListRenderItemInfo,
@@ -18,6 +18,7 @@ import {
   View,
   ViewProps,
 } from 'react-native';
+import ThemeContext from '../../context/ThemeContext';
 import {useAppDispatch, useAppSelector} from '../../redux';
 import {linkUser} from '../../redux/actions/private/friendActions';
 import {TradePoint} from '../../utils/api.types';
@@ -44,6 +45,8 @@ interface ExtendTradePoint extends TradePoint {
 }
 
 const AddFriendModal: React.FC<Props> = ({navigation}) => {
+  const {theme} = useContext(ThemeContext);
+
   const dispatch = useAppDispatch();
   const tradePoints = useAppSelector(state => state.main.tradePoints);
 
@@ -90,6 +93,7 @@ const AddFriendModal: React.FC<Props> = ({navigation}) => {
             placeholder="E-mail"
             size="large"
             keyboardType="email-address"
+            keyboardAppearance={theme}
             value={email}
             onChangeText={t => setEmail(t)}
           />

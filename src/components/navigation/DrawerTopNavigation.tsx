@@ -1,13 +1,5 @@
-import React, {Fragment} from 'react';
-import {
-  Divider,
-  Icon,
-  Layout,
-  Text,
-  TopNavigation,
-  TopNavigationAction,
-  useTheme,
-} from '@ui-kitten/components';
+import React from 'react';
+import {Divider, Icon, Layout, Text, useTheme} from '@ui-kitten/components';
 import {ImageProps, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {DrawerHeaderProps} from '@react-navigation/drawer';
 import {useAppSelector} from '../../redux';
@@ -35,11 +27,14 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
         </TouchableOpacity>
         <View style={{marginLeft: 16}}>
           <Text category="s1">{options.title}</Text>
-          {name !== 'Profile' && name !== 'Friends' && (
+          {name !== 'Profile' && name !== 'Friends' && subtitle && (
             <Text category="label" appearance="hint">
               {subtitle}
             </Text>
           )}
+        </View>
+        <View style={{marginLeft: 'auto'}}>
+          <DatePicker />
         </View>
       </Layout>
       <Divider />

@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useContext, useState} from 'react';
 import {
   ImageProps,
   Keyboard,
@@ -19,6 +19,7 @@ import {
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PublicStackNavigator} from '../../../utils/navigation.types';
+import ThemeContext from '../../../context/ThemeContext';
 
 const User = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="person-outline" />
@@ -45,17 +46,13 @@ type Props = {
 };
 
 const Registration: React.FC<Props> = ({navigation}) => {
+  const {theme} = useContext(ThemeContext);
+
   const [name, setName] = useState<string>('');
   const [surname, setSurname] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-
-  const handleChangeName = (text: string) => setName(text);
-  const handleChangeSurname = (text: string) => setSurname(text);
-  const handleChangeEmail = (text: string) => setEmail(text);
-  const handleChangePhone = (text: string) => setPhone(text);
-  const handleChangePassword = (text: string) => setPassword(text);
 
   //Navigation actions
   const goBack = () => navigation.canGoBack() && navigation.goBack();
@@ -90,47 +87,52 @@ const Registration: React.FC<Props> = ({navigation}) => {
           <Text category="h2">РЕГИСТРАЦИЯ</Text>
           <Input
             value={name}
-            onChangeText={handleChangeName}
+            onChangeText={setName}
             accessoryLeft={User}
             placeholder="Имя"
             style={styles.name}
             size="large"
+            keyboardAppearance={theme}
           />
           <Input
             value={surname}
-            onChangeText={handleChangeSurname}
+            onChangeText={setSurname}
             accessoryLeft={User}
             placeholder="Фамилия"
             style={styles.input}
             size="large"
+            keyboardAppearance={theme}
           />
           <Input
             value={email}
-            onChangeText={handleChangeEmail}
+            onChangeText={setEmail}
             accessoryLeft={Email}
             placeholder="E-mail"
             style={styles.input}
             keyboardType="email-address"
             size="large"
+            keyboardAppearance={theme}
           />
           <Input
             value={phone}
-            onChangeText={handleChangePhone}
+            onChangeText={setPhone}
             accessoryLeft={Phone}
             placeholder="Телефон"
             style={styles.input}
             keyboardType="phone-pad"
             size="large"
+            keyboardAppearance={theme}
           />
           <Input
             value={password}
-            onChangeText={handleChangePassword}
+            onChangeText={setPassword}
             accessoryLeft={Lock}
             accessoryRight={renderToggleIcon}
             placeholder="Пароль"
             style={styles.input}
             size="large"
             secureTextEntry={secureTextEntry}
+            keyboardAppearance={theme}
           />
 
           <Button style={styles.registration}>РЕГИСТРАЦИЯ</Button>

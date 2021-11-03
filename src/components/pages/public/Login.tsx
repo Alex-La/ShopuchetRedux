@@ -100,6 +100,7 @@ const Login: React.FC<Props> = ({navigation}) => {
             accessoryLeft={Email}
             placeholder="E-mail"
             keyboardType="email-address"
+            keyboardAppearance={theme}
             style={styles.email}
             size="large"
           />
@@ -111,6 +112,7 @@ const Login: React.FC<Props> = ({navigation}) => {
             placeholder="Password"
             style={styles.password}
             secureTextEntry={secureTextEntry}
+            keyboardAppearance={theme}
             size="large"
           />
           <TouchableOpacity style={styles.forgot} onPress={navToForgot}>

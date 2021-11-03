@@ -1,6 +1,7 @@
 import {Icon, Input, Text, Tooltip, Button} from '@ui-kitten/components';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
+import ThemeContext from '../../../../../context/ThemeContext';
 
 type Props = {
   cnt: string;
@@ -10,6 +11,8 @@ type Props = {
 };
 
 const Filter: React.FC<Props> = ({cnt, setCnt, filter, setFilter}) => {
+  const {theme} = useContext(ThemeContext);
+
   const [visible, setVisible] = useState<boolean>(false);
 
   const toggle = () => setVisible(!visible);
@@ -21,6 +24,7 @@ const Filter: React.FC<Props> = ({cnt, setCnt, filter, setFilter}) => {
         value={cnt}
         onChangeText={setCnt}
         keyboardType="number-pad"
+        keyboardAppearance={theme}
         selectTextOnFocus
         style={{marginTop: 8}}
         placeholder="Остаток"
@@ -42,6 +46,7 @@ const Filter: React.FC<Props> = ({cnt, setCnt, filter, setFilter}) => {
         value={filter}
         onChangeText={setFilter}
         selectTextOnFocus
+        keyboardAppearance={theme}
         style={{marginTop: 16}}
         placeholder="Товар"
       />
