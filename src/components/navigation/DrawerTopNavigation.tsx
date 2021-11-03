@@ -34,10 +34,10 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
           )}
         </View>
         <View style={{marginLeft: 'auto'}}>
-          <DatePicker />
+          {(name === 'Reports' || name === 'Trade') && <DatePicker />}
         </View>
       </Layout>
-      <Divider />
+      {name !== 'Reports' && name !== 'Trade' && <Divider />}
     </>
   );
 };

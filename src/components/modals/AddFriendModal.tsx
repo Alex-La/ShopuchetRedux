@@ -130,7 +130,7 @@ const RenderItem: React.FC<ItemProps> = ({item, index, setActive}) => (
 const Styles = StyleService.create({
   wrap: {
     flex: 1,
-    backgroundColor: 'color-basic-transparent-500',
+    backgroundColor: 'color-primary-transparent-100',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
