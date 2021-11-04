@@ -2,6 +2,7 @@ import {Icon, Input, Text, Tooltip, Button} from '@ui-kitten/components';
 import React, {useContext, useState} from 'react';
 import {Keyboard, TouchableOpacity, View} from 'react-native';
 import ThemeContext from '../../../../../context/ThemeContext';
+import {useAppSelector} from '../../../../../redux';
 
 type Props = {
   cnt: string;
@@ -19,6 +20,8 @@ const Filter: React.FC<Props> = ({
   handleSearch,
 }) => {
   const {theme} = useContext(ThemeContext);
+
+  const loading = useAppSelector(state => state.remainders.loading);
 
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -62,7 +65,7 @@ const Filter: React.FC<Props> = ({
         style={{marginTop: 16}}
         placeholder="Товар"
       />
-      <Button disabled={false} onPress={onSearch} style={{marginTop: 16}}>
+      <Button disabled={loading} onPress={onSearch} style={{marginTop: 16}}>
         Поиск
       </Button>
     </View>
