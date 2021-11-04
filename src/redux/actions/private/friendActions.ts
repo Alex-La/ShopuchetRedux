@@ -1,5 +1,5 @@
 import {ThunkAction} from 'redux-thunk';
-import api from '../../../utils/api';
+import api from '../../../utils/api/api';
 import {Friend} from '../../../utils/api.types';
 import {RootState} from '../../store';
 import {

@@ -1,5 +1,5 @@
 import {ThunkAction} from 'redux-thunk';
-import api from '../../../utils/api';
+import api from '../../../utils/api/api';
 import {RootState} from '../../store';
 import {SetUserAction} from '../../types/auth.types';
 import {

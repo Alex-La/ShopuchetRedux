@@ -1,5 +1,5 @@
 import {ThunkAction} from 'redux-thunk';
-import api from '../../../utils/api';
+import api from '../../../utils/api/api';
 import {MainData, TradePoint, TradePoints} from '../../../utils/api.types';
 import {RootState} from '../../store';
 import {SetAppLoadingAction} from '../../types/fetch.types';

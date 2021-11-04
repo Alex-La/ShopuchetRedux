@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ThunkAction} from 'redux-thunk';
-import api from '../../utils/api';
+import api from '../../utils/api/api';
 import {User} from '../../utils/api.types';
 import {RootState} from '../store';
 import {
