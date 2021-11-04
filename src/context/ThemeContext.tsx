@@ -28,12 +28,6 @@ export const ThemeContextProvider: React.FC<Props> = ({
 }) => {
   const uiTheme = useTheme();
 
-  useEffect(() => {
-    AsyncStorage.getItem('theme').then(res =>
-      setTheme((res as Theme) || 'light'),
-    );
-  }, []);
-
   const toggleTheme = () => {
     if (theme === 'light') {
       AsyncStorage.setItem('theme', 'dark').then(() => setTheme('dark'));
