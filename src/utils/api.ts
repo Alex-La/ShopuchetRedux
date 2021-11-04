@@ -82,12 +82,14 @@ const api = {
     axiosInstance.post<string>(`/api/linkuser?login=${login}${gtochkaids}`),
   getRemainders: (
     gtochkaid: number,
-    limit: number,
-    cnt: number,
-    filter: string,
+    page: number,
+    cnt?: number,
+    filter: string = '',
   ) =>
     axiosInstance.get<Remainder[]>(
-      `/api/remainders?gtochkaid=${gtochkaid}&cnt=${cnt}&filter=${filter}&limit=${limit}`,
+      `/api/remainders?gtochkaid=${gtochkaid}&page=${page}&cnt=${
+        cnt || ''
+      }&filter=${filter}&rows=40&sortField=amount&descending=true`,
     ),
   getSalesByGroups: (gtochkaid: number, datebegin: string, dateend: string) =>
     axiosInstance.get<SalesGroups>(

@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 export const even = (n: number) => !(n % 2);
 
 export const monthNames = [

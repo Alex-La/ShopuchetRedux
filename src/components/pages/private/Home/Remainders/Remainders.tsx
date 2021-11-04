@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ListRenderItemInfo, StyleSheet, View} from 'react-native';
 import {Divider, Layout, List, Text} from '@ui-kitten/components';
 
@@ -8,6 +8,7 @@ import {useAppDispatch, useAppSelector} from '../../../../../redux';
 import {useFocusEffect} from '@react-navigation/core';
 import usePrevious from '../../../../../hooks/previous.hook';
 import {
+  clearRemainders,
   getRemainders,
   setRemainders,
 } from '../../../../../redux/actions/private/remaindersActions';
@@ -19,28 +20,38 @@ const Remainders: React.FC = () => {
   const currentGTochkaId = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
-  const prevGTochkaId = usePrevious<number>(currentGTochkaId);
   const remainders = useAppSelector(state => state.remainders.remainders);
   const loading = useAppSelector(state => state.remainders.loading);
 
   const [cnt, setCnt] = useState<string>('');
   const [filter, setFilter] = useState<string>('');
+  const [_, setCurrnetPage] = useState<number>(0);
 
-  const loadRemainders = useCallback(() => {
-    if (currentGTochkaId)
-      dispatch(getRemainders(currentGTochkaId, 30, Number(cnt), filter));
-  }, [currentGTochkaId, cnt, filter]);
+  const loadRemainders = useCallback(
+    (loading: boolean, loadMore: boolean, currentPage: number = 0) => {
+      if (currentGTochkaId)
+        dispatch(
+          getRemainders(
+            loading,
+            loadMore,
+            currentGTochkaId,
+            currentPage,
+            Number(cnt),
+            filter,
+          ),
+        );
+    },
+    [currentGTochkaId, cnt, filter],
+  );
 
   useFocusEffect(
     useCallback(() => {
-      if (currentGTochkaId) loadRemainders();
-      return () => dispatch(setRemainders([]));
-    }, [currentGTochkaId, prevGTochkaId]),
-  );
-
-  const keyExtractor = useCallback<(item: Remainder) => string>(
-    item => item.gProductId.toString(),
-    [],
+      if (currentGTochkaId) loadRemainders(true, false);
+      return () => {
+        setCurrnetPage(0);
+        dispatch(clearRemainders());
+      };
+    }, [currentGTochkaId]),
   );
 
   const RenderItem = useCallback<
@@ -67,9 +78,32 @@ const Remainders: React.FC = () => {
     [remainders],
   );
 
+  const handelSearch = () => {
+    setCurrnetPage(0);
+    loadRemainders(true, false, 0);
+  };
+
+  const handelRefresh = () => {
+    setCurrnetPage(0);
+    loadRemainders(true, false, 0);
+  };
+
+  const handleEndReached = () =>
+    setCurrnetPage(page => {
+      const newPage = page + 1;
+      loadRemainders(false, true, newPage);
+      return newPage;
+    });
+
   return (
     <Layout style={styles.wrap}>
-      <Filter cnt={cnt} setCnt={setCnt} filter={filter} setFilter={setFilter} />
+      <Filter
+        cnt={cnt}
+        setCnt={setCnt}
+        filter={filter}
+        setFilter={setFilter}
+        handleSearch={handelSearch}
+      />
       <Divider />
 
       <View style={styles.tableHead}>
@@ -85,10 +119,10 @@ const Remainders: React.FC = () => {
 
       <List
         refreshing={loading}
-        onRefresh={loadRemainders}
+        onRefresh={handelRefresh}
         data={remainders}
         renderItem={RenderItem}
-        keyExtractor={keyExtractor}
+        onEndReached={handleEndReached}
       />
     </Layout>
   );

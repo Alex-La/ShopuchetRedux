@@ -1,6 +1,6 @@
 import {Icon, Input, Text, Tooltip, Button} from '@ui-kitten/components';
 import React, {useContext, useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {Keyboard, TouchableOpacity, View} from 'react-native';
 import ThemeContext from '../../../../../context/ThemeContext';
 
 type Props = {
@@ -8,14 +8,26 @@ type Props = {
   setCnt: React.Dispatch<React.SetStateAction<string>>;
   filter: string;
   setFilter: React.Dispatch<React.SetStateAction<string>>;
+  handleSearch: () => void;
 };
 
-const Filter: React.FC<Props> = ({cnt, setCnt, filter, setFilter}) => {
+const Filter: React.FC<Props> = ({
+  cnt,
+  setCnt,
+  filter,
+  setFilter,
+  handleSearch,
+}) => {
   const {theme} = useContext(ThemeContext);
 
   const [visible, setVisible] = useState<boolean>(false);
 
   const toggle = () => setVisible(!visible);
+
+  const onSearch = () => {
+    handleSearch();
+    Keyboard.dismiss();
+  };
 
   return (
     <View style={{padding: 16}}>
@@ -50,7 +62,7 @@ const Filter: React.FC<Props> = ({cnt, setCnt, filter, setFilter}) => {
         style={{marginTop: 16}}
         placeholder="Товар"
       />
-      <Button disabled={false} onPress={() => {}} style={{marginTop: 16}}>
+      <Button disabled={false} onPress={onSearch} style={{marginTop: 16}}>
         Поиск
       </Button>
     </View>

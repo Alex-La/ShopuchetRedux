@@ -3,6 +3,7 @@ import api from '../../../utils/api';
 import {Remainder} from '../../../utils/api.types';
 import {RootState} from '../../store';
 import {
+  ClearRemaindersAction,
   REMAINDERS_ACTION_TYPES,
   SetLoadingAction,
   SetRemaindersAction,
@@ -17,9 +18,15 @@ const setLoading = (loading: boolean): SetLoadingAction => ({
 
 export const setRemainders = (
   remainders: Remainder[],
+  loadMore: boolean,
 ): SetRemaindersAction => ({
   type: REMAINDERS_ACTION_TYPES.SET_REMAINDERS,
+  loadMore,
   payload: remainders,
+});
+
+export const clearRemainders = (): ClearRemaindersAction => ({
+  type: REMAINDERS_ACTION_TYPES.CLEAR_REMAINDERS,
 });
 
 export const sortRemainders = (reverse: boolean): SortRemaindersAction => ({
@@ -29,8 +36,10 @@ export const sortRemainders = (reverse: boolean): SortRemaindersAction => ({
 
 export const getRemainders =
   (
+    loading: boolean,
+    loadMore: boolean,
     gtochkaid: number,
-    limit?: number,
+    page: number = 0,
     cnt?: number,
     filter?: string,
   ): ThunkAction<
@@ -40,11 +49,11 @@ export const getRemainders =
     SetRemaindersAction | SetLoadingAction
   > =>
   dispatch => {
-    dispatch(setLoading(true));
+    loading && dispatch(setLoading(true));
     api
-      .getRemainders(gtochkaid, limit || 50, cnt || 0, filter || '')
+      .getRemainders(gtochkaid, page, cnt, filter)
       .then(res => {
-        dispatch(setRemainders(res.data));
+        dispatch(setRemainders(res.data, loadMore));
         dispatch(setLoading(false));
       })
       .catch(e => {

@@ -21,9 +21,16 @@ export const remainders = (
     case REMAINDERS_ACTION_TYPES.SET_LOADING:
       return {...state, loading: (action as SetLoadingAction).payload};
     case REMAINDERS_ACTION_TYPES.SET_REMAINDERS:
-      return {...state, remainders: (action as SetRemaindersAction).payload};
+      const setRemaindersAction = action as SetRemaindersAction;
+      return {
+        ...state,
+        remainders: setRemaindersAction.loadMore
+          ? [...state.remainders, ...setRemaindersAction.payload]
+          : setRemaindersAction.payload,
+      };
+    case REMAINDERS_ACTION_TYPES.CLEAR_REMAINDERS:
+      return {...state, remainders: []};
     case REMAINDERS_ACTION_TYPES.SORT_REMAINDERS:
-      console.log(action.payload);
       return {
         loading: state.loading,
         remainders: state.remainders.reverse(),
