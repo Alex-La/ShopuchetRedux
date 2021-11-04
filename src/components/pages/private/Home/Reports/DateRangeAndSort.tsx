@@ -1,14 +1,24 @@
 import {Text} from '@ui-kitten/components';
 import React from 'react';
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
+import {convertDate, DateRange} from '../../../../../utils';
 import Sort from '../../../../icons/Sort';
 
-const DateRangeAndSort: React.FC = () => {
+type Props = {
+  date: DateRange;
+  reduce: boolean;
+  setReduce: () => void;
+};
+
+const DateRangeAndSort: React.FC<Props> = ({date, reduce, setReduce}) => {
   return (
     <View style={styles.wrap}>
-      <Text appearance="hint">14 сен. - 14 окт.</Text>
-      <TouchableOpacity>
-        <Sort def />
+      <Text appearance="hint">
+        {convertDate(date.datebegin, false)} -{' '}
+        {convertDate(date.dateend, false)}
+      </Text>
+      <TouchableOpacity onPress={setReduce}>
+        <Sort def={!reduce} />
       </TouchableOpacity>
     </View>
   );

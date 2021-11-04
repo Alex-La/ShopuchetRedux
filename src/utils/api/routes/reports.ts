@@ -1,10 +1,13 @@
+import {convertDate} from '../..';
 import {SalesGroups} from '../../api.types';
 import axiosInstance from '../axiosInstance';
 
 const reports = {
-  getSalesByGroups: (gtochkaid: number, datebegin: string, dateend: string) =>
+  getSalesByGroups: (gtochkaid: number, datebegin: Date, dateend: Date) =>
     axiosInstance.get<SalesGroups>(
-      `/api/readsalesgroupproducts?gtochkaid=${gtochkaid}&datebegin=${datebegin}&dateend=${dateend}`,
+      `/api/readsalesgroupproducts?gtochkaid=${gtochkaid}&datebegin=${convertDate(
+        datebegin,
+      )}&dateend=${convertDate(dateend)}`,
     ),
 };
 

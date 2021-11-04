@@ -1,12 +1,19 @@
 import {Divider, Text} from '@ui-kitten/components';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {DateRange} from '../../../../../utils';
 import DateRangeAndSort from './DateRangeAndSort';
 
-const SalesHeader: React.FC = () => {
+type Props = {
+  date: DateRange;
+  reduce: boolean;
+  setReduce: () => void;
+};
+
+const SalesHeader: React.FC<Props> = ({date, reduce, setReduce}) => {
   return (
     <View>
-      <DateRangeAndSort />
+      <DateRangeAndSort date={date} reduce={reduce} setReduce={setReduce} />
       <View style={styles.wrap}>
         <View style={styles.item}>
           <Text>Всего продаж:</Text>

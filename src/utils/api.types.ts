@@ -70,6 +70,42 @@ export type SalesGroups = {
   details: SalesGroupsDetails[];
 };
 
+type SalesProductsHead = {
+  cnt: number;
+  summ: number;
+  income: number;
+};
+
+type SalesProductsDetails = {
+  name: string;
+  amount: number;
+  summ: number;
+  income: number;
+};
+
+export type SalesProducts = {
+  head: SalesProductsHead;
+  details: SalesProductsDetails[];
+};
+
+type SalesMonthHead = {
+  cnt: number;
+  summ: number;
+  income: number;
+};
+
+type SalesMonthDetails = {
+  month: string;
+  amount: number;
+  summ: number;
+  income: number;
+};
+
+export type SalesMonth = {
+  head: SalesMonthHead;
+  details: SalesMonthDetails[];
+};
+
 export type ConReport = {
   sales: {
     cnt: number;
