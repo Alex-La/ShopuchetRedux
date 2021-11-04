@@ -1,4 +1,4 @@
-import {DateRange} from '../../../utils';
+import {DateRange, SetDateAction} from '../../../utils';
 import {SalesGroups} from '../../../utils/api.types';
 
 export type Tabs = {
@@ -14,11 +14,5 @@ export type Reports = {
 export enum REPORTS_ACTION_TYPES {
   SET_DATE = 'REPORTS_ACTION/SET_DATE',
 }
-
-export type SetDateAction = {
-  type: string;
-  index: number;
-  date: DateRange;
-};
 
 export type ReportsActions = SetDateAction;

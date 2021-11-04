@@ -1,3 +1,4 @@
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   IndexPath,
   Layout,
@@ -9,8 +10,13 @@ import {
 import React, {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useAppDispatch} from '../../redux';
-import {SetDateAction} from '../../redux/types/private/reports.types';
-import {DateRange, getDateRangeByIndex} from '../../utils';
+import {
+  convertDate,
+  DateRange,
+  getDateRangeByIndex,
+  SetDate,
+} from '../../utils';
+import {PrivateStackNavigator} from '../../utils/navigation.types';
 
 import Clock from '../icons/Clock';
 import Day from '../icons/Day';
@@ -31,11 +37,18 @@ const items: Item[] = [
 ];
 
 type Props = {
+  navigation: NativeStackNavigationProp<PrivateStackNavigator>;
   index: number;
-  setDateAction: (index: number, date: DateRange) => SetDateAction;
+  setDateAction: SetDate;
+  date: DateRange;
 };
 
-const DatePicker: React.FC<Props> = ({index, setDateAction}) => {
+const DatePicker: React.FC<Props> = ({
+  index,
+  setDateAction,
+  navigation,
+  date,
+}) => {
   const theme = useTheme();
 
   const dispatch = useAppDispatch();
@@ -51,7 +64,9 @@ const DatePicker: React.FC<Props> = ({index, setDateAction}) => {
   const [visible, setVisible] = React.useState<boolean>(false);
 
   const onItemSelect = (index: IndexPath) => {
-    dispatch(setDateAction(index.row, getDateRangeByIndex(index.row)));
+    if (index.row === 3)
+      navigation.navigate('DatePickerModal', {setDate: setDateAction});
+    else dispatch(setDateAction(index.row, getDateRangeByIndex(index.row)));
     setVisible(false);
   };
 
@@ -63,7 +78,11 @@ const DatePicker: React.FC<Props> = ({index, setDateAction}) => {
         <Layout style={styles.wrap}>
           {items[selectedIndex.row].icon}
           <Text status="primary" style={{marginLeft: 10}}>
-            {items[selectedIndex.row].title}
+            {selectedIndex.row === 3
+              ? convertDate(date.datebegin, false) +
+                ' - ' +
+                convertDate(date.dateend, false)
+              : items[selectedIndex.row].title}
           </Text>
         </Layout>
       </TouchableOpacity>

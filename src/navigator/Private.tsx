@@ -9,6 +9,7 @@ import Home from '../components/pages/private/Home/Home';
 import TradePoint from '../components/pages/private/TradePoint/TradePoint';
 import StackTopNavigation from '../components/navigation/StackTopNavigation';
 import AddFriendModal from '../components/modals/AddFriendModal';
+import DatePickerModal from '../components/modals/DatePickerModal';
 
 const Stack = createNativeStackNavigator<PrivateStackNavigator>();
 
@@ -37,6 +38,7 @@ const Private: React.FC = () => {
             headerShown: false,
           }}>
           <Stack.Screen name="AddFriendModal" component={AddFriendModal} />
+          <Stack.Screen name="DatePickerModal" component={DatePickerModal} />
         </Stack.Group>
       </Stack.Navigator>
     </Layout>

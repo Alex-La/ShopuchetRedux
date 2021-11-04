@@ -1,3 +1,4 @@
+import {SetDate} from '.';
 import {User} from './api.types';
 
 export type PublicStackNavigator = {
@@ -10,6 +11,7 @@ export type PrivateStackNavigator = {
   Home: undefined;
   TradePoint: undefined;
   AddFriendModal: undefined;
+  DatePickerModal: {setDate: SetDate};
 };
 
 export type DrawerNavigator = {

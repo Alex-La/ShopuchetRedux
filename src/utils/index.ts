@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const even = (n: number) => !(n % 2);
 
 export const monthNames = [
@@ -15,13 +17,30 @@ export const monthNames = [
   'Декабрь',
 ];
 
-export function convertDate(inputFormat: Date | string): string {
+export function convertDate(
+  inputFormat: Date | string,
+  fetch: boolean = true,
+): string {
   function pad(s: number) {
     return s < 10 ? '0' + s : s;
   }
   var d = new Date(inputFormat);
+  if (!fetch)
+    return (
+      d.getDate() +
+      ' ' +
+      monthNames[d.getMonth()].toLowerCase().slice(0, 3) +
+      '.'
+    );
   return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('.');
 }
+export type SetDateAction = {
+  type: string;
+  index: number;
+  date: DateRange;
+};
+
+export type SetDate = (index: number, date: DateRange) => SetDateAction;
 
 export type DateRange = {
   datebegin: Date;
