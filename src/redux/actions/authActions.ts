@@ -36,7 +36,7 @@ export const getUser =
   > =>
   dispatch => {
     dispatch(setAppLoading(true));
-    api
+    api.main
       .getUser()
       .then(res => {
         dispatch(setUser(res.data));
@@ -80,7 +80,7 @@ export const login =
   > =>
   dispatch => {
     dispatch(setAppLoading(true));
-    api
+    api.auth
       .login(username, password)
       .then(res => {
         AsyncStorage.setItem('accessToken', res.data['X-Auth-Token']).then(() =>

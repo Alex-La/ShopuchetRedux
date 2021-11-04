@@ -28,7 +28,7 @@ export const loadFriends =
   > =>
   dispatch => {
     dispatch(setLoading(true));
-    api
+    api.friends
       .getFriends()
       .then(res => {
         dispatch(getFriends(res.data));
@@ -48,7 +48,7 @@ export const linkUser =
   async dispatch => {
     dispatch(setLoading(true));
     return await new Promise(resolve =>
-      api
+      api.friends
         .linkUser(login, gtochkaids)
         .then(res => {
           dispatch(loadFriends());

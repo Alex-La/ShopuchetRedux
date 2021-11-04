@@ -50,7 +50,7 @@ export const getRemainders =
   > =>
   dispatch => {
     loading && dispatch(setLoading(true));
-    api
+    api.remainders
       .getRemainders(gtochkaid, page, cnt, filter)
       .then(res => {
         dispatch(setRemainders(res.data, loadMore));

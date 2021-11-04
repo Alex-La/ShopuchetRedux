@@ -31,7 +31,7 @@ export const updateUser =
   async dispatch => {
     dispatch(setLoading(true));
     return await new Promise(resolve =>
-      api
+      api.profile
         .updateUser(fn, nm, '', phone, oldpwd, newpwd)
         .then(res => {
           if (res.status === 200) {

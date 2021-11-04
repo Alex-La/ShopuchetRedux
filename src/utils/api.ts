@@ -55,15 +55,21 @@ axiosInstance.interceptors.response.use(
   },
 );
 
-const api = {
+const auth = {
   login: (username: string, password: string) =>
     axiosInstance.get<Tokens>(
       `/logon-oauth2?username=${username}&password=${password}`,
     ),
+};
+
+const main = {
   getTradePoints: () => axiosInstance.get<TradePoints>(`/api/readgtochka`),
   getUser: () => axiosInstance.get<User>('/api/getuser'),
   getMain: (gtochkaid: number) =>
     axiosInstance.get<MainData>(`/api/readmain?gtochkaid=${gtochkaid}`),
+};
+
+const profile = {
   updateUser: (
     fn: string,
     nm: string,
@@ -77,9 +83,15 @@ const api = {
         oldpwd ? `&oldpwd=${oldpwd}` : ''
       }${newpwd ? `&newpwd=${newpwd}` : ''}`,
     ),
+};
+
+const friends = {
   getFriends: () => axiosInstance.get<Friend[]>('/api/readusers'),
   linkUser: (login: string, gtochkaids: string) =>
     axiosInstance.post<string>(`/api/linkuser?login=${login}${gtochkaids}`),
+};
+
+const remainders = {
   getRemainders: (
     gtochkaid: number,
     page: number,
@@ -91,10 +103,22 @@ const api = {
         cnt || ''
       }&filter=${filter}&rows=40&sortField=amount&descending=true`,
     ),
+};
+
+const reports = {
   getSalesByGroups: (gtochkaid: number, datebegin: string, dateend: string) =>
     axiosInstance.get<SalesGroups>(
       `/api/readsalesgroupproducts?gtochkaid=${gtochkaid}&datebegin=${datebegin}&dateend=${dateend}`,
     ),
+};
+
+const api = {
+  auth,
+  main,
+  profile,
+  friends,
+  remainders,
+  reports,
 };
 
 export default api;

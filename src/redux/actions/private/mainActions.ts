@@ -43,7 +43,7 @@ export const getTradePoints =
   > =>
   dispatch => {
     dispatch(setAppLoading(true));
-    api
+    api.main
       .getTradePoints()
       .then(res => {
         dispatch(setTradePoints(res.data));
@@ -67,7 +67,7 @@ export const getMainData =
   > =>
   dispatch => {
     dispatch(setLoading(true));
-    api
+    api.main
       .getMain(gtochkaid)
       .then(res => {
         dispatch(setMainData(res.data));
