@@ -27,6 +27,15 @@ import {
 } from './private/remaindersReducer';
 import {Remainders} from '../types/private/remainders.types';
 
+import {
+  reports,
+  initialState as reportsInitialState,
+} from './private/reportsReducer';
+import {Reports} from '../types/private/reports.types';
+
+import {trade, initialState as tradeInitialState} from './private/tradeReducer';
+import {Trade} from '../types/private/trade.types';
+
 type RootReducer = {
   auth: Auth;
   fetch: Fetch;
@@ -34,6 +43,8 @@ type RootReducer = {
   profile: Profile;
   friends: Friends;
   remainders: Remainders;
+  reports: Reports;
+  trade: Trade;
 };
 
 const initialRootState: RootReducer = {
@@ -43,6 +54,8 @@ const initialRootState: RootReducer = {
   profile: profileInitialState,
   friends: friendsInitialState,
   remainders: remaindersInitialState,
+  reports: reportsInitialState,
+  trade: tradeInitialState,
 };
 
 const appReducer = combineReducers<RootReducer>({
@@ -52,6 +65,8 @@ const appReducer = combineReducers<RootReducer>({
   profile,
   friends,
   remainders,
+  reports,
+  trade,
 });
 
 const rootReducer = (state: RootReducer, action: AnyAction) => {

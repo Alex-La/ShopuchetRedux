@@ -14,3 +14,48 @@ export const monthNames = [
   'Ноябрь',
   'Декабрь',
 ];
+
+export function convertDate(inputFormat: Date | string): string {
+  function pad(s: number) {
+    return s < 10 ? '0' + s : s;
+  }
+  var d = new Date(inputFormat);
+  return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('.');
+}
+
+export type DateRange = {
+  datebegin: Date;
+  dateend: Date;
+};
+
+export const getDayRange = (): DateRange => {
+  const date = new Date();
+  return {datebegin: date, dateend: date};
+};
+
+export const getWeekRange = (): DateRange => {
+  const datebegin = new Date();
+  const dateend = new Date();
+  datebegin.setTime(dateend.getTime() - 7 * 24 * 3600000);
+  return {datebegin, dateend};
+};
+
+export const getMonthRange = (): DateRange => {
+  const datebegin = new Date();
+  const dateend = new Date();
+  datebegin.setTime(dateend.getTime() - 30 * 24 * 3600000);
+  return {datebegin, dateend};
+};
+
+export const getDateRangeByIndex = (index: number): DateRange => {
+  switch (index) {
+    case 0:
+      return getDayRange();
+    case 1:
+      return getWeekRange();
+    case 2:
+      return getMonthRange();
+    default:
+      return getDayRange();
+  }
+};

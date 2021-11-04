@@ -6,12 +6,19 @@ import {useAppSelector} from '../../redux';
 import {RouteProp} from '@react-navigation/core';
 import {DrawerNavigator} from '../../utils/navigation.types';
 import DatePicker from '../general/DatePicker';
+import {setDate as reportsSetDate} from '../../redux/actions/private/reportsActions';
+import {setDate as tradeSetDate} from '../../redux/actions/private/tradeActions';
 
 interface Props extends DrawerHeaderProps {}
 
 const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
   const theme = useTheme();
   const name = (route as RouteProp<DrawerNavigator>).name;
+
+  const {reportsIndex, tradeIndex} = useAppSelector(({reports, trade}) => ({
+    reportsIndex: reports.index,
+    tradeIndex: trade.index,
+  }));
 
   const subtitle = useAppSelector(state => state.main.tradePoint?.name);
 
@@ -34,7 +41,12 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
           )}
         </View>
         <View style={{marginLeft: 'auto'}}>
-          {(name === 'Reports' || name === 'Trade') && <DatePicker />}
+          {(name === 'Reports' || name === 'Trade') && (
+            <DatePicker
+              setDateAction={name === 'Reports' ? reportsSetDate : tradeSetDate}
+              index={name === 'Reports' ? reportsIndex : tradeIndex}
+            />
+          )}
         </View>
       </Layout>
       {name !== 'Reports' && name !== 'Trade' && <Divider />}

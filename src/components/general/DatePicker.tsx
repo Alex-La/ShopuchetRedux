@@ -6,8 +6,12 @@ import {
   Text,
   useTheme,
 } from '@ui-kitten/components';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
+import {useAppDispatch} from '../../redux';
+import {SetDateAction} from '../../redux/types/private/reports.types';
+import {DateRange, getDateRangeByIndex} from '../../utils';
+
 import Clock from '../icons/Clock';
 import Day from '../icons/Day';
 import Month from '../icons/Month';
@@ -26,16 +30,28 @@ const items: Item[] = [
   {key: 3, title: 'Любой срок', icon: <Clock />},
 ];
 
-const DatePicker: React.FC = () => {
+type Props = {
+  index: number;
+  setDateAction: (index: number, date: DateRange) => SetDateAction;
+};
+
+const DatePicker: React.FC<Props> = ({index, setDateAction}) => {
   const theme = useTheme();
+
+  const dispatch = useAppDispatch();
 
   const [selectedIndex, setSelectedIndex] = React.useState<IndexPath>(
     new IndexPath(0),
   );
+
+  useEffect(() => {
+    setSelectedIndex(new IndexPath(index));
+  }, [index]);
+
   const [visible, setVisible] = React.useState<boolean>(false);
 
   const onItemSelect = (index: IndexPath) => {
-    setSelectedIndex(index);
+    dispatch(setDateAction(index.row, getDateRangeByIndex(index.row)));
     setVisible(false);
   };
 
