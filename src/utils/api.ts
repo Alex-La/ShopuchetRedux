@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import {convertDate} from '.';
 import {
+  ConReport,
   Friend,
   MainData,
   Remainder,
@@ -112,6 +114,15 @@ const reports = {
     ),
 };
 
+const conReport = {
+  getConReport: (gtochkaid: number, datebegin: Date) =>
+    axiosInstance.get<ConReport>(
+      `/api/readconsolidated?gtochkaid=${gtochkaid}&datebegin=${convertDate(
+        datebegin,
+      )}`,
+    ),
+};
+
 const api = {
   auth,
   main,
@@ -119,6 +130,7 @@ const api = {
   friends,
   remainders,
   reports,
+  conReport,
 };
 
 export default api;

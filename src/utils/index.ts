@@ -76,3 +76,9 @@ export const getDateRangeByIndex = (index: number): DateRange => {
       return getDayRange();
   }
 };
+
+export const incrementDecrementDate = (date: Date, mode: 'inc' | 'dec') => {
+  const d = new Date(date);
+  d.setDate(mode === 'inc' ? d.getDate() + 1 : d.getDate() - 1);
+  return d;
+};

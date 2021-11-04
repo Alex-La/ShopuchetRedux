@@ -1,4 +1,3 @@
-import {useTheme} from '@ui-kitten/components';
 import React from 'react';
 import {RefreshControl, ScrollView} from 'react-native';
 
@@ -12,17 +11,11 @@ const RefreshScrollView: React.FC<Props> = ({
   refreshing,
   onRefresh,
 }) => {
-  const theme = useTheme();
-
   return (
     <ScrollView
       contentContainerStyle={{flexGrow: 1}}
       refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          colors={[theme['color-primary-500']]}
-        />
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
       {children}
     </ScrollView>

@@ -69,3 +69,20 @@ export type SalesGroups = {
   head: SalesGroupsHead;
   details: SalesGroupsDetails[];
 };
+
+export type ConReport = {
+  sales: {
+    cnt: number;
+    summ: number;
+    products: number;
+    avg: number;
+    income: number;
+  };
+  payed: {cntPayed: number; cach: number; nonCach: number; bonus: number};
+  ret: {
+    cnt: number;
+    summ: number;
+    products: number;
+  };
+  kassa: {inSumm: number; outSumm: number};
+};
