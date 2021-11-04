@@ -4,17 +4,25 @@ import api from '../../utils/api/api';
 import {User} from '../../utils/api.types';
 import {RootState} from '../store';
 import {
+  AuthActions,
   AUTH_ACTION_TYPES,
   SetIsAuthAction,
+  SetLoadingAction,
   SetUserAction,
   UserLogoutAction,
 } from '../types/auth.types';
 import {SetAppLoadingAction} from '../types/fetch.types';
 import {handleError, setAppLoading} from './fetchActions';
 import {getTradePoints} from './private/mainActions';
+import {show} from '../../utils/snackbar';
 
 const userLogout = (): UserLogoutAction => ({
   type: AUTH_ACTION_TYPES.USER_LOGOUT,
+});
+
+const setLoading = (loading: boolean): SetLoadingAction => ({
+  type: AUTH_ACTION_TYPES.SET_LOADING,
+  payload: loading,
 });
 
 export const setIsAuth = (isAuth: boolean): SetIsAuthAction => ({
@@ -93,6 +101,49 @@ export const login =
       })
       .catch(e => {
         dispatch(setAppLoading(false));
+        dispatch(handleError(e.response));
+      });
+  };
+
+export const registrate =
+  (
+    email: string,
+    password: string,
+    fn: string,
+    nm: string,
+    phone: string,
+  ): ThunkAction<void, RootState, unknown, AuthActions> =>
+  dispatch => {
+    dispatch(setLoading(true));
+    api.auth
+      .registrate(email, password, fn, nm, '', phone)
+      .then(res => {
+        show({text: res.data, type: 'success'});
+        dispatch(login(email, password));
+        dispatch(setLoading(false));
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
+        dispatch(handleError(e.response));
+      });
+  };
+
+export const resetPassword =
+  (
+    email: string,
+    goBack: () => void,
+  ): ThunkAction<void, RootState, unknown, SetLoadingAction> =>
+  dispatch => {
+    dispatch(setLoading(true));
+    api.auth
+      .resetPassword(email)
+      .then(res => {
+        goBack();
+        show({text: res.data, type: 'success'});
+        dispatch(setLoading(false));
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
         dispatch(handleError(e.response));
       });
   };

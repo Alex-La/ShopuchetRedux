@@ -17,6 +17,9 @@ import {
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PublicStackNavigator} from '../../../utils/navigation.types';
 import ThemeContext from '../../../context/ThemeContext';
+import {useAppDispatch, useAppSelector} from '../../../redux';
+import {resetPassword} from '../../../redux/actions/authActions';
+import Preloader from '../../loaders/Preloader';
 
 const Email = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="email-outline" />
@@ -31,18 +34,21 @@ type Props = {
 };
 
 const Forgot: React.FC<Props> = ({navigation}) => {
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector(state => state.auth.loading);
+
   const {theme} = useContext(ThemeContext);
   const [email, setEmail] = useState<string>('');
 
-  const handleChangeEmail = (text: string) => setEmail(text);
-
-  //Navigation actions
   const goBack = () => navigation.canGoBack() && navigation.goBack();
-  //----------------
 
   const BackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={goBack} />
   );
+
+  const handleResetPassword = () => dispatch(resetPassword(email, goBack));
+
+  if (loading) return <Preloader />;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -51,7 +57,7 @@ const Forgot: React.FC<Props> = ({navigation}) => {
         <Layout style={styles.formWrap}>
           <Input
             value={email}
-            onChangeText={handleChangeEmail}
+            onChangeText={setEmail}
             accessoryLeft={Email}
             placeholder="E-mail"
             keyboardType="email-address"
@@ -60,7 +66,9 @@ const Forgot: React.FC<Props> = ({navigation}) => {
             size="large"
           />
 
-          <Button style={styles.login}>ОТПРАВИТЬ</Button>
+          <Button onPress={handleResetPassword} style={styles.login}>
+            ОТПРАВИТЬ
+          </Button>
         </Layout>
       </Layout>
     </TouchableWithoutFeedback>

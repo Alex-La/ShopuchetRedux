@@ -20,6 +20,9 @@ import {
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {PublicStackNavigator} from '../../../utils/navigation.types';
 import ThemeContext from '../../../context/ThemeContext';
+import {useAppDispatch, useAppSelector} from '../../../redux';
+import Preloader from '../../loaders/Preloader';
+import {registrate} from '../../../redux/actions/authActions';
 
 const User = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="person-outline" />
@@ -46,6 +49,9 @@ type Props = {
 };
 
 const Registration: React.FC<Props> = ({navigation}) => {
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector(state => state.auth.loading);
+
   const {theme} = useContext(ThemeContext);
 
   const [name, setName] = useState<string>('');
@@ -78,6 +84,11 @@ const Registration: React.FC<Props> = ({navigation}) => {
     [secureTextEntry],
   );
   //--------------------
+
+  const handleRegistrate = () =>
+    dispatch(registrate(email, password, surname, name, phone));
+
+  if (loading) return <Preloader />;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -135,7 +146,9 @@ const Registration: React.FC<Props> = ({navigation}) => {
             keyboardAppearance={theme}
           />
 
-          <Button style={styles.registration}>РЕГИСТРАЦИЯ</Button>
+          <Button onPress={handleRegistrate} style={styles.registration}>
+            РЕГИСТРАЦИЯ
+          </Button>
         </View>
       </Layout>
     </TouchableWithoutFeedback>
