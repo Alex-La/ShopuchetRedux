@@ -54,7 +54,7 @@ const ConReport: React.FC = () => {
   };
 
   const ArrowLeft = (props: Partial<ImageProps>) => (
-    <TouchableOpacity onPress={decreaseDate}>
+    <TouchableOpacity onPress={decreaseDate} disabled={loading}>
       <Icon
         {...props}
         name="arrow-back-outline"
@@ -64,7 +64,7 @@ const ConReport: React.FC = () => {
   );
 
   const ArrowRight = (props: Partial<ImageProps>) => (
-    <TouchableOpacity onPress={increaseDate}>
+    <TouchableOpacity onPress={increaseDate} disabled={loading}>
       <Icon
         {...props}
         name="arrow-forward-outline"
@@ -74,6 +74,10 @@ const ConReport: React.FC = () => {
   );
 
   const handleRefresh = () => loadConReport(date);
+  const handeleChangeDate = (date: Date) => {
+    loadConReport(date);
+    setDate(date);
+  };
 
   return (
     <Layout style={styles.wrap}>
@@ -81,10 +85,11 @@ const ConReport: React.FC = () => {
         <View style={styles.date}>
           <ArrowLeft width={25} height={25} />
           <Datepicker
+            disabled={loading}
             style={{marginHorizontal: 10}}
             size="small"
             date={date}
-            onSelect={setDate}
+            onSelect={handeleChangeDate}
           />
           <ArrowRight width={25} height={25} />
         </View>
