@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {ListRenderItemInfo, StyleSheet, View} from 'react-native';
 import {Divider, Layout, List, Text} from '@ui-kitten/components';
 
@@ -95,43 +95,45 @@ const Remainders: React.FC = () => {
       return newPage;
     });
 
+  const ListHeaderComponent = useMemo(
+    () => (
+      <Layout>
+        <Filter
+          cnt={cnt}
+          setCnt={setCnt}
+          filter={filter}
+          setFilter={setFilter}
+          handleSearch={handelSearch}
+        />
+        <Divider />
+
+        <View style={styles.tableHead}>
+          <Text appearance="hint" style={{flex: 4}}>
+            Товар
+          </Text>
+          <Text appearance="hint" style={styles.tableHeadRemainder}>
+            Остаток
+          </Text>
+        </View>
+        <Divider />
+      </Layout>
+    ),
+    [setCnt, setFilter, cnt, filter],
+  );
+
   return (
-    <Layout style={styles.wrap}>
-      <Filter
-        cnt={cnt}
-        setCnt={setCnt}
-        filter={filter}
-        setFilter={setFilter}
-        handleSearch={handelSearch}
-      />
-      <Divider />
-
-      <View style={styles.tableHead}>
-        <Text appearance="hint" style={{flex: 4}}>
-          Товар
-        </Text>
-        <Text appearance="hint" style={styles.tableHeadRemainder}>
-          Остаток
-        </Text>
-      </View>
-
-      <Divider />
-
-      <List
-        refreshing={loading}
-        onRefresh={handelRefresh}
-        data={remainders}
-        renderItem={RenderItem}
-        onEndReached={handleEndReached}
-      />
-    </Layout>
+    <List
+      refreshing={loading}
+      onRefresh={handelRefresh}
+      ListHeaderComponent={ListHeaderComponent}
+      data={remainders}
+      renderItem={RenderItem}
+      onEndReached={handleEndReached}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  wrap: {
-    flex: 1,
-  },
   tableHead: {
     flexDirection: 'row',
     paddingVertical: 8,
