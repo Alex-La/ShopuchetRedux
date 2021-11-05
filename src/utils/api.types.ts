@@ -52,13 +52,13 @@ export type Remainder = {
   cost: number;
 };
 
-type SalesGroupsHead = {
+export type SalesGroupsHead = {
   cnt: number;
   summ: number;
   income: number;
 };
 
-type SalesGroupsDetails = {
+export type SalesGroupsDetails = {
   name: string;
   amount: number;
   summ: number;
@@ -70,13 +70,13 @@ export type SalesGroups = {
   details: SalesGroupsDetails[];
 };
 
-type SalesProductsHead = {
+export type SalesProductsHead = {
   cnt: number;
   summ: number;
   income: number;
 };
 
-type SalesProductsDetails = {
+export type SalesProductsDetails = {
   name: string;
   amount: number;
   summ: number;
@@ -88,13 +88,13 @@ export type SalesProducts = {
   details: SalesProductsDetails[];
 };
 
-type SalesMonthHead = {
+export type SalesMonthHead = {
   cnt: number;
   summ: number;
   income: number;
 };
 
-type SalesMonthDetails = {
+export type SalesMonthDetails = {
   month: string;
   amount: number;
   summ: number;

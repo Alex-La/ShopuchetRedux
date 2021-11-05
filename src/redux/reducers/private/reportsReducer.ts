@@ -6,6 +6,8 @@ import {
   SetLoadingAction,
   SetReduceAction,
   SetSalesGroupsAction,
+  SetSalesMonthAction,
+  SetSalesProductsAction,
   Tabs,
 } from '../../types/private/reports.types';
 
@@ -51,7 +53,6 @@ export const reports = (
       };
     case REPORTS_ACTION_TYPES.SET_REDUCE:
       const reduceAction = action as SetReduceAction;
-      console.log(reduceAction.tab);
       return {
         ...state,
         tabs: {
@@ -70,6 +71,28 @@ export const reports = (
           salesGroups: {
             ...state.tabs.salesGroups,
             data: (action as SetSalesGroupsAction).payload,
+          },
+        },
+      };
+    case REPORTS_ACTION_TYPES.SET_SALES_PRODUCTS:
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          salesProducts: {
+            ...state.tabs.salesProducts,
+            data: (action as SetSalesProductsAction).payload,
+          },
+        },
+      };
+    case REPORTS_ACTION_TYPES.SET_SALES_MONTH:
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          salesMonth: {
+            ...state.tabs.salesMonth,
+            data: (action as SetSalesMonthAction).payload,
           },
         },
       };

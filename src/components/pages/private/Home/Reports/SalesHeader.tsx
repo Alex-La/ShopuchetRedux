@@ -1,41 +1,65 @@
-import {Divider, Text} from '@ui-kitten/components';
+import {Divider, Layout, Text} from '@ui-kitten/components';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {DateRange} from '../../../../../utils';
+import {
+  SalesGroups,
+  SalesGroupsHead,
+  SalesMonth,
+  SalesMonthHead,
+  SalesProducts,
+  SalesProductsHead,
+} from '../../../../../utils/api.types';
 import DateRangeAndSort from './DateRangeAndSort';
+
+type Head = SalesProductsHead | SalesGroupsHead | SalesMonthHead;
 
 type Props = {
   date: DateRange;
   reduce: boolean;
   setReduce: () => void;
+  head: Head;
 };
 
-const SalesHeader: React.FC<Props> = ({date, reduce, setReduce}) => {
+const SalesHeader: React.FC<Props> = ({date, reduce, setReduce, head}) => {
   return (
-    <View>
+    <Layout>
       <DateRangeAndSort date={date} reduce={reduce} setReduce={setReduce} />
       <View style={styles.wrap}>
         <View style={styles.item}>
           <Text>Всего продаж:</Text>
-          <Text status="primary">5</Text>
+          <Text status="primary">{head.cnt}</Text>
         </View>
         <View style={[styles.item, {marginTop: 8}]}>
           <Text>На сумму:</Text>
-          <Text status="primary">29750.00</Text>
+          <Text status="primary">{head.summ}</Text>
         </View>
         <View style={[styles.item, {marginTop: 8}]}>
           <Text>Прибыль:</Text>
-          <Text status="primary">12345.00</Text>
+          <Text status="primary">{head.income}</Text>
         </View>
       </View>
       <Divider />
-    </View>
+      <View style={styles.tableHead}>
+        <Text appearance="hint" style={{flex: 2}}>
+          Кол-во
+        </Text>
+        <Text appearance="hint" style={{flex: 1, textAlign: 'right'}}>
+          Сумма
+        </Text>
+        <Text appearance="hint" style={{flex: 1, textAlign: 'right'}}>
+          Прибыль
+        </Text>
+      </View>
+      <Divider />
+    </Layout>
   );
 };
 
 const styles = StyleSheet.create({
   wrap: {paddingHorizontal: 16, paddingBottom: 16},
   item: {flexDirection: 'row', justifyContent: 'space-between'},
+  tableHead: {paddingHorizontal: 16, paddingVertical: 8, flexDirection: 'row'},
 });
 
 export default SalesHeader;

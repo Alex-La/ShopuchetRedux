@@ -52,7 +52,6 @@ export const getUser =
         dispatch(setIsAuth(true));
       })
       .catch(e => {
-        console.log(e.status);
         dispatch(setAppLoading(false));
         dispatch(handleError(e.response));
       });
