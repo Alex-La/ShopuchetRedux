@@ -47,7 +47,10 @@ const SalesByMonthes: React.FC = () => {
     }, [currentGTochkaid, prevGTochkaId, date, prevDateend, prevDatebegin]),
   );
 
-  const handleReduce = () => dispatch(setReduce(reduce, TAB_TYPES.SALES_MONTH));
+  const handleReduce = () => {
+    dispatch(setReduce(reduce, TAB_TYPES.SALES_MONTH));
+    loadSalesMonth();
+  };
 
   return (
     <List

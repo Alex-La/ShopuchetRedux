@@ -46,8 +46,10 @@ const SalesByGroups: React.FC = () => {
     }, [currentGTochkaid, prevGTochkaId, date, prevDateend, prevDatebegin]),
   );
 
-  const handleReduce = () =>
+  const handleReduce = () => {
     dispatch(setReduce(!reduce, TAB_TYPES.SALES_GROUPS));
+    loadSalesGroups();
+  };
 
   return (
     <List

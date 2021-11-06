@@ -64,35 +64,59 @@ export const reports = (
         },
       };
     case REPORTS_ACTION_TYPES.SET_SALES_GROUPS:
+      const groupsAction = action as SetSalesGroupsAction;
       return {
         ...state,
         tabs: {
           ...state.tabs,
           salesGroups: {
             ...state.tabs.salesGroups,
-            data: (action as SetSalesGroupsAction).payload,
+            data: {
+              ...groupsAction.payload,
+              details: groupsAction.payload.details.sort((a, b) =>
+                state.tabs.salesGroups.reduce
+                  ? a.summ - b.summ
+                  : b.summ - a.summ,
+              ),
+            },
           },
         },
       };
     case REPORTS_ACTION_TYPES.SET_SALES_PRODUCTS:
+      const productsAction = action as SetSalesProductsAction;
       return {
         ...state,
         tabs: {
           ...state.tabs,
           salesProducts: {
             ...state.tabs.salesProducts,
-            data: (action as SetSalesProductsAction).payload,
+            data: {
+              ...productsAction.payload,
+              details: productsAction.payload.details.sort((a, b) =>
+                state.tabs.salesProducts.reduce
+                  ? a.summ - b.summ
+                  : b.summ - a.summ,
+              ),
+            },
           },
         },
       };
     case REPORTS_ACTION_TYPES.SET_SALES_MONTH:
+      const monthAction = action as SetSalesMonthAction;
       return {
         ...state,
         tabs: {
           ...state.tabs,
           salesMonth: {
             ...state.tabs.salesMonth,
-            data: (action as SetSalesMonthAction).payload,
+            data: {
+              ...monthAction.payload,
+              details: monthAction.payload.details.sort((a, b) =>
+                state.tabs.salesMonth.reduce
+                  ? a.summ - b.summ
+                  : b.summ - a.summ,
+              ),
+            },
           },
         },
       };
