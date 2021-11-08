@@ -10,6 +10,7 @@ import StackTopNavigation from '../components/navigation/StackTopNavigation';
 import Home from '../components/pages/private/Home/Home';
 import TradePoint from '../components/pages/private/TradePoint/TradePoint';
 import TradeOptions from '../components/pages/private/TradeOptions/TradeOptions';
+import AddProduct from '../components/pages/private/AddProduct/AddProduct';
 import AddFriendModal from '../components/modals/AddFriendModal';
 import DatePickerModal from '../components/modals/DatePickerModal';
 import DeleteTradeModal from '../components/modals/DeleteTradeModal';
@@ -35,6 +36,11 @@ const Private: React.FC = () => {
             options={{title: 'Торговая точка'}}
           />
           <Stack.Screen name="TradeOptions" component={TradeOptions} />
+          <Stack.Screen
+            name="AddProduct"
+            component={AddProduct}
+            options={{title: 'Добавить товар'}}
+          />
         </Stack.Group>
         <Stack.Group
           screenOptions={{

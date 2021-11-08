@@ -7,7 +7,11 @@ import {
   View,
 } from 'react-native';
 
-const ListFooterComponent: React.FC = () => {
+type Props = {
+  goBack: () => void;
+};
+
+const ListFooterComponent: React.FC<Props> = ({goBack}) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Layout style={styles.wrap} level="2">
@@ -34,7 +38,10 @@ const ListFooterComponent: React.FC = () => {
         </View>
 
         <View style={styles.buttonsWrap}>
-          <Button appearance="outline" style={{flex: 1, marginRight: 5}}>
+          <Button
+            onPress={goBack}
+            appearance="outline"
+            style={{flex: 1, marginRight: 5}}>
             Отмена
           </Button>
           <Button style={{flex: 1, marginLeft: 5}}>Сохранить</Button>

@@ -11,7 +11,7 @@ import Plus from '../../../icons/Plus';
 import ListEmptyComponent from './ListEmptyComponent';
 import ListFooterComponent from './ListFooterComponent';
 import ListHeaderComponent from './ListHeaderComponent';
-import ListItem from './ListItem';
+import ListItem from '../../../general/ListItem';
 
 type Props = {
   navigation: NativeStackNavigationProp<PrivateStackNavigator, 'TradeOptions'>;
@@ -30,6 +30,9 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
 
   const theme = useTheme();
 
+  const goBack = () => navigation.goBack();
+  const navToAddProduct = () => navigation.navigate('AddProduct');
+
   return (
     <>
       <View style={styles.wrap}>
@@ -39,15 +42,17 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
             styles.list,
             {backgroundColor: theme['background-basic-color-1']},
           ]}
-          ListEmptyComponent={ListEmptyComponent}
-          data={[1, 2]}
-          renderItem={props => <ListItem {...props} theme={theme} />}
+          ListEmptyComponent={() => (
+            <ListEmptyComponent navToAddProduct={navToAddProduct} />
+          )}
+          data={[2, 3]}
+          renderItem={props => <ListItem {...props} theme={theme} modal />}
         />
-        <Button style={styles.addButton}>
+        <Button style={styles.addButton} onPress={navToAddProduct}>
           <Plus />
         </Button>
       </View>
-      <ListFooterComponent />
+      <ListFooterComponent goBack={goBack} />
     </>
   );
 };
@@ -59,7 +64,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flexGrow: 1,
-    padding: 16,
+    paddingVertical: 10,
   },
   addButton: {
     position: 'absolute',

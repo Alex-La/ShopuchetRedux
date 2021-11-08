@@ -3,9 +3,13 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import Box from '../../../icons/Box';
 
-const ListEmptyComponent: React.FC = () => {
+type Props = {
+  navToAddProduct: () => void;
+};
+
+const ListEmptyComponent: React.FC<Props> = ({navToAddProduct}) => {
   return (
-    <TouchableOpacity style={styles.wrap}>
+    <TouchableOpacity style={styles.wrap} onPress={navToAddProduct}>
       <Layout style={styles.box}>
         <Box />
         <Text category="h4" status="primary">

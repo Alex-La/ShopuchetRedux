@@ -23,6 +23,7 @@ export type PrivateStackNavigator = {
   Home: undefined;
   TradePoint: undefined;
   TradeOptions: TradeOptions;
+  AddProduct: undefined;
   AddFriendModal: undefined;
   DatePickerModal: {setDate: SetDate};
   DeleteTradeModal: undefined;

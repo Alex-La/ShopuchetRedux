@@ -15,9 +15,11 @@ const Trash = (props?: Partial<ImageProps>) => (
 
 interface Props extends ListRenderItemInfo<any> {
   theme: Record<string, string>;
+  disabled?: boolean;
+  modal?: boolean;
 }
 
-const ListItem: React.FC<Props> = ({item, index, theme}) => {
+const ListItem: React.FC<Props> = ({item, index, theme, disabled, modal}) => {
   const [visibale, setVisibale] = useState<boolean>(false);
 
   const toggle = () => {
@@ -31,6 +33,7 @@ const ListItem: React.FC<Props> = ({item, index, theme}) => {
   const RenderAnchor = useCallback(() => {
     return (
       <TouchableHighlight
+        disabled={disabled}
         onPress={() => {}}
         onLongPress={toggle}
         key={index}
@@ -78,7 +81,7 @@ const ListItem: React.FC<Props> = ({item, index, theme}) => {
       anchor={RenderAnchor}
       onBackdropPress={() => setVisibale(false)}
       backdropStyle={{backgroundColor: theme['color-basic-transparent-focus']}}
-      visible={visibale}
+      visible={modal && visibale}
       placement="bottom end">
       <MenuItem title="Удалить" accessoryLeft={Trash} />
     </OverflowMenu>
@@ -86,7 +89,7 @@ const ListItem: React.FC<Props> = ({item, index, theme}) => {
 };
 
 const styles = StyleSheet.create({
-  wrap: {marginVertical: 4},
+  wrap: {marginVertical: 5, marginHorizontal: 16},
   item: {
     borderWidth: 1,
     flexDirection: 'row',
