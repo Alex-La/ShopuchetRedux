@@ -59,6 +59,10 @@ const TradeListItem: React.FC<ListItemProps> = ({
   };
 
   const navToInfo = () => navigation.navigate('TradeOptions', {type});
+  const navToDelete = () => {
+    setVisible(false);
+    navigation.navigate('DeleteTradeModal');
+  };
 
   const RenderAnchor = useCallback(() => {
     return (
@@ -94,7 +98,11 @@ const TradeListItem: React.FC<ListItemProps> = ({
           }}
           placement="top">
           <MenuItem title="Изменить" accessoryLeft={Edit} />
-          <MenuItem title="Удалить" accessoryLeft={Trash} />
+          <MenuItem
+            title="Удалить"
+            accessoryLeft={Trash}
+            onPress={navToDelete}
+          />
         </OverflowMenu>
       </TouchableHighlight>
     </Layout>

@@ -25,6 +25,7 @@ export type PrivateStackNavigator = {
   TradeOptions: TradeOptions;
   AddFriendModal: undefined;
   DatePickerModal: {setDate: SetDate};
+  DeleteTradeModal: undefined;
 };
 
 export type DrawerNavigator = {
