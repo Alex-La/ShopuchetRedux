@@ -17,9 +17,17 @@ interface Props extends ListRenderItemInfo<any> {
   theme: Record<string, string>;
   disabled?: boolean;
   modal?: boolean;
+  onPress?: () => void;
 }
 
-const ListItem: React.FC<Props> = ({item, index, theme, disabled, modal}) => {
+const ListItem: React.FC<Props> = ({
+  item,
+  index,
+  theme,
+  disabled,
+  modal,
+  onPress,
+}) => {
   const [visibale, setVisibale] = useState<boolean>(false);
 
   const toggle = () => {
@@ -34,7 +42,7 @@ const ListItem: React.FC<Props> = ({item, index, theme, disabled, modal}) => {
     return (
       <TouchableHighlight
         disabled={disabled}
-        onPress={() => {}}
+        onPress={onPress}
         onLongPress={toggle}
         key={index}
         style={styles.wrap}
@@ -74,7 +82,7 @@ const ListItem: React.FC<Props> = ({item, index, theme, disabled, modal}) => {
         </View>
       </TouchableHighlight>
     );
-  }, []);
+  }, [disabled, onPress]);
 
   return (
     <OverflowMenu

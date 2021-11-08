@@ -14,6 +14,7 @@ import AddProduct from '../components/pages/private/AddProduct/AddProduct';
 import AddFriendModal from '../components/modals/AddFriendModal';
 import DatePickerModal from '../components/modals/DatePickerModal';
 import DeleteTradeModal from '../components/modals/DeleteTradeModal';
+import AddProductModal from '../components/modals/AddProductModal';
 
 const Stack = createNativeStackNavigator<PrivateStackNavigator>();
 
@@ -50,6 +51,7 @@ const Private: React.FC = () => {
           <Stack.Screen name="AddFriendModal" component={AddFriendModal} />
           <Stack.Screen name="DatePickerModal" component={DatePickerModal} />
           <Stack.Screen name="DeleteTradeModal" component={DeleteTradeModal} />
+          <Stack.Screen name="AddProductModal" component={AddProductModal} />
         </Stack.Group>
       </Stack.Navigator>
     </Layout>
