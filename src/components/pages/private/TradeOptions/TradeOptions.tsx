@@ -32,6 +32,8 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
 
   const goBack = () => navigation.goBack();
   const navToAddProduct = () => navigation.navigate('AddProduct');
+  const navToAddProductModal = () => navigation.navigate('AddProductModal');
+  const navToPaymentModal = () => navigation.navigate('PaymentModal');
 
   return (
     <>
@@ -46,13 +48,20 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
             <ListEmptyComponent navToAddProduct={navToAddProduct} />
           )}
           data={[2, 3]}
-          renderItem={props => <ListItem {...props} theme={theme} modal />}
+          renderItem={props => (
+            <ListItem
+              {...props}
+              theme={theme}
+              modal
+              onPress={navToAddProductModal}
+            />
+          )}
         />
         <Button style={styles.addButton} onPress={navToAddProduct}>
           <Plus />
         </Button>
       </View>
-      <ListFooterComponent goBack={goBack} />
+      <ListFooterComponent goBack={goBack} handlePay={navToPaymentModal} />
     </>
   );
 };

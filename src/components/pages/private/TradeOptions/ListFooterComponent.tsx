@@ -9,9 +9,10 @@ import {
 
 type Props = {
   goBack: () => void;
+  handlePay: () => void;
 };
 
-const ListFooterComponent: React.FC<Props> = ({goBack}) => {
+const ListFooterComponent: React.FC<Props> = ({goBack, handlePay}) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Layout style={styles.wrap} level="2">
@@ -44,7 +45,9 @@ const ListFooterComponent: React.FC<Props> = ({goBack}) => {
             style={{flex: 1, marginRight: 5}}>
             Отмена
           </Button>
-          <Button style={{flex: 1, marginLeft: 5}}>Сохранить</Button>
+          <Button style={{flex: 1, marginLeft: 5}} onPress={handlePay}>
+            Сохранить
+          </Button>
         </View>
       </Layout>
     </TouchableWithoutFeedback>

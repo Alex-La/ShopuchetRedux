@@ -28,6 +28,7 @@ export type PrivateStackNavigator = {
   DatePickerModal: {setDate: SetDate};
   DeleteTradeModal: undefined;
   AddProductModal: undefined;
+  PaymentModal: undefined;
 };
 
 export type DrawerNavigator = {
