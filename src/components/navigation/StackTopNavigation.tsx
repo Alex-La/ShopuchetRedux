@@ -2,11 +2,17 @@ import React from 'react';
 import {Divider, Icon, Layout, Text, useTheme} from '@ui-kitten/components';
 import {ImageProps, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
+import {RouteProp} from '@react-navigation/core';
+import {PrivateStackNavigator} from '../../utils/navigation.types';
+import {useAppSelector} from '../../redux';
 
 interface Props extends NativeStackHeaderProps {}
 
-const StackTopNavigation: React.FC<Props> = ({options, navigation}) => {
+const StackTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
+  const name = (route as RouteProp<PrivateStackNavigator>).name;
+
   const theme = useTheme();
+  const subtitle = useAppSelector(state => state.main.tradePoint?.name);
 
   const BackIcon = (props?: Partial<ImageProps>) => (
     <Icon
@@ -24,11 +30,11 @@ const StackTopNavigation: React.FC<Props> = ({options, navigation}) => {
         </TouchableOpacity>
         <View style={{marginLeft: 16}}>
           <Text category="s1">{options.title}</Text>
-          {/* {name !== 'Profile' && name !== 'Friends' && subtitle && (
+          {name !== 'TradePoint' && (
             <Text category="label" appearance="hint">
               {subtitle}
             </Text>
-          )} */}
+          )}
         </View>
       </Layout>
       <Divider />

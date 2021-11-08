@@ -7,9 +7,22 @@ export type PublicStackNavigator = {
   Forgot: undefined;
 };
 
+export enum TradeOptionsTypes {
+  SALE = 'Новая продажа',
+  INCOME = 'Приход',
+  RETURN = 'Возврат',
+  RECEIPT = 'RECEIPT',
+}
+
+type TradeOptions = {
+  type: TradeOptionsTypes;
+  receipt?: number;
+};
+
 export type PrivateStackNavigator = {
   Home: undefined;
   TradePoint: undefined;
+  TradeOptions: TradeOptions;
   AddFriendModal: undefined;
   DatePickerModal: {setDate: SetDate};
 };

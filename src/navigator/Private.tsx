@@ -1,13 +1,15 @@
 import React from 'react';
-import {Layout} from '@ui-kitten/components';
+import {Layout, Text} from '@ui-kitten/components';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {PrivateStackNavigator} from '../utils/navigation.types';
 
+import StackTopNavigation from '../components/navigation/StackTopNavigation';
+
 import Home from '../components/pages/private/Home/Home';
 import TradePoint from '../components/pages/private/TradePoint/TradePoint';
-import StackTopNavigation from '../components/navigation/StackTopNavigation';
+import TradeOptions from '../components/pages/private/TradeOptions/TradeOptions';
 import AddFriendModal from '../components/modals/AddFriendModal';
 import DatePickerModal from '../components/modals/DatePickerModal';
 
@@ -31,6 +33,7 @@ const Private: React.FC = () => {
             component={TradePoint}
             options={{title: 'Торговая точка'}}
           />
+          <Stack.Screen name="TradeOptions" component={TradeOptions} />
         </Stack.Group>
         <Stack.Group
           screenOptions={{
