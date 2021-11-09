@@ -1,34 +1,59 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {Fragment, useCallback, useState} from 'react';
 import {ListRenderItemInfo, StyleSheet, View} from 'react-native';
 import {Divider, Layout, List, Text} from '@ui-kitten/components';
 
 import Filter from './Filter';
 
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
+import {even} from '../../../../../utils';
+import {RemaindersDetail} from '../../../../../utils/api.types';
 import {useFocusEffect} from '@react-navigation/core';
-import usePrevious from '../../../../../hooks/previous.hook';
 import {
   clearRemainders,
   getRemainders,
-  setRemainders,
 } from '../../../../../redux/actions/private/remaindersActions';
-import {Remainder} from '../../../../../utils/api.types';
-import {even} from '../../../../../utils';
+import FooterLoader from '../../../../general/FooterLoader';
 
 const Remainders: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentGTochkaId = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
-  const remainders = useAppSelector(state => state.remainders.remainders);
+
+  const remainders = useAppSelector(state => state.remainders);
+  const details = useAppSelector(state => state.remainders.data.details);
   const loading = useAppSelector(state => state.remainders.loading);
 
   const [cnt, setCnt] = useState<string>('');
   const [filter, setFilter] = useState<string>('');
-  const [_, setCurrnetPage] = useState<number>(0);
+  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(true);
+
+  const loadRemainders = useCallback(
+    (loadMore: boolean, page: number, descending: boolean) => {
+      if (currentGTochkaId)
+        return dispatch(
+          getRemainders(
+            loadMore,
+            currentGTochkaId,
+            page,
+            descending,
+            cnt,
+            filter,
+          ),
+        );
+    },
+    [currentGTochkaId, cnt, filter],
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      loadRemainders(false, 0, remainders.descending);
+      return () => dispatch(clearRemainders());
+    }, []),
+  );
 
   const RenderItem = useCallback<
-    (props: ListRenderItemInfo<Remainder>) => JSX.Element
+    (props: ListRenderItemInfo<RemaindersDetail>) => JSX.Element
   >(
     ({item, index}) => {
       const level = even(index) ? '2' : '1';
@@ -48,42 +73,58 @@ const Remainders: React.FC = () => {
         </Layout>
       );
     },
-    [remainders],
+    [details],
   );
 
-  const ListHeaderComponent = useMemo(
-    () => (
-      <Layout>
-        <Filter
-          cnt={cnt}
-          setCnt={setCnt}
-          filter={filter}
-          setFilter={setFilter}
-          handleSearch={() => {}}
-        />
-        <Divider />
+  const handleRefreshOrSearch = () =>
+    loadRemainders(false, 0, remainders.descending);
 
-        <View style={styles.tableHead}>
-          <Text appearance="hint" style={{flex: 4}}>
-            Товар
-          </Text>
-          <Text appearance="hint" style={styles.tableHeadRemainder}>
-            Остаток
-          </Text>
-        </View>
-        <Divider />
-      </Layout>
-    ),
-    [setCnt, setFilter, cnt, filter],
-  );
+  const handleLoadMore = () => {
+    if (isDataLoaded && remainders.data.hasNext) {
+      setIsDataLoaded(false);
+      loadRemainders(
+        true,
+        remainders.data.currentPage + 1,
+        remainders.descending,
+      )
+        ?.then(() => setIsDataLoaded(true))
+        .catch(() => setIsDataLoaded(true));
+    }
+  };
+
+  const RenderFooter = () => (isDataLoaded ? <Fragment /> : <FooterLoader />);
 
   return (
-    <List
-      refreshing={loading}
-      ListHeaderComponent={ListHeaderComponent}
-      data={remainders}
-      renderItem={RenderItem}
-    />
+    <Layout style={{flex: 1}}>
+      <Filter
+        cnt={cnt}
+        setCnt={setCnt}
+        filter={filter}
+        setFilter={setFilter}
+        handleSearch={handleRefreshOrSearch}
+      />
+      <Divider />
+
+      <View style={styles.tableHead}>
+        <Text appearance="hint" style={{flex: 4}}>
+          Товар
+        </Text>
+        <Text appearance="hint" style={styles.tableHeadRemainder}>
+          Остаток
+        </Text>
+      </View>
+      <Divider />
+
+      <List
+        ListFooterComponent={RenderFooter}
+        refreshing={loading}
+        onRefresh={handleRefreshOrSearch}
+        data={details}
+        renderItem={RenderItem}
+        onEndReachedThreshold={0.2}
+        onEndReached={handleLoadMore}
+      />
+    </Layout>
   );
 };
 

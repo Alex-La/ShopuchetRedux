@@ -1,16 +1,16 @@
-import {Remainder} from '../../../utils/api.types';
+import {Remainders as TRemainders} from '../../../utils/api.types';
 
 export type Remainders = {
   loading: boolean;
-  remainders: Remainder[];
-  reverse: boolean;
+  descending: boolean;
+  data: TRemainders;
 };
 
 export enum REMAINDERS_ACTION_TYPES {
   SET_LOADING = 'REMAINDERS_ACTION/SET_LOADING',
+  SET_DESCENDING = 'REMAINDERS_ACTION/SET_DESCENDING',
   SET_REMAINDERS = 'REMAINDERS_ACTION/SET_REMAINDERS',
   CLEAR_REMAINDERS = 'REMAINDERS_ACTION/CLEAR_REMAINDERS',
-  SORT_REMAINDERS = 'REMAINDERS_ACTION/SORT_REMAINDERS',
 }
 
 export type SetLoadingAction = {
@@ -18,23 +18,23 @@ export type SetLoadingAction = {
   payload: boolean;
 };
 
-export type SetRemaindersAction = {
-  type: string;
-  loadMore: boolean;
-  payload: Remainder[];
-};
-
-export type ClearRemaindersAction = {
-  type: string;
-};
-
-export type SortRemaindersAction = {
+export type SetDescendingAction = {
   type: string;
   payload: boolean;
 };
 
+export type SetRemaindersAction = {
+  type: string;
+  loadMore: boolean;
+  payload: TRemainders;
+};
+
+export type ClearRemaindersAction = {
+  type: String;
+};
+
 export type RemaindersActions =
   | SetLoadingAction
+  | SetDescendingAction
   | SetRemaindersAction
-  | ClearRemaindersAction
-  | SortRemaindersAction;
+  | ClearRemaindersAction;

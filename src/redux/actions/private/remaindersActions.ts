@@ -1,24 +1,30 @@
 import {ThunkAction} from 'redux-thunk';
+import {Remainders} from '../../../utils/api.types';
 import api from '../../../utils/api/api';
-import {Remainder} from '../../../utils/api.types';
 import {RootState} from '../../store';
 import {
   ClearRemaindersAction,
+  RemaindersActions,
   REMAINDERS_ACTION_TYPES,
+  SetDescendingAction,
   SetLoadingAction,
   SetRemaindersAction,
-  SortRemaindersAction,
 } from '../../types/private/remainders.types';
 import {handleError} from '../fetchActions';
 
-const setLoading = (loading: boolean): SetLoadingAction => ({
+export const setLoading = (loading: boolean): SetLoadingAction => ({
   type: REMAINDERS_ACTION_TYPES.SET_LOADING,
   payload: loading,
 });
 
+export const setDescending = (descending: boolean): SetDescendingAction => ({
+  type: REMAINDERS_ACTION_TYPES.SET_DESCENDING,
+  payload: descending,
+});
+
 export const setRemainders = (
-  remainders: Remainder[],
   loadMore: boolean,
+  remainders: Remainders,
 ): SetRemaindersAction => ({
   type: REMAINDERS_ACTION_TYPES.SET_REMAINDERS,
   loadMore,
@@ -29,35 +35,28 @@ export const clearRemainders = (): ClearRemaindersAction => ({
   type: REMAINDERS_ACTION_TYPES.CLEAR_REMAINDERS,
 });
 
-export const sortRemainders = (reverse: boolean): SortRemaindersAction => ({
-  type: REMAINDERS_ACTION_TYPES.SORT_REMAINDERS,
-  payload: reverse,
-});
-
 export const getRemainders =
   (
-    loading: boolean,
     loadMore: boolean,
     gtochkaid: number,
-    page: number = 0,
-    cnt?: number,
-    filter?: string,
-  ): ThunkAction<
-    void,
-    RootState,
-    unknown,
-    SetRemaindersAction | SetLoadingAction
-  > =>
-  dispatch => {
-    loading && dispatch(setLoading(true));
-    api.remainders
-      .getRemainders(gtochkaid, page, cnt, filter)
-      .then(res => {
-        dispatch(setRemainders(res.data, loadMore));
-        dispatch(setLoading(false));
-      })
-      .catch(e => {
-        dispatch(setLoading(false));
-        dispatch(handleError(e.response));
-      });
-  };
+    page: number,
+    descending: boolean,
+    cnt: string = '',
+    filter: string = '',
+  ): ThunkAction<Promise<void>, RootState, unknown, RemaindersActions> =>
+  async dispatch =>
+    await new Promise((resolve, reject) => {
+      if (!loadMore) dispatch(setLoading(true));
+      api.remainders
+        .getRemainders(gtochkaid, page, descending, cnt, filter)
+        .then(res => {
+          dispatch(setLoading(false));
+          dispatch(setRemainders(loadMore, res.data));
+          resolve();
+        })
+        .catch(e => {
+          dispatch(handleError(e.response));
+          dispatch(setLoading(false));
+          reject(e);
+        });
+    });

@@ -43,13 +43,21 @@ export type Friend = {
   nameGTochka: string;
 };
 
-export type Remainder = {
+export type RemaindersDetail = {
   remaindersId: number;
   amount: number;
   name: string;
   groupName: string;
   gProductId: number;
   cost: number;
+};
+
+export type Remainders = {
+  currentPage: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+  totalPages: number;
+  details: RemaindersDetail[];
 };
 
 export type SalesGroupsHead = {

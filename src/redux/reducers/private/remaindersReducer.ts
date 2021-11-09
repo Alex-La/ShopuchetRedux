@@ -1,16 +1,25 @@
+import {Remainders as TRemainders} from '../../../utils/api.types';
 import {
   Remainders,
   RemaindersActions,
   REMAINDERS_ACTION_TYPES,
+  SetDescendingAction,
   SetLoadingAction,
   SetRemaindersAction,
-  SortRemaindersAction,
 } from '../../types/private/remainders.types';
+
+const initialData: TRemainders = {
+  currentPage: 0,
+  hasNext: false,
+  hasPrevious: false,
+  totalPages: 0,
+  details: [],
+};
 
 export const initialState: Remainders = {
   loading: false,
-  remainders: [],
-  reverse: false,
+  descending: true,
+  data: initialData,
 };
 
 export const remainders = (
@@ -19,23 +28,27 @@ export const remainders = (
 ): Remainders => {
   switch (action.type) {
     case REMAINDERS_ACTION_TYPES.SET_LOADING:
-      return {...state, loading: (action as SetLoadingAction).payload};
+      const loadingAction = action as SetLoadingAction;
+      return {...state, loading: loadingAction.payload};
+    case REMAINDERS_ACTION_TYPES.SET_DESCENDING:
+      const descendingAction = action as SetDescendingAction;
+      return {...state, descending: descendingAction.payload};
     case REMAINDERS_ACTION_TYPES.SET_REMAINDERS:
-      const setRemaindersAction = action as SetRemaindersAction;
-      return {
-        ...state,
-        remainders: setRemaindersAction.loadMore
-          ? [...state.remainders, ...setRemaindersAction.payload]
-          : setRemaindersAction.payload,
-      };
+      const remaindersAction = action as SetRemaindersAction;
+      if (remaindersAction.loadMore) {
+        return {
+          ...state,
+          data: {
+            ...remaindersAction.payload,
+            details: [
+              ...state.data.details,
+              ...remaindersAction.payload.details,
+            ],
+          },
+        };
+      } else return {...state, data: remaindersAction.payload};
     case REMAINDERS_ACTION_TYPES.CLEAR_REMAINDERS:
-      return {...state, remainders: []};
-    case REMAINDERS_ACTION_TYPES.SORT_REMAINDERS:
-      return {
-        loading: state.loading,
-        remainders: state.remainders.reverse(),
-        reverse: (action as SortRemaindersAction).payload,
-      };
+      return initialState;
     default:
       return state;
   }

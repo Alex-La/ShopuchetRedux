@@ -1,17 +1,16 @@
-import {Remainder} from '../../api.types';
+import {Remainders} from '../../api.types';
 import axiosInstance from '../axiosInstance';
 
 const remainders = {
   getRemainders: (
     gtochkaid: number,
     page: number,
-    cnt?: number,
+    descending: boolean = true,
+    cnt: string = '',
     filter: string = '',
   ) =>
-    axiosInstance.get<Remainder[]>(
-      `/api/remainders?gtochkaid=${gtochkaid}&page=${page}&cnt=${
-        cnt || ''
-      }&filter=${filter}&rows=40&sortField=amount&descending=true`,
+    axiosInstance.get<Remainders>(
+      `/api/remainders?gtochkaid=${gtochkaid}&page=${page}&cnt=${cnt}&filter=${filter}&rows=10&sortField=amount&descending=${descending}`,
     ),
 };
 
