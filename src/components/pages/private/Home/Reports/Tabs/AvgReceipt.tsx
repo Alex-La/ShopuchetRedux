@@ -1,8 +1,18 @@
-import {Layout} from '@ui-kitten/components';
+import {Layout, List} from '@ui-kitten/components';
 import React from 'react';
+import {useAppSelector} from '../../../../../../redux';
+import DateRangeAndSort from '../DateRangeAndSort';
 
 const AvgReceipt: React.FC = () => {
-  return <Layout style={{flex: 1}}></Layout>;
+  const date = useAppSelector(state => state.reports.date);
+
+  const ListHeader = () => (
+    <Layout>
+      <DateRangeAndSort date={date} reduce={false} setReduce={() => {}} />
+    </Layout>
+  );
+
+  return <List ListHeaderComponent={ListHeader} />;
 };
 
 export default AvgReceipt;

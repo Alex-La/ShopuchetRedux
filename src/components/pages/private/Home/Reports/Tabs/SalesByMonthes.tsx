@@ -48,7 +48,7 @@ const SalesByMonthes: React.FC = () => {
   );
 
   const handleReduce = () => {
-    dispatch(setReduce(reduce, TAB_TYPES.SALES_MONTH));
+    dispatch(setReduce(!reduce, TAB_TYPES.SALES_MONTH));
     loadSalesMonth();
   };
 

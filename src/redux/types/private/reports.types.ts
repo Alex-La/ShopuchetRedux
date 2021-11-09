@@ -1,5 +1,10 @@
 import {DateRange, SetDateAction} from '../../../utils';
-import {SalesGroups, SalesMonth, SalesProducts} from '../../../utils/api.types';
+import {
+  SalesGroups,
+  SalesMonth,
+  SalesProducts,
+  ReturnsProducts,
+} from '../../../utils/api.types';
 
 export type Tab<T> = {
   reduce: boolean;
@@ -11,6 +16,7 @@ export type Tabs = {
   salesGroups: Tab<SalesGroups>;
   salesProducts: Tab<SalesProducts>;
   salesMonth: Tab<SalesMonth>;
+  returnsByProducts: Tab<ReturnsProducts>;
 };
 
 export type Reports = {
@@ -23,6 +29,7 @@ export enum TAB_TYPES {
   SALES_GROUPS = 'salesGroups',
   SALES_PRODUCTS = 'salesProducts',
   SALES_MONTH = 'salesMonth',
+  RETURNS_PRODUCTS = 'returnsByProducts',
 }
 
 export enum REPORTS_ACTION_TYPES {
@@ -32,6 +39,7 @@ export enum REPORTS_ACTION_TYPES {
   SET_SALES_GROUPS = 'REPORTS_ACTION/SET_SALES_GROUPS',
   SET_SALES_PRODUCTS = 'REPORTS_ACTION/SET_SALES_PRODUCTS',
   SET_SALES_MONTH = 'REPORTS_ACTION/SET_SALES_MONTH',
+  SET_RETURNS_PRODUCTS = 'REPORTS_ACTION/SET_RETURNS_PRODUCTS',
 }
 
 export type SetLoadingAction = {
@@ -61,10 +69,17 @@ export type SetSalesMonthAction = {
   payload: SalesMonth;
 };
 
+export type SetReturnsProductsAction = {
+  type: string;
+  loadMore: boolean;
+  payload: ReturnsProducts;
+};
+
 export type ReportsActions =
   | SetDateAction
   | SetLoadingAction
   | SetReduceAction
   | SetSalesGroupsAction
   | SetSalesProductsAction
-  | SetSalesMonthAction;
+  | SetSalesMonthAction
+  | SetReturnsProductsAction;

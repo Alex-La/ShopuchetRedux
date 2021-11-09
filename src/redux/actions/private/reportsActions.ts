@@ -1,6 +1,11 @@
 import {ThunkAction} from 'redux-thunk';
 import {DateRange, SetDateAction} from '../../../utils';
-import {SalesGroups, SalesMonth, SalesProducts} from '../../../utils/api.types';
+import {
+  ReturnsProducts,
+  SalesGroups,
+  SalesMonth,
+  SalesProducts,
+} from '../../../utils/api.types';
 import api from '../../../utils/api/api';
 import {RootState} from '../../store';
 import {
@@ -8,6 +13,7 @@ import {
   REPORTS_ACTION_TYPES,
   SetLoadingAction,
   SetReduceAction,
+  SetReturnsProductsAction,
   SetSalesGroupsAction,
   SetSalesMonthAction,
   SetSalesProductsAction,
@@ -58,6 +64,15 @@ export const setSalesGroups = (
 export const setSalesMonth = (salesMonth: SalesMonth): SetSalesMonthAction => ({
   type: REPORTS_ACTION_TYPES.SET_SALES_MONTH,
   payload: salesMonth,
+});
+
+export const setReturnsProducts = (
+  loadMore: boolean,
+  returnsProducts: ReturnsProducts,
+): SetReturnsProductsAction => ({
+  type: REPORTS_ACTION_TYPES.SET_RETURNS_PRODUCTS,
+  loadMore,
+  payload: returnsProducts,
 });
 
 export const getSalesProducts =
@@ -118,4 +133,31 @@ export const getSalesMonth =
         dispatch(setLoading(false, TAB_TYPES.SALES_MONTH));
         dispatch(handleError(e.response));
       });
+  };
+
+export const getReturnsProducts =
+  (
+    loadMore: boolean,
+    gtochkaid: number,
+    datebegin: Date,
+    dateend: Date,
+    page: number = 0,
+    descending: boolean = true,
+  ): ThunkAction<Promise<void>, RootState, unknown, ReportsActions> =>
+  async dispatch => {
+    if (!loadMore) dispatch(setLoading(true, TAB_TYPES.RETURNS_PRODUCTS));
+    return await new Promise((resolve, reject) =>
+      api.reports
+        .getReturnsByProducts(gtochkaid, datebegin, dateend, page, descending)
+        .then(res => {
+          dispatch(setLoading(false, TAB_TYPES.RETURNS_PRODUCTS));
+          dispatch(setReturnsProducts(loadMore, res.data));
+          resolve();
+        })
+        .catch(e => {
+          dispatch(handleError(e.response));
+          dispatch(setLoading(false, TAB_TYPES.RETURNS_PRODUCTS));
+          reject(e);
+        }),
+    );
   };

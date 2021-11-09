@@ -1,13 +1,16 @@
 import {getDayRange} from '../../../utils';
+import {ReturnsProducts} from '../../../utils/api.types';
 import {
   Reports,
   ReportsActions,
   REPORTS_ACTION_TYPES,
   SetLoadingAction,
   SetReduceAction,
+  SetReturnsProductsAction,
   SetSalesGroupsAction,
   SetSalesMonthAction,
   SetSalesProductsAction,
+  Tab,
   Tabs,
 } from '../../types/private/reports.types';
 
@@ -20,10 +23,24 @@ const salesObject = {
   },
 };
 
+const initialReturns: Tab<ReturnsProducts> = {
+  reduce: false,
+  loading: false,
+  data: {
+    currentPage: 0,
+    hasNext: false,
+    hasPrevious: false,
+    totalPages: 0,
+    head: {cnt: 0, summ: 0},
+    details: [],
+  },
+};
+
 const initialTabs: Tabs = {
   salesGroups: salesObject,
   salesProducts: salesObject,
   salesMonth: salesObject,
+  returnsByProducts: initialReturns,
 };
 
 export const initialState: Reports = {
@@ -120,6 +137,37 @@ export const reports = (
           },
         },
       };
+
+    case REPORTS_ACTION_TYPES.SET_RETURNS_PRODUCTS:
+      const returnsAction = action as SetReturnsProductsAction;
+      if (returnsAction.loadMore) {
+        return {
+          ...state,
+          tabs: {
+            ...state.tabs,
+            returnsByProducts: {
+              ...state.tabs.returnsByProducts,
+              data: {
+                ...returnsAction.payload,
+                details: [
+                  ...state.tabs.returnsByProducts.data.details,
+                  ...returnsAction.payload.details,
+                ],
+              },
+            },
+          },
+        };
+      } else
+        return {
+          ...state,
+          tabs: {
+            ...state.tabs,
+            returnsByProducts: {
+              ...state.tabs.returnsByProducts,
+              data: returnsAction.payload,
+            },
+          },
+        };
     default:
       return state;
   }

@@ -114,6 +114,26 @@ export type SalesMonth = {
   details: SalesMonthDetails[];
 };
 
+export type ReturnsProductsHead = {
+  cnt: number;
+  summ: number;
+};
+
+export type ReturnsProductsDetail = {
+  amount: number;
+  name: string;
+  summ: number;
+};
+
+export type ReturnsProducts = {
+  currentPage: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+  totalPages: number;
+  head: ReturnsProductsHead;
+  details: ReturnsProductsDetail[];
+};
+
 export type ConReport = {
   sales: {
     cnt: number;
