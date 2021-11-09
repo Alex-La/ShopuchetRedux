@@ -4,6 +4,7 @@ import {
   SalesMonth,
   SalesProducts,
   ReturnsProducts,
+  TopSales,
 } from '../../../utils/api.types';
 
 export type Tab<T> = {
@@ -17,6 +18,7 @@ export type Tabs = {
   salesProducts: Tab<SalesProducts>;
   salesMonth: Tab<SalesMonth>;
   returnsByProducts: Tab<ReturnsProducts>;
+  topSales: Tab<TopSales>;
 };
 
 export type Reports = {
@@ -30,6 +32,7 @@ export enum TAB_TYPES {
   SALES_PRODUCTS = 'salesProducts',
   SALES_MONTH = 'salesMonth',
   RETURNS_PRODUCTS = 'returnsByProducts',
+  TOP_SALES = 'topSales',
 }
 
 export enum REPORTS_ACTION_TYPES {
@@ -40,6 +43,7 @@ export enum REPORTS_ACTION_TYPES {
   SET_SALES_PRODUCTS = 'REPORTS_ACTION/SET_SALES_PRODUCTS',
   SET_SALES_MONTH = 'REPORTS_ACTION/SET_SALES_MONTH',
   SET_RETURNS_PRODUCTS = 'REPORTS_ACTION/SET_RETURNS_PRODUCTS',
+  SET_TOP_SALES = 'REPORTS_ACTION/SET_TOP_SALES',
 }
 
 export type SetLoadingAction = {
@@ -75,6 +79,11 @@ export type SetReturnsProductsAction = {
   payload: ReturnsProducts;
 };
 
+export type SetTopSalesAction = {
+  type: string;
+  payload: TopSales;
+};
+
 export type ReportsActions =
   | SetDateAction
   | SetLoadingAction
@@ -82,4 +91,5 @@ export type ReportsActions =
   | SetSalesGroupsAction
   | SetSalesProductsAction
   | SetSalesMonthAction
-  | SetReturnsProductsAction;
+  | SetReturnsProductsAction
+  | SetTopSalesAction;

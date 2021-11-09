@@ -4,6 +4,7 @@ import {
   SalesGroups,
   SalesMonth,
   SalesProducts,
+  TopSales,
 } from '../../api.types';
 import axiosInstance from '../axiosInstance';
 
@@ -39,6 +40,19 @@ const reports = {
       )}&dateend=${convertDate(
         dateend,
       )}&page=${page}&descending=${descending}&rows=10&sortField=summ`,
+    ),
+  getTopSales: (
+    gtochkaid: number,
+    datebegin: Date,
+    dateend: Date,
+    descending: boolean,
+  ) =>
+    axiosInstance.get<TopSales>(
+      `/api/readtopsalesproducts?gtochkaid=${gtochkaid}&datebegin=${convertDate(
+        datebegin,
+      )}&dateend=${convertDate(
+        dateend,
+      )}&descending=${descending}&page=0&rows=4&sortField=amount`,
     ),
 };
 

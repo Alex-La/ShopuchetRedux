@@ -5,6 +5,7 @@ import {
   SalesGroups,
   SalesMonth,
   SalesProducts,
+  TopSales,
 } from '../../../utils/api.types';
 import api from '../../../utils/api/api';
 import {RootState} from '../../store';
@@ -17,6 +18,7 @@ import {
   SetSalesGroupsAction,
   SetSalesMonthAction,
   SetSalesProductsAction,
+  SetTopSalesAction,
   TAB_TYPES,
 } from '../../types/private/reports.types';
 import {handleError} from '../fetchActions';
@@ -64,6 +66,11 @@ export const setSalesGroups = (
 export const setSalesMonth = (salesMonth: SalesMonth): SetSalesMonthAction => ({
   type: REPORTS_ACTION_TYPES.SET_SALES_MONTH,
   payload: salesMonth,
+});
+
+export const setTopSales = (topSales: TopSales): SetTopSalesAction => ({
+  type: REPORTS_ACTION_TYPES.SET_TOP_SALES,
+  payload: topSales,
 });
 
 export const setReturnsProducts = (
@@ -160,4 +167,25 @@ export const getReturnsProducts =
           reject(e);
         }),
     );
+  };
+
+export const getTopSales =
+  (
+    gtochkaid: number,
+    datebegin: Date,
+    dateend: Date,
+    descending: boolean = true,
+  ): ThunkAction<any, RootState, unknown, ReportsActions> =>
+  dispatch => {
+    dispatch(setLoading(true, TAB_TYPES.TOP_SALES));
+    api.reports
+      .getTopSales(gtochkaid, datebegin, dateend, descending)
+      .then(res => {
+        dispatch(setLoading(false, TAB_TYPES.TOP_SALES));
+        dispatch(setTopSales(res.data));
+      })
+      .catch(e => {
+        dispatch(handleError(e.response));
+        dispatch(setLoading(false, TAB_TYPES.TOP_SALES));
+      });
   };

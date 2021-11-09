@@ -1,3 +1,9 @@
+export const colors = ['#69DFAE', '#6395FA', '#6D7FA0', '#F7C122'];
+
+export function getColor(index: number) {
+  return colors[index];
+}
+
 export const even = (n: number) => !(n % 2);
 
 export const monthNames = [

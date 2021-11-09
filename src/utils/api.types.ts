@@ -134,6 +134,25 @@ export type ReturnsProducts = {
   details: ReturnsProductsDetail[];
 };
 
+export type TopSalesHead = {
+  cnt: number;
+  summ: number;
+};
+
+export type TopSalesDetail = {
+  amount: number;
+  name: string;
+};
+
+export type TopSales = {
+  currentPage: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+  totalPages: number;
+  head: TopSalesHead;
+  details: TopSalesDetail[];
+};
+
 export type ConReport = {
   sales: {
     cnt: number;

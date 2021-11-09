@@ -1,5 +1,5 @@
 import {getDayRange} from '../../../utils';
-import {ReturnsProducts} from '../../../utils/api.types';
+import {ReturnsProducts, TopSales} from '../../../utils/api.types';
 import {
   Reports,
   ReportsActions,
@@ -10,6 +10,7 @@ import {
   SetSalesGroupsAction,
   SetSalesMonthAction,
   SetSalesProductsAction,
+  SetTopSalesAction,
   Tab,
   Tabs,
 } from '../../types/private/reports.types';
@@ -36,11 +37,25 @@ const initialReturns: Tab<ReturnsProducts> = {
   },
 };
 
+const initialTopSales: Tab<TopSales> = {
+  reduce: false,
+  loading: false,
+  data: {
+    currentPage: 0,
+    hasNext: false,
+    hasPrevious: false,
+    totalPages: 0,
+    head: {cnt: 0, summ: 0},
+    details: [],
+  },
+};
+
 const initialTabs: Tabs = {
   salesGroups: salesObject,
   salesProducts: salesObject,
   salesMonth: salesObject,
   returnsByProducts: initialReturns,
+  topSales: initialTopSales,
 };
 
 export const initialState: Reports = {
@@ -168,6 +183,15 @@ export const reports = (
             },
           },
         };
+    case REPORTS_ACTION_TYPES.SET_TOP_SALES:
+      const topAction = action as SetTopSalesAction;
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          topSales: {...state.tabs.topSales, data: topAction.payload},
+        },
+      };
     default:
       return state;
   }
