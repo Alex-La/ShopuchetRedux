@@ -27,33 +27,6 @@ const Remainders: React.FC = () => {
   const [filter, setFilter] = useState<string>('');
   const [_, setCurrnetPage] = useState<number>(0);
 
-  const loadRemainders = useCallback(
-    (loading: boolean, loadMore: boolean, currentPage: number = 0) => {
-      if (currentGTochkaId)
-        dispatch(
-          getRemainders(
-            loading,
-            loadMore,
-            currentGTochkaId,
-            currentPage,
-            Number(cnt),
-            filter,
-          ),
-        );
-    },
-    [currentGTochkaId, cnt, filter],
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      if (currentGTochkaId) loadRemainders(true, false);
-      return () => {
-        setCurrnetPage(0);
-        dispatch(clearRemainders());
-      };
-    }, [currentGTochkaId]),
-  );
-
   const RenderItem = useCallback<
     (props: ListRenderItemInfo<Remainder>) => JSX.Element
   >(
@@ -78,23 +51,6 @@ const Remainders: React.FC = () => {
     [remainders],
   );
 
-  const handelSearch = () => {
-    setCurrnetPage(0);
-    loadRemainders(true, false, 0);
-  };
-
-  const handelRefresh = () => {
-    setCurrnetPage(0);
-    loadRemainders(true, false, 0);
-  };
-
-  const handleEndReached = () =>
-    setCurrnetPage(page => {
-      const newPage = page + 1;
-      loadRemainders(false, true, newPage);
-      return newPage;
-    });
-
   const ListHeaderComponent = useMemo(
     () => (
       <Layout>
@@ -103,7 +59,7 @@ const Remainders: React.FC = () => {
           setCnt={setCnt}
           filter={filter}
           setFilter={setFilter}
-          handleSearch={handelSearch}
+          handleSearch={() => {}}
         />
         <Divider />
 
@@ -124,11 +80,9 @@ const Remainders: React.FC = () => {
   return (
     <List
       refreshing={loading}
-      onRefresh={handelRefresh}
       ListHeaderComponent={ListHeaderComponent}
       data={remainders}
       renderItem={RenderItem}
-      onEndReached={handleEndReached}
     />
   );
 };

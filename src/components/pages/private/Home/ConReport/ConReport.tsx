@@ -145,7 +145,11 @@ const ConReport: React.FC = () => {
               Оплачено:
             </Text>
             <Text status="primary" style={styles.item}>
-              {conReport.payed.cntPayed.toFixed(2)}
+              {(
+                conReport.payed.cach +
+                conReport.payed.nonCach +
+                conReport.payed.bonus
+              ).toFixed(2)}
             </Text>
           </View>
           <View style={styles.line}>
