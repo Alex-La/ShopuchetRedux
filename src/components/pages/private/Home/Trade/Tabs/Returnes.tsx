@@ -13,7 +13,10 @@ type Props = {
 
 const Returnes: React.FC<Props> = ({navigation}) => {
   const navToNewReturn = () =>
-    navigation.navigate('TradeOptions', {type: TradeOptionsTypes.RETURN});
+    navigation.navigate('TradeOptions', {
+      type: TradeOptionsTypes.RETURN,
+      edit: false,
+    });
 
   const ListHeaderComponent = useCallback(() => {
     return (
@@ -32,6 +35,11 @@ const Returnes: React.FC<Props> = ({navigation}) => {
 
   return (
     <Layout style={styles.wrap}>
+      <List
+        ListHeaderComponent={ListHeaderComponent}
+        data={[]}
+        renderItem={() => <></>}
+      />
       <Button onPress={navToNewReturn} style={styles.button}>
         Новый возврат
       </Button>

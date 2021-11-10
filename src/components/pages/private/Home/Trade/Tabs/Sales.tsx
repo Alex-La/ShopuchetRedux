@@ -69,7 +69,10 @@ const Sales: React.FC<Props> = ({navigation}) => {
   const handleRefresh = () => loadSales();
 
   const navToNewTrade = () =>
-    navigation.navigate('TradeOptions', {type: TradeOptionsTypes.SALE});
+    navigation.navigate('TradeOptions', {
+      type: TradeOptionsTypes.SALE,
+      edit: false,
+    });
 
   const ListHeaderComponent = useCallback(() => {
     return (

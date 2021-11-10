@@ -13,7 +13,10 @@ type Props = {
 
 const Incomes: React.FC<Props> = ({navigation}) => {
   const navToNewIncome = () =>
-    navigation.navigate('TradeOptions', {type: TradeOptionsTypes.INCOME});
+    navigation.navigate('TradeOptions', {
+      type: TradeOptionsTypes.INCOME,
+      edit: false,
+    });
 
   const ListHeaderComponent = useCallback(() => {
     return (
@@ -32,6 +35,11 @@ const Incomes: React.FC<Props> = ({navigation}) => {
 
   return (
     <Layout style={styles.wrap}>
+      <List
+        ListHeaderComponent={ListHeaderComponent}
+        data={[]}
+        renderItem={() => <></>}
+      />
       <Button onPress={navToNewIncome} style={styles.button}>
         Новый приход
       </Button>

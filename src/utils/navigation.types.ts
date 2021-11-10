@@ -16,7 +16,8 @@ export enum TradeOptionsTypes {
 
 type TradeOptions = {
   type: TradeOptionsTypes;
-  receipt?: number;
+  edit: boolean;
+  recId?: number;
 };
 
 export type PrivateStackNavigator = {
