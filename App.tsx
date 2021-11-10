@@ -10,8 +10,13 @@ import store from './src/redux/store';
 import {Theme, ThemeContextProvider} from './src/context/ThemeContext';
 import {useColorScheme} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SplashScreen from 'react-native-splash-screen';
 
 export default (): React.ReactFragment => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   const schema = useColorScheme();
   const [theme, setTheme] = useState<Theme>('light');
 
