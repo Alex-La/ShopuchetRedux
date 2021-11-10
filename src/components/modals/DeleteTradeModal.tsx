@@ -9,7 +9,15 @@ import {
 } from '@ui-kitten/components';
 import React from 'react';
 import {Alert, TouchableWithoutFeedback, View} from 'react-native';
-import {PrivateStackNavigator} from '../../utils/navigation.types';
+import {useAppDispatch, useAppSelector} from '../../redux';
+import {
+  deleteReceipt,
+  deleteSale,
+} from '../../redux/actions/private/tradeActions';
+import {
+  PrivateStackNavigator,
+  TradeOptionsTypes,
+} from '../../utils/navigation.types';
 
 type Props = {
   navigation: NativeStackNavigationProp<
@@ -20,11 +28,46 @@ type Props = {
 };
 
 const DeleteTradeModal: React.FC<Props> = ({navigation, route}) => {
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector(state => state.trade.loading);
+
   const styles = useStyleSheet(Styles);
   const goBack = () => navigation.goBack();
 
-  const onDelete = () =>
-    Alert.alert('Информация', 'message', [{onPress: goBack}]);
+  const onPress = () => {
+    route.params.refresh();
+    goBack();
+  };
+
+  const onDelete = () => {
+    switch (route.params.type) {
+      case TradeOptionsTypes.SALE:
+        dispatch(deleteSale(route.params.deleteId))
+          .then(text => {
+            Alert.alert('Информация', text, [
+              {
+                onPress,
+              },
+            ]);
+          })
+          .catch(goBack);
+        break;
+      case TradeOptionsTypes.INCOME:
+      case TradeOptionsTypes.RETURN:
+        dispatch(deleteReceipt(route.params.deleteId))
+          .then(text => {
+            Alert.alert('Информация', text, [
+              {
+                onPress,
+              },
+            ]);
+          })
+          .catch(goBack);
+        break;
+      default:
+        return;
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={goBack}>
@@ -33,10 +76,18 @@ const DeleteTradeModal: React.FC<Props> = ({navigation, route}) => {
           <Text category="h5" style={{textAlign: 'center'}} status="primary">
             Вы точно хотите удалить продажу?!
           </Text>
-          <Button style={{marginTop: 40}} status="danger" onPress={onDelete}>
+          <Button
+            disabled={loading}
+            style={{marginTop: 40}}
+            status="danger"
+            onPress={onDelete}>
             Удалить
           </Button>
-          <Button style={{marginTop: 15}} appearance="outline" onPress={goBack}>
+          <Button
+            disabled={loading}
+            style={{marginTop: 15}}
+            appearance="outline"
+            onPress={goBack}>
             Отмена
           </Button>
         </Layout>

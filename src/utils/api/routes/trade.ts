@@ -1,3 +1,4 @@
+import {AxiosResponse} from 'axios';
 import {convertDate} from '../..';
 import {Sales, Sklad, ZakazInfo} from '../../api.types';
 import axiosInstance from '../axiosInstance';
@@ -18,9 +19,15 @@ const trade = {
   getZakazInfo: (zakazid: number) =>
     axiosInstance.get<ZakazInfo>(`/api/readzakazdetails?zakazid=${zakazid}`),
   deleteSale: (zakazIds: number[]) =>
-    axiosInstance.post<object, any, number[]>('/api/deletesales', zakazIds),
+    axiosInstance.post<object, AxiosResponse<object>, number[]>(
+      '/api/deletesales',
+      zakazIds,
+    ),
   deleteReceipt: (skladIds: number[]) =>
-    axiosInstance.post<object, any, number[]>('/api/deletereceipt', skladIds),
+    axiosInstance.post<object, AxiosResponse<object>, number[]>(
+      '/api/deletereceipt',
+      skladIds,
+    ),
 };
 
 export default trade;

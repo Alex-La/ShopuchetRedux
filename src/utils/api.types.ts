@@ -197,7 +197,7 @@ export type SalesProduct = {
 
 export type SalesDetail = {
   date: string;
-  products: [];
+  products: SalesProduct[];
   recId: number;
   summ: number;
   zakazId: number;

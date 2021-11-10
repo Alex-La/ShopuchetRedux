@@ -46,3 +46,49 @@ export const getSales =
         dispatch(handleError(e.response));
       });
   };
+
+export const deleteSale =
+  (
+    deleteId: number,
+  ): ThunkAction<Promise<string>, RootState, any, TradeActions> =>
+  async dispatch => {
+    dispatch(setLoading(true));
+    return await new Promise((resolve, reject) =>
+      api.trade
+        .deleteSale([deleteId])
+        .then(res => {
+          let str: string = '';
+          for (let [_, value] of Object.entries(res.data)) str = value;
+          setLoading(false);
+          resolve(str);
+        })
+        .catch(e => {
+          dispatch(setLoading(false));
+          dispatch(handleError(e.response));
+          reject(e);
+        }),
+    );
+  };
+
+export const deleteReceipt =
+  (
+    deleteId: number,
+  ): ThunkAction<Promise<string>, RootState, any, TradeActions> =>
+  async dispatch => {
+    dispatch(setLoading(true));
+    return await new Promise((resolve, reject) =>
+      api.trade
+        .deleteReceipt([deleteId])
+        .then(res => {
+          let str: string = '';
+          for (let [_, value] of Object.entries(res.data)) str = value;
+          setLoading(false);
+          resolve(str);
+        })
+        .catch(e => {
+          dispatch(setLoading(false));
+          dispatch(handleError(e.response));
+          reject(e);
+        }),
+    );
+  };

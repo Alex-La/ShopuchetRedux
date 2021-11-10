@@ -26,7 +26,11 @@ export type PrivateStackNavigator = {
   AddProduct: undefined;
   AddFriendModal: undefined;
   DatePickerModal: {setDate: SetDate};
-  DeleteTradeModal: undefined;
+  DeleteTradeModal: {
+    refresh: () => void;
+    deleteId: number;
+    type: TradeOptionsTypes;
+  };
   AddProductModal: undefined;
   PaymentModal: undefined;
 };

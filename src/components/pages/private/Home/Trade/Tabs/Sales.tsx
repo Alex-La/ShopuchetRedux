@@ -1,17 +1,34 @@
 import {useFocusEffect} from '@react-navigation/core';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {Button, Layout, List, Text, useTheme} from '@ui-kitten/components';
+import {
+  Button,
+  Icon,
+  Layout,
+  List,
+  MenuItem,
+  OverflowMenu,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import React, {useCallback, useState} from 'react';
-import {ListRenderItemInfo, StyleSheet, View} from 'react-native';
+import {ImageProps, ListRenderItemInfo, StyleSheet, View} from 'react-native';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import usePrevious from '../../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {getSales} from '../../../../../../redux/actions/private/tradeActions';
-import {Sale, SalesDetail} from '../../../../../../utils/api.types';
+import {SalesDetail} from '../../../../../../utils/api.types';
 import {
   PrivateStackNavigator,
   TradeOptionsTypes,
 } from '../../../../../../utils/navigation.types';
+
+const Trash = (props?: Partial<ImageProps>) => (
+  <Icon {...props} name="trash-2-outline" />
+);
+
+const Edit = (props?: Partial<ImageProps>) => (
+  <Icon {...props} name="edit-outline" />
+);
 
 type Props = {
   navigation: NativeStackNavigationProp<PrivateStackNavigator>;
@@ -21,6 +38,7 @@ const Sales: React.FC<Props> = ({navigation}) => {
   const theme = useTheme();
 
   const dispatch = useAppDispatch();
+  const loading = useAppSelector(state => state.trade.loading);
   const {sales, details} = useAppSelector(state => state.trade.sales);
   const date = useAppSelector(state => state.trade.date);
   const currentGTochkaId = useAppSelector(
@@ -48,6 +66,8 @@ const Sales: React.FC<Props> = ({navigation}) => {
     }, [currentGTochkaId, prevGTochkaId, date, prevDatebegin, prevDateend]),
   );
 
+  const handleRefresh = () => loadSales();
+
   const navToNewTrade = () =>
     navigation.navigate('TradeOptions', {type: TradeOptionsTypes.SALE});
 
@@ -72,11 +92,20 @@ const Sales: React.FC<Props> = ({navigation}) => {
 
   return (
     <Layout style={styles.wrap}>
-      <ListHeaderComponent />
       <List
+        ListHeaderComponent={ListHeaderComponent}
+        refreshing={loading}
+        onRefresh={handleRefresh}
         style={{backgroundColor: theme['background-color-1']}}
         data={details}
-        renderItem={props => <ListItem {...props} theme={theme} />}
+        renderItem={props => (
+          <ListItem
+            {...props}
+            theme={theme}
+            navigation={navigation}
+            reload={loadSales}
+          />
+        )}
       />
       <Button onPress={navToNewTrade} style={styles.button}>
         Новая продажа
@@ -87,9 +116,29 @@ const Sales: React.FC<Props> = ({navigation}) => {
 
 interface ListItemProps extends ListRenderItemInfo<SalesDetail> {
   theme: Record<string, string>;
+  navigation: NativeStackNavigationProp<PrivateStackNavigator>;
+  reload: () => void;
 }
 
-const ListItem: React.FC<ListItemProps> = ({item, index, theme}) => {
+const ListItem: React.FC<ListItemProps> = ({
+  item,
+  index,
+  theme,
+  navigation,
+  reload,
+}) => {
+  const [visible, setVisible] = useState<boolean>(false);
+  const toggle = () => setVisible(true);
+
+  const navToDelete = () => {
+    setVisible(false);
+    navigation.navigate('DeleteTradeModal', {
+      refresh: reload,
+      deleteId: item.zakazId,
+      type: TradeOptionsTypes.SALE,
+    });
+  };
+
   const RenderAnchor = () => (
     <View
       style={{
@@ -100,15 +149,43 @@ const ListItem: React.FC<ListItemProps> = ({item, index, theme}) => {
       <View
         style={{
           padding: 5,
-          flex: 2,
+          flex: 3,
           borderRightWidth: 1,
           borderColor: theme['color-basic-500'],
         }}>
         <Text category="p2" status="primary">
           {`Чек № ${item.recId}`}
         </Text>
+        {item.products.slice(0, 3).map((item, index) => (
+          <Text key={index} category="label" numberOfLines={1}>
+            {item.name}
+          </Text>
+        ))}
+        {item.products.length > 3 && (
+          <Text category="label" appearance="hint" style={{marginTop: 5}}>
+            ... ещё позиций - {item.products.length - 3}шт.
+          </Text>
+        )}
       </View>
-      <View style={{padding: 5, flex: 1}}></View>
+      <View
+        style={{
+          padding: 5,
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        {item.products.slice(0, 3).map((item, index) => (
+          <Text key={index} category="label">
+            {item.price} x {item.amount?.toFixed(2)}
+          </Text>
+        ))}
+        <Text status="primary" category="p2">
+          ={' '}
+          {item.products
+            .slice(0, 3)
+            .reduce((acc, item) => acc + item.price * item.amount, 0)}
+        </Text>
+      </View>
     </View>
   );
 
@@ -116,9 +193,20 @@ const ListItem: React.FC<ListItemProps> = ({item, index, theme}) => {
     <TouchableHighlight
       underlayColor={theme['color-basic-transparent-active']}
       onPress={() => {}}
+      onLongPress={toggle}
       key={index}
       style={{marginHorizontal: 16, marginVertical: 8}}>
-      <RenderAnchor />
+      <OverflowMenu
+        anchor={RenderAnchor}
+        visible={visible}
+        onBackdropPress={() => setVisible(false)}
+        backdropStyle={{
+          backgroundColor: theme['color-basic-transparent-focus'],
+        }}
+        placement="top">
+        <MenuItem title="Изменить" accessoryLeft={Edit} />
+        <MenuItem title="Удалить" accessoryLeft={Trash} onPress={navToDelete} />
+      </OverflowMenu>
     </TouchableHighlight>
   );
 };
