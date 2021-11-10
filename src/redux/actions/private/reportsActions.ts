@@ -1,6 +1,7 @@
 import {ThunkAction} from 'redux-thunk';
 import {DateRange, SetDateAction} from '../../../utils';
 import {
+  AvgReceipt,
   ReturnsProducts,
   SalesGroups,
   SalesMonth,
@@ -12,6 +13,7 @@ import {RootState} from '../../store';
 import {
   ReportsActions,
   REPORTS_ACTION_TYPES,
+  SetAvgReceiptAction,
   SetLoadingAction,
   SetReduceAction,
   SetReturnsProductsAction,
@@ -71,6 +73,13 @@ export const setSalesMonth = (salesMonth: SalesMonth): SetSalesMonthAction => ({
 export const setTopSales = (topSales: TopSales): SetTopSalesAction => ({
   type: REPORTS_ACTION_TYPES.SET_TOP_SALES,
   payload: topSales,
+});
+
+export const setAvgReceipt = (
+  avgReceipt: AvgReceipt[],
+): SetAvgReceiptAction => ({
+  type: REPORTS_ACTION_TYPES.SET_AVG_RECEIPT,
+  payload: avgReceipt,
 });
 
 export const setReturnsProducts = (
@@ -187,5 +196,25 @@ export const getTopSales =
       .catch(e => {
         dispatch(handleError(e.response));
         dispatch(setLoading(false, TAB_TYPES.TOP_SALES));
+      });
+  };
+
+export const getAvgReceipt =
+  (
+    gtochkaid: number,
+    datebegin: Date,
+    dateend: Date,
+  ): ThunkAction<any, RootState, unknown, ReportsActions> =>
+  dispatch => {
+    dispatch(setLoading(true, TAB_TYPES.AVG_RECEIPT));
+    api.reports
+      .getAvgReceipt(gtochkaid, datebegin, dateend)
+      .then(res => {
+        dispatch(setLoading(false, TAB_TYPES.AVG_RECEIPT));
+        dispatch(setAvgReceipt(res.data));
+      })
+      .catch(e => {
+        dispatch(handleError(e.response));
+        dispatch(setLoading(false, TAB_TYPES.AVG_RECEIPT));
       });
   };

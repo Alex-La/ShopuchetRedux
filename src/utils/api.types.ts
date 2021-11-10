@@ -153,6 +153,11 @@ export type TopSales = {
   details: TopSalesDetail[];
 };
 
+export type AvgReceipt = {
+  avg: number;
+  date: string;
+};
+
 export type ConReport = {
   sales: {
     cnt: number;

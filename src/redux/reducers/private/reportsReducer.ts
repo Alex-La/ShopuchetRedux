@@ -1,9 +1,10 @@
 import {getDayRange} from '../../../utils';
-import {ReturnsProducts, TopSales} from '../../../utils/api.types';
+import {AvgReceipt, ReturnsProducts, TopSales} from '../../../utils/api.types';
 import {
   Reports,
   ReportsActions,
   REPORTS_ACTION_TYPES,
+  SetAvgReceiptAction,
   SetLoadingAction,
   SetReduceAction,
   SetReturnsProductsAction,
@@ -50,12 +51,19 @@ const initialTopSales: Tab<TopSales> = {
   },
 };
 
+const initialAvgReceipt: Tab<AvgReceipt[]> = {
+  reduce: false,
+  loading: false,
+  data: [],
+};
+
 const initialTabs: Tabs = {
   salesGroups: salesObject,
   salesProducts: salesObject,
   salesMonth: salesObject,
   returnsByProducts: initialReturns,
   topSales: initialTopSales,
+  avgReceipt: initialAvgReceipt,
 };
 
 export const initialState: Reports = {
@@ -190,6 +198,24 @@ export const reports = (
         tabs: {
           ...state.tabs,
           topSales: {...state.tabs.topSales, data: topAction.payload},
+        },
+      };
+    case REPORTS_ACTION_TYPES.SET_AVG_RECEIPT:
+      const avgAction = action as SetAvgReceiptAction;
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          avgReceipt: {
+            ...state.tabs.avgReceipt,
+            data: avgAction.payload.sort((a, b) => {
+              const dateA = new Date(a.date).getTime();
+              const dateB = new Date(b.date).getTime();
+              return state.tabs.avgReceipt.reduce
+                ? dateA - dateB
+                : dateB - dateA;
+            }),
+          },
         },
       };
     default:

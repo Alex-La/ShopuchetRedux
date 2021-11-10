@@ -1,5 +1,6 @@
 import {convertDate} from '../..';
 import {
+  AvgReceipt,
   ReturnsProducts,
   SalesGroups,
   SalesMonth,
@@ -53,6 +54,12 @@ const reports = {
       )}&dateend=${convertDate(
         dateend,
       )}&descending=${descending}&page=0&rows=4&sortField=amount`,
+    ),
+  getAvgReceipt: (gtochkaid: number, datebegin: Date, dateend: Date) =>
+    axiosInstance.get<AvgReceipt[]>(
+      `/api/readaveragezakaz?gtochkaid=${gtochkaid}&datebegin=${convertDate(
+        datebegin,
+      )}&dateend=${convertDate(dateend)}`,
     ),
 };
 
