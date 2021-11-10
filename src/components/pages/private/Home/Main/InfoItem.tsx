@@ -37,6 +37,7 @@ const InfoItem: React.FC<Props> = ({title, info}) => {
 
 const styles = StyleSheet.create({
   wrap: {
+    paddingHorizontal: 16,
     marginTop: 8,
   },
   title: {

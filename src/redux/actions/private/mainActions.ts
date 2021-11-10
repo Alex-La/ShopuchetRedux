@@ -1,6 +1,11 @@
 import {ThunkAction} from 'redux-thunk';
 import api from '../../../utils/api/api';
-import {MainData, TradePoint, TradePoints} from '../../../utils/api.types';
+import {
+  MainData,
+  MainGraph,
+  TradePoint,
+  TradePoints,
+} from '../../../utils/api.types';
 import {RootState} from '../../store';
 import {SetAppLoadingAction} from '../../types/fetch.types';
 import {
@@ -9,6 +14,8 @@ import {
   SetTradePointsAction,
   SetTradePointAction,
   SetLoadingAction,
+  SetMainGraphAction,
+  MainActions,
 } from '../../types/private/main.types';
 import {handleError, setAppLoading} from '../fetchActions';
 
@@ -34,14 +41,13 @@ const setMainData = (data: MainData): SetMainDataAction => ({
   payload: data,
 });
 
+const setMainGrahp = (data: MainGraph[]): SetMainGraphAction => ({
+  type: MAIN_ACTION_TYPES.SET_MAIN_GRAPH,
+  payload: data,
+});
+
 export const getTradePoints =
-  (): ThunkAction<
-    void,
-    RootState,
-    unknown,
-    SetAppLoadingAction | SetTradePointsAction | SetTradePointAction
-  > =>
-  dispatch => {
+  (): ThunkAction<void, RootState, unknown, MainActions> => dispatch => {
     dispatch(setAppLoading(true));
     api.main
       .getTradePoints()
@@ -57,20 +63,33 @@ export const getTradePoints =
   };
 
 export const getMainData =
-  (
-    gtochkaid: number,
-  ): ThunkAction<
-    void,
-    RootState,
-    unknown,
-    SetMainDataAction | SetLoadingAction
-  > =>
+  (gtochkaid: number): ThunkAction<void, RootState, unknown, MainActions> =>
   dispatch => {
     dispatch(setLoading(true));
     api.main
       .getMain(gtochkaid)
       .then(res => {
         dispatch(setMainData(res.data));
+        dispatch(setLoading(false));
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
+        dispatch(handleError(e.response));
+      });
+  };
+
+export const getMainGraph =
+  (
+    gtochkaid: number,
+    datebegin: Date,
+    dateend: Date,
+  ): ThunkAction<any, RootState, unknown, MainActions> =>
+  dispatch => {
+    dispatch(setLoading(true));
+    api.main
+      .getMainGraph(gtochkaid, datebegin, dateend)
+      .then(res => {
+        dispatch(setMainGrahp(res.data));
         dispatch(setLoading(false));
       })
       .catch(e => {

@@ -5,6 +5,7 @@ import {
   MAIN_ACTION_TYPES,
   SetLoadingAction,
   SetMainDataAction,
+  SetMainGraphAction,
   SetTradePointAction,
   SetTradePointsAction,
 } from '../../types/private/main.types';
@@ -35,6 +36,7 @@ export const initialState: Main = {
   tradePoints: [],
   tradePoint: initialTradePoint,
   mainData: initialMainData,
+  mainGraph: [],
 };
 
 export const main = (state: Main = initialState, action: MainActions): Main => {
@@ -47,6 +49,8 @@ export const main = (state: Main = initialState, action: MainActions): Main => {
       return {...state, tradePoint: (action as SetTradePointAction).payload};
     case MAIN_ACTION_TYPES.SET_MAIN_DATA:
       return {...state, mainData: (action as SetMainDataAction).payload};
+    case MAIN_ACTION_TYPES.SET_MAIN_GRAPH:
+      return {...state, mainGraph: (action as SetMainGraphAction).payload};
     default:
       return state;
   }

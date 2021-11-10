@@ -9,6 +9,7 @@ import {useAppDispatch, useAppSelector} from '../../../../../redux';
 import {getMainData} from '../../../../../redux/actions/private/mainActions';
 import {useFocusEffect} from '@react-navigation/core';
 import usePrevious from '../../../../../hooks/previous.hook';
+import MainGraph from './MainGraph';
 
 const Main: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -43,6 +44,7 @@ const Main: React.FC = () => {
         <InfoItem title="Сегодня" info={mainData.day} />
         <InfoItem title="За последние 7 дней" info={mainData.week} />
         <InfoItem title="За последние 30 дней" info={mainData.month} />
+        <MainGraph />
       </RefreshScrollView>
     </Layout>
   );
@@ -51,11 +53,12 @@ const Main: React.FC = () => {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    padding: 16,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
 });
 

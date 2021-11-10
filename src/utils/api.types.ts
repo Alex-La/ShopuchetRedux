@@ -36,6 +36,12 @@ export type MainData = {
   summ: number;
 };
 
+export type MainGraph = {
+  date: string;
+  cnt: number;
+  income: number;
+};
+
 export type Friend = {
   usersId: number;
   login: string;

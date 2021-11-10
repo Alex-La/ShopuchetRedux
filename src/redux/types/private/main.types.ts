@@ -1,10 +1,16 @@
-import {MainData, TradePoint, TradePoints} from '../../../utils/api.types';
+import {
+  MainData,
+  MainGraph,
+  TradePoint,
+  TradePoints,
+} from '../../../utils/api.types';
 
 export type Main = {
   loading: boolean;
   tradePoints: TradePoints;
   tradePoint: TradePoint | undefined;
   mainData: MainData;
+  mainGraph: MainGraph[];
 };
 
 export enum MAIN_ACTION_TYPES {
@@ -12,6 +18,7 @@ export enum MAIN_ACTION_TYPES {
   SET_TRADE_POINTS = 'MAIN_ACTION/SET_TRADE_POINTS',
   SET_TRADE_POINT = 'MAIN_ACTION/SET_TRADE_POINT',
   SET_MAIN_DATA = 'MAIN_ACTION/SET_MAIN_DATA',
+  SET_MAIN_GRAPH = 'MAIN_ACTION/SET_MAIN_GRAPH',
 }
 
 export type SetLoadingAction = {
@@ -34,8 +41,14 @@ export type SetMainDataAction = {
   payload: MainData;
 };
 
+export type SetMainGraphAction = {
+  type: string;
+  payload: MainGraph[];
+};
+
 export type MainActions =
   | SetLoadingAction
   | SetTradePointsAction
   | SetTradePointAction
-  | SetMainDataAction;
+  | SetMainDataAction
+  | SetMainGraphAction;
