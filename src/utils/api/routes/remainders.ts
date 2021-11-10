@@ -8,9 +8,10 @@ const remainders = {
     descending: boolean = true,
     cnt: string = '',
     filter: string = '',
+    rows: number = 10,
   ) =>
     axiosInstance.get<Remainders>(
-      `/api/remainders?gtochkaid=${gtochkaid}&page=${page}&cnt=${cnt}&filter=${filter}&rows=10&sortField=amount&descending=${descending}`,
+      `/api/remainders?gtochkaid=${gtochkaid}&page=${page}&cnt=${cnt}&filter=${filter}&rows=${rows}&sortField=amount&descending=${descending}`,
     ),
 };
 

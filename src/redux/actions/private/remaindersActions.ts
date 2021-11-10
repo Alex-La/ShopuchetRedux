@@ -43,12 +43,13 @@ export const getRemainders =
     descending: boolean,
     cnt: string = '',
     filter: string = '',
+    rows: number = 10,
   ): ThunkAction<Promise<void>, RootState, unknown, RemaindersActions> =>
   async dispatch =>
     await new Promise((resolve, reject) => {
       if (!loadMore) dispatch(setLoading(true));
       api.remainders
-        .getRemainders(gtochkaid, page, descending, cnt, filter)
+        .getRemainders(gtochkaid, page, descending, cnt, filter, rows)
         .then(res => {
           dispatch(setLoading(false));
           dispatch(setRemainders(loadMore, res.data));

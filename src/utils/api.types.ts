@@ -174,3 +174,98 @@ export type ConReport = {
   };
   kassa: {inSumm: number; outSumm: number};
 };
+
+export type Sale = {
+  cnt: number;
+  income: number;
+  summ: number;
+};
+
+export type SalesProduct = {
+  amount: number;
+  gProductId: number;
+  name: string;
+  price: number;
+  remainder: number;
+};
+
+export type SalesDetail = {
+  date: string;
+  products: [];
+  recId: number;
+  summ: number;
+  zakazId: number;
+};
+
+export type Sales = {
+  sales: Sale;
+  details: SalesDetail[];
+};
+
+export type GProduct = {
+  gProductId: number;
+  usersId: number;
+  recId: number;
+  parentId: number;
+  articul: string;
+  barcode: string;
+  name: string;
+  price: number;
+  isCategory: number;
+  isActive: number;
+};
+
+export type SkladItemDetail = {
+  skladDetailsId: number;
+  recId: number;
+  gProduct: GProduct;
+  amount: number;
+  price: number;
+  remainAmount: number;
+};
+
+export type SkladDetail = {
+  skladId: number;
+  usersId: number;
+  recId: number;
+  gTochkaId: number;
+  date: string;
+  summ: number;
+  summCash: number;
+  summNoncash: number;
+  type: number;
+  isChange: number;
+  details: SkladItemDetail[];
+};
+
+export type Sklad = {
+  currentPage: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+  totalPages: number;
+  details: [];
+};
+
+export type ZakazInfoHead = {
+  date: string;
+  payedSumm: number;
+  recId: number;
+  summ: number;
+  summBonus: number;
+  summCash: number;
+  summNoncash: number;
+};
+
+export type ZakazInfoDetail = {
+  amount: number;
+  gProductId: number;
+  name: string;
+  price: number;
+  remainder: number;
+  summ: number;
+};
+
+export type ZakazInfo = {
+  head: ZakazInfoHead;
+  details: ZakazInfoDetail[];
+};

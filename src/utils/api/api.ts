@@ -5,6 +5,7 @@ import main from './routes/main';
 import profile from './routes/profile';
 import remainders from './routes/remainders';
 import reports from './routes/reports';
+import trade from './routes/trade';
 
 const api = {
   auth,
@@ -14,6 +15,7 @@ const api = {
   remainders,
   reports,
   conReport,
+  trade,
 };
 
 export default api;

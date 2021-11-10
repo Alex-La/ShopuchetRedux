@@ -8,12 +8,13 @@ import {
   View,
 } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import {RemaindersDetail} from '../../utils/api.types';
 
 const Trash = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="trash-2-outline" />
 );
 
-interface Props extends ListRenderItemInfo<any> {
+interface Props extends ListRenderItemInfo<RemaindersDetail> {
   theme: Record<string, string>;
   disabled?: boolean;
   modal?: boolean;
@@ -55,7 +56,7 @@ const ListItem: React.FC<Props> = ({
             },
           ]}>
           <Text numberOfLines={1} status="primary" style={styles.product}>
-            товар 1
+            {item.name}
           </Text>
           <Text
             status="primary"
@@ -66,7 +67,7 @@ const ListItem: React.FC<Props> = ({
                 borderLeftColor: theme['color-primary-500'],
               },
             ]}>
-            1 шт.
+            {item.amount} шт.
           </Text>
           <Text
             status="primary"
@@ -77,7 +78,7 @@ const ListItem: React.FC<Props> = ({
                 borderLeftColor: theme['color-primary-500'],
               },
             ]}>
-            100.00
+            {item.cost?.toFixed(2)}
           </Text>
         </View>
       </TouchableHighlight>
