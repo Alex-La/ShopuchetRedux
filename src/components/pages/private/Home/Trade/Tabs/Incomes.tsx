@@ -6,7 +6,6 @@ import {
   PrivateStackNavigator,
   TradeOptionsTypes,
 } from '../../../../../../utils/navigation.types';
-import TradesList from '../TradesList';
 
 type Props = {
   navigation: NativeStackNavigationProp<PrivateStackNavigator>;
@@ -33,11 +32,6 @@ const Incomes: React.FC<Props> = ({navigation}) => {
 
   return (
     <Layout style={styles.wrap}>
-      <TradesList
-        ListHeaderComponent={<ListHeaderComponent />}
-        navigation={navigation}
-        type={TradeOptionsTypes.INCOME}
-      />
       <Button onPress={navToNewIncome} style={styles.button}>
         Новый приход
       </Button>
