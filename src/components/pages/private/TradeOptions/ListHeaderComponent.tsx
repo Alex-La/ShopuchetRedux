@@ -7,16 +7,28 @@ import {
   Text,
   useStyleSheet,
 } from '@ui-kitten/components';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Keyboard, TouchableWithoutFeedback, View} from 'react-native';
+import {useAppSelector} from '../../../../redux';
 import {
   PrivateStackNavigator,
   TradeOptionsTypes,
 } from '../../../../utils/navigation.types';
 
 const ListHeaderComponent: React.FC = () => {
+  const tradeSession = useAppSelector(state => state.trade.tradeSession);
+
   const styles = useStyleSheet(Styles);
   const route = useRoute<RouteProp<PrivateStackNavigator, 'TradeOptions'>>();
+
+  const [date, setDate] = useState<Date>(new Date());
+  const [discount, setDiscount] = useState<string>('0.00');
+
+  useEffect(() => {
+    if (tradeSession.date.length) setDate(new Date(tradeSession.date));
+  }, [tradeSession.date]);
+
+  const handleBlur = () => setDiscount(dis => Number(dis).toFixed(2));
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -25,7 +37,11 @@ const ListHeaderComponent: React.FC = () => {
           <Text appearance="hint" category="label">
             Дата:
           </Text>
-          <Datepicker controlStyle={styles.datepicker} />
+          <Datepicker
+            controlStyle={styles.datepicker}
+            date={date}
+            onSelect={setDate}
+          />
         </View>
         {route.params.type === TradeOptionsTypes.SALE && (
           <View style={styles.itemWrap}>
@@ -33,9 +49,12 @@ const ListHeaderComponent: React.FC = () => {
               Скидка в %
             </Text>
             <Input
+              value={discount}
+              onChangeText={setDiscount}
+              onBlur={handleBlur}
               style={{backgroundColor: 'transparent', borderWidth: 0}}
               selectTextOnFocus
-              keyboardType="decimal-pad"
+              keyboardType="number-pad"
               textStyle={styles.percentage}
             />
           </View>

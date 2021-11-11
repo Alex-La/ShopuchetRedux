@@ -6,8 +6,10 @@ import {RootState} from '../../store';
 import {
   SetLoadingAction,
   SetSalesAction,
+  SetTradeSessionAction,
   TAB_TYPES,
   TradeActions,
+  TradeSession,
   TRADE_ACTION_TYPES,
 } from '../../types/private/trade.types';
 import {handleError} from '../fetchActions';
@@ -25,6 +27,13 @@ export const setLoading = (
   type: TRADE_ACTION_TYPES.SET_LOADING,
   payload: loading,
   tab,
+});
+
+export const setTradeSession = (
+  tradeSession: TradeSession,
+): SetTradeSessionAction => ({
+  type: TRADE_ACTION_TYPES.SET_TRADE_SESSION,
+  payload: tradeSession,
 });
 
 export const setSales = (sales: Sales): SetSalesAction => ({

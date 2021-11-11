@@ -8,13 +8,13 @@ import {
   View,
 } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import {RemaindersDetail} from '../../utils/api.types';
+import {TradeSessionDetail} from '../../redux/types/private/trade.types';
 
 const Trash = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="trash-2-outline" />
 );
 
-interface Props extends ListRenderItemInfo<RemaindersDetail> {
+interface Props extends ListRenderItemInfo<TradeSessionDetail> {
   theme: Record<string, string>;
   disabled?: boolean;
   modal?: boolean;

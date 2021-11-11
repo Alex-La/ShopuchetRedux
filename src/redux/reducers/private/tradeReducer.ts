@@ -1,13 +1,16 @@
 import {getDayRange, SetDateAction} from '../../../utils';
-import {Sale, Sales, Sklad} from '../../../utils/api.types';
+import {Sales, Sklad} from '../../../utils/api.types';
 import {
   SetIncomeAction,
   SetLoadingAction,
   SetReturnAction,
   SetSalesAction,
+  SetTradeSessionAction,
   Tab,
+  TAB_TYPES,
   Trade,
   TradeActions,
+  TradeSession,
   TRADE_ACTION_TYPES,
 } from '../../types/private/trade.types';
 
@@ -30,6 +33,18 @@ const initialSklad: Tab<Sklad> = {
   },
 };
 
+export const initialTradeSession: TradeSession = {
+  type: TAB_TYPES.SALES,
+  edit: false,
+  date: '',
+  payedSumm: 0,
+  summ: 0,
+  summBonus: 0,
+  summCash: 0,
+  summNoncash: 0,
+  details: [],
+};
+
 export const initialState: Trade = {
   index: 0,
   date: getDayRange(),
@@ -38,6 +53,7 @@ export const initialState: Trade = {
     income: initialSklad,
     return: initialSklad,
   },
+  tradeSession: initialTradeSession,
 };
 
 export const trade = (
@@ -121,6 +137,9 @@ export const trade = (
           return: {...state.tabs.return, data: returnAction.payload},
         },
       };
+    case TRADE_ACTION_TYPES.SET_TRADE_SESSION:
+      const sessionAction = action as SetTradeSessionAction;
+      return {...state, tradeSession: sessionAction.payload};
     default:
       return state;
   }

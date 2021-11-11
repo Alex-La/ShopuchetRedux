@@ -16,6 +16,7 @@ export type Trade = {
   index: number;
   date: DateRange;
   tabs: Tabs;
+  tradeSession: TradeSession;
 };
 
 export enum TAB_TYPES {
@@ -24,12 +25,34 @@ export enum TAB_TYPES {
   RETURN = 'return',
 }
 
+export type TradeSessionDetail = {
+  remaindersId: number;
+  amount: number;
+  name: string;
+  groupName: string;
+  gProductId: number;
+  cost: number;
+};
+
+export type TradeSession = {
+  edit: boolean;
+  type: TAB_TYPES;
+  date: string;
+  payedSumm: number;
+  summ: number;
+  summBonus: number;
+  summCash: number;
+  summNoncash: number;
+  details: TradeSessionDetail[];
+};
+
 export enum TRADE_ACTION_TYPES {
   SET_LOADING = 'TRADE_ACTION/SET_LOADING',
   SET_DATE = 'TRADE_ACTION/SET_DATE',
   SET_SALES = 'TRADE_ACTION/SET_SALES',
   SET_INCOME = 'TRADE_ACTION/SET_INCOME',
   SET_RETURN = 'TRADE_ACTION/SET_RETURN',
+  SET_TRADE_SESSION = 'TRADE_ACTION/SET_TRADE_SESSION',
 }
 
 export type SetLoadingAction = {
@@ -55,9 +78,15 @@ export type SetReturnAction = {
   payload: Sklad;
 };
 
+export type SetTradeSessionAction = {
+  type: string;
+  payload: TradeSession;
+};
+
 export type TradeActions =
   | SetDateAction
   | SetSalesAction
   | SetIncomeAction
   | SetReturnAction
+  | SetTradeSessionAction
   | SetLoadingAction;

@@ -2,7 +2,7 @@ import {RouteProp} from '@react-navigation/core';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Button, List, Text, useTheme} from '@ui-kitten/components';
 import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {
   PrivateStackNavigator,
   TradeOptionsTypes,
@@ -12,6 +12,9 @@ import ListEmptyComponent from './ListEmptyComponent';
 import ListFooterComponent from './ListFooterComponent';
 import ListHeaderComponent from './ListHeaderComponent';
 import ListItem from '../../../general/ListItem';
+import {useAppDispatch, useAppSelector} from '../../../../redux';
+import {setTradeSession} from '../../../../redux/actions/private/tradeActions';
+import {initialTradeSession} from '../../../../redux/reducers/private/tradeReducer';
 
 type Props = {
   navigation: NativeStackNavigationProp<PrivateStackNavigator, 'TradeOptions'>;
@@ -19,6 +22,9 @@ type Props = {
 };
 
 const TradeOptions: React.FC<Props> = ({navigation, route}) => {
+  const dispatch = useAppDispatch();
+  const details = useAppSelector(state => state.trade.tradeSession.details);
+
   useEffect(() => {
     navigation.setOptions({
       title:
@@ -35,6 +41,24 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
   const navToAddProductModal = () => navigation.navigate('AddProductModal');
   const navToPaymentModal = () => navigation.navigate('PaymentModal');
 
+  useEffect(() => {
+    navigation.addListener('beforeRemove', e => {
+      e.preventDefault();
+      Alert.alert('Вы уверены?', 'Введенные данные не сохранятся!', [
+        {text: 'Остаться', style: 'cancel'},
+        {
+          text: 'Уйти',
+          style: 'destructive',
+          onPress: () => {
+            navigation.dispatch(e.data.action);
+            dispatch(setTradeSession(initialTradeSession));
+          },
+        },
+      ]);
+    });
+    return () => navigation.removeListener('beforeRemove', () => {});
+  }, [navigation]);
+
   return (
     <>
       <View style={styles.wrap}>
@@ -47,7 +71,7 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
           ListEmptyComponent={() => (
             <ListEmptyComponent navToAddProduct={navToAddProduct} />
           )}
-          data={[]}
+          data={details}
           renderItem={props => (
             <ListItem
               {...props}
