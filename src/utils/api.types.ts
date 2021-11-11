@@ -249,7 +249,7 @@ export type Sklad = {
   hasNext: boolean;
   hasPrevious: boolean;
   totalPages: number;
-  details: [];
+  details: SkladDetail[];
 };
 
 export type ZakazInfoHead = {

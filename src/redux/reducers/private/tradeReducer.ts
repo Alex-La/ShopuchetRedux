@@ -1,37 +1,43 @@
 import {getDayRange, SetDateAction} from '../../../utils';
-import {Sale, Sklad} from '../../../utils/api.types';
-import {SetLoadingAction} from '../../types/auth.types';
+import {Sale, Sales, Sklad} from '../../../utils/api.types';
 import {
+  SetIncomeAction,
+  SetLoadingAction,
+  SetReturnAction,
   SetSalesAction,
-  SetSkladAction,
+  Tab,
   Trade,
   TradeActions,
   TRADE_ACTION_TYPES,
 } from '../../types/private/trade.types';
 
-const initialSale: Sale = {
-  cnt: 0,
-  income: 0,
-  summ: 0,
+const initialSale: Tab<Sales> = {
+  loading: false,
+  data: {
+    sales: {cnt: 0, income: 0, summ: 0},
+    details: [],
+  },
 };
 
-const initialSklad: Sklad = {
-  currentPage: 0,
-  hasNext: false,
-  hasPrevious: false,
-  totalPages: 0,
-  details: [],
+const initialSklad: Tab<Sklad> = {
+  loading: false,
+  data: {
+    currentPage: 0,
+    hasNext: false,
+    hasPrevious: false,
+    totalPages: 0,
+    details: [],
+  },
 };
 
 export const initialState: Trade = {
   index: 0,
-  loading: false,
   date: getDayRange(),
-  sales: {
+  tabs: {
     sales: initialSale,
-    details: [],
+    income: initialSklad,
+    return: initialSklad,
   },
-  sklad: initialSklad,
 };
 
 export const trade = (
@@ -41,24 +47,80 @@ export const trade = (
   switch (action.type) {
     case TRADE_ACTION_TYPES.SET_LOADING:
       const loadingAction = action as SetLoadingAction;
-      return {...state, loading: loadingAction.payload};
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          [loadingAction.tab]: {
+            ...state.tabs[loadingAction.tab],
+            loading: loadingAction.payload,
+          },
+        },
+      };
     case TRADE_ACTION_TYPES.SET_DATE:
       const dateAction = action as SetDateAction;
       return {...state, ...dateAction};
     case TRADE_ACTION_TYPES.SET_SALES:
       const salesAction = action as SetSalesAction;
-      return {...state, sales: salesAction.payload};
-    case TRADE_ACTION_TYPES.SET_SKLAD:
-      const skladAction = action as SetSkladAction;
-      if (skladAction.loadMore)
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          sales: {...state.tabs.sales, data: salesAction.payload},
+        },
+      };
+    case TRADE_ACTION_TYPES.SET_INCOME:
+      const incomeAction = action as SetIncomeAction;
+      if (incomeAction.loadMore)
         return {
           ...state,
-          sklad: {
-            ...state.sklad,
-            details: [...state.sklad.details, ...skladAction.payload.details],
+          tabs: {
+            ...state.tabs,
+            income: {
+              ...state.tabs.income,
+              data: {
+                ...incomeAction.payload,
+                details: [
+                  ...state.tabs.income.data.details,
+                  ...incomeAction.payload.details,
+                ],
+              },
+            },
           },
         };
-      return {...state, sklad: skladAction.payload};
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          income: {...state.tabs.income, data: incomeAction.payload},
+        },
+      };
+    case TRADE_ACTION_TYPES.SET_RETURN:
+      const returnAction = action as SetReturnAction;
+      if (returnAction.loadMore)
+        return {
+          ...state,
+          tabs: {
+            ...state.tabs,
+            return: {
+              ...state.tabs.return,
+              data: {
+                ...returnAction.payload,
+                details: [
+                  ...state.tabs.return.data.details,
+                  ...returnAction.payload.details,
+                ],
+              },
+            },
+          },
+        };
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          return: {...state.tabs.return, data: returnAction.payload},
+        },
+      };
     default:
       return state;
   }

@@ -38,8 +38,8 @@ const Sales: React.FC<Props> = ({navigation}) => {
   const theme = useTheme();
 
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(state => state.trade.loading);
-  const {sales, details} = useAppSelector(state => state.trade.sales);
+  const loading = useAppSelector(state => state.trade.tabs.sales.loading);
+  const {sales, details} = useAppSelector(state => state.trade.tabs.sales.data);
   const date = useAppSelector(state => state.trade.date);
   const currentGTochkaId = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
