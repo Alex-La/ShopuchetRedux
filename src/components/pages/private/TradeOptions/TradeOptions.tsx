@@ -42,22 +42,11 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
   const navToPaymentModal = () => navigation.navigate('PaymentModal');
 
   useEffect(() => {
-    navigation.addListener('beforeRemove', e => {
-      e.preventDefault();
-      Alert.alert('Вы уверены?', 'Введенные данные не сохранятся!', [
-        {text: 'Остаться', style: 'cancel'},
-        {
-          text: 'Уйти',
-          style: 'destructive',
-          onPress: () => {
-            navigation.dispatch(e.data.action);
-            dispatch(setTradeSession(initialTradeSession));
-          },
-        },
-      ]);
+    navigation.addListener('beforeRemove', () => {
+      dispatch(setTradeSession(initialTradeSession));
     });
     return () => navigation.removeListener('beforeRemove', () => {});
-  }, [navigation]);
+  }, []);
 
   return (
     <>
