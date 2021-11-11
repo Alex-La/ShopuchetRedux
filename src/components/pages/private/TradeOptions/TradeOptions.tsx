@@ -1,7 +1,7 @@
 import {RouteProp} from '@react-navigation/core';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Button, List, Text, useTheme} from '@ui-kitten/components';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {
   PrivateStackNavigator,
@@ -13,8 +13,13 @@ import ListFooterComponent from './ListFooterComponent';
 import ListHeaderComponent from './ListHeaderComponent';
 import ListItem from '../../../general/ListItem';
 import {useAppDispatch, useAppSelector} from '../../../../redux';
-import {setTradeSession} from '../../../../redux/actions/private/tradeActions';
+import {
+  getZakazInfo,
+  setTradeSession,
+} from '../../../../redux/actions/private/tradeActions';
 import {initialTradeSession} from '../../../../redux/reducers/private/tradeReducer';
+import Preloader from '../../../loaders/Preloader';
+import {TAB_TYPES} from '../../../../redux/types/private/trade.types';
 
 type Props = {
   navigation: NativeStackNavigationProp<PrivateStackNavigator, 'TradeOptions'>;
@@ -22,15 +27,23 @@ type Props = {
 };
 
 const TradeOptions: React.FC<Props> = ({navigation, route}) => {
+  const {type, zakazId, edit, recId} = route.params;
+
   const dispatch = useAppDispatch();
   const details = useAppSelector(state => state.trade.tradeSession.details);
+  const [loading, setLoding] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (type === TradeOptionsTypes.RECEIPT && zakazId) {
+      dispatch(getZakazInfo(zakazId, edit, TAB_TYPES.SALES)).then(() =>
+        setLoding(false),
+      );
+    } else setLoding(false);
+  }, [type]);
 
   useEffect(() => {
     navigation.setOptions({
-      title:
-        route.params.type === TradeOptionsTypes.RECEIPT
-          ? `Чек №${route.params.recId}`
-          : route.params.type,
+      title: type === TradeOptionsTypes.RECEIPT ? `Чек №${recId}` : type,
     });
   }, [route.params]);
 
@@ -47,6 +60,8 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
     });
     return () => navigation.removeListener('beforeRemove', () => {});
   }, []);
+
+  if (loading) return <Preloader />;
 
   return (
     <>

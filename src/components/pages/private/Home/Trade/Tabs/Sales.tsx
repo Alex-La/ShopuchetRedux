@@ -16,6 +16,7 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 import usePrevious from '../../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {getSales} from '../../../../../../redux/actions/private/tradeActions';
+import {convertDate} from '../../../../../../utils';
 import {SalesDetail} from '../../../../../../utils/api.types';
 import {
   PrivateStackNavigator,
@@ -41,6 +42,7 @@ const Sales: React.FC<Props> = ({navigation}) => {
   const loading = useAppSelector(state => state.trade.tabs.sales.loading);
   const {sales, details} = useAppSelector(state => state.trade.tabs.sales.data);
   const date = useAppSelector(state => state.trade.date);
+  const index = useAppSelector(state => state.trade.index);
   const currentGTochkaId = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
@@ -104,6 +106,7 @@ const Sales: React.FC<Props> = ({navigation}) => {
         renderItem={props => (
           <ListItem
             {...props}
+            dateIndex={index}
             theme={theme}
             navigation={navigation}
             reload={loadSales}
@@ -118,6 +121,7 @@ const Sales: React.FC<Props> = ({navigation}) => {
 };
 
 interface ListItemProps extends ListRenderItemInfo<SalesDetail> {
+  dateIndex: number;
   theme: Record<string, string>;
   navigation: NativeStackNavigationProp<PrivateStackNavigator>;
   reload: () => void;
@@ -126,6 +130,7 @@ interface ListItemProps extends ListRenderItemInfo<SalesDetail> {
 const ListItem: React.FC<ListItemProps> = ({
   item,
   index,
+  dateIndex,
   theme,
   navigation,
   reload,
@@ -148,6 +153,7 @@ const ListItem: React.FC<ListItemProps> = ({
       edit: true,
       type: TradeOptionsTypes.RECEIPT,
       recId: item.recId,
+      zakazId: item.zakazId,
     });
   };
 
@@ -157,8 +163,15 @@ const ListItem: React.FC<ListItemProps> = ({
       edit: false,
       type: TradeOptionsTypes.RECEIPT,
       recId: item.recId,
+      zakazId: item.zakazId,
     });
   };
+
+  const renderDate = useCallback(() => {
+    if (dateIndex === 0) {
+      return `в ${new Date(item.date).toLocaleTimeString()}`;
+    } else return `от ${convertDate(item.date)}`;
+  }, []);
 
   const RenderAnchor = () => (
     <View
@@ -175,7 +188,7 @@ const ListItem: React.FC<ListItemProps> = ({
           borderColor: theme['color-basic-500'],
         }}>
         <Text category="p2" status="primary">
-          {`Чек № ${item.recId}`}
+          {`Чек № ${item.recId} ${renderDate()}`}
         </Text>
         {item.products.slice(0, 3).map((item, index) => (
           <Text key={index} category="label" numberOfLines={1}>

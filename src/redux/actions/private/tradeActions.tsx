@@ -10,6 +10,7 @@ import {
   TAB_TYPES,
   TradeActions,
   TradeSession,
+  TradeSessionDetail,
   TRADE_ACTION_TYPES,
 } from '../../types/private/trade.types';
 import {handleError} from '../fetchActions';
@@ -82,6 +83,33 @@ export const deleteSale =
           reject(e);
         }),
     );
+  };
+
+export const getZakazInfo =
+  (
+    zakazid: number,
+    edit: boolean,
+    type: TAB_TYPES,
+  ): ThunkAction<Promise<void>, RootState, any, TradeActions> =>
+  async dispatch => {
+    return await api.trade
+      .getZakazInfo(zakazid)
+      .then(res => {
+        dispatch(
+          setTradeSession({
+            edit,
+            type,
+            ...res.data.head,
+            details: res.data.details.map<TradeSessionDetail>(det => ({
+              ...det,
+              cost: det.price,
+            })),
+          }),
+        );
+      })
+      .catch(e => {
+        dispatch(handleError(e.response));
+      });
   };
 
 export const deleteReceipt =

@@ -26,10 +26,9 @@ export enum TAB_TYPES {
 }
 
 export type TradeSessionDetail = {
-  remaindersId: number;
+  remainder: number;
   amount: number;
   name: string;
-  groupName: string;
   gProductId: number;
   cost: number;
 };

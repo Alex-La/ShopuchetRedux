@@ -18,6 +18,7 @@ type TradeOptions = {
   type: TradeOptionsTypes;
   edit: boolean;
   recId?: number;
+  zakazId?: number;
 };
 
 export type PrivateStackNavigator = {
