@@ -23,7 +23,7 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
     navigation.setOptions({
       title:
         route.params.type === TradeOptionsTypes.RECEIPT
-          ? `Чек №`
+          ? `Чек №${route.params.recId}`
           : route.params.type,
     });
   }, [route.params]);
@@ -47,7 +47,7 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
           ListEmptyComponent={() => (
             <ListEmptyComponent navToAddProduct={navToAddProduct} />
           )}
-          data={[2, 3]}
+          data={[]}
           renderItem={props => (
             <ListItem
               {...props}

@@ -142,6 +142,24 @@ const ListItem: React.FC<ListItemProps> = ({
     });
   };
 
+  const navToEdit = () => {
+    setVisible(false);
+    navigation.navigate('TradeOptions', {
+      edit: true,
+      type: TradeOptionsTypes.RECEIPT,
+      recId: item.recId,
+    });
+  };
+
+  const navToReceipt = () => {
+    setVisible(false);
+    navigation.navigate('TradeOptions', {
+      edit: false,
+      type: TradeOptionsTypes.RECEIPT,
+      recId: item.recId,
+    });
+  };
+
   const RenderAnchor = () => (
     <View
       style={{
@@ -195,7 +213,7 @@ const ListItem: React.FC<ListItemProps> = ({
   return (
     <TouchableHighlight
       underlayColor={theme['color-basic-transparent-active']}
-      onPress={() => {}}
+      onPress={navToReceipt}
       onLongPress={toggle}
       key={index}
       style={{marginHorizontal: 16, marginVertical: 8}}>
@@ -207,7 +225,7 @@ const ListItem: React.FC<ListItemProps> = ({
           backgroundColor: theme['color-basic-transparent-focus'],
         }}
         placement="top">
-        <MenuItem title="Изменить" accessoryLeft={Edit} />
+        <MenuItem title="Изменить" accessoryLeft={Edit} onPress={navToEdit} />
         <MenuItem title="Удалить" accessoryLeft={Trash} onPress={navToDelete} />
       </OverflowMenu>
     </TouchableHighlight>

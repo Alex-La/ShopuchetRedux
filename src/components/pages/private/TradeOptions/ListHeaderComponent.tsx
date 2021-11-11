@@ -1,3 +1,4 @@
+import {RouteProp, useRoute} from '@react-navigation/core';
 import {
   Datepicker,
   Input,
@@ -8,9 +9,14 @@ import {
 } from '@ui-kitten/components';
 import React from 'react';
 import {Keyboard, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  PrivateStackNavigator,
+  TradeOptionsTypes,
+} from '../../../../utils/navigation.types';
 
 const ListHeaderComponent: React.FC = () => {
   const styles = useStyleSheet(Styles);
+  const route = useRoute<RouteProp<PrivateStackNavigator, 'TradeOptions'>>();
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -21,17 +27,19 @@ const ListHeaderComponent: React.FC = () => {
           </Text>
           <Datepicker controlStyle={styles.datepicker} />
         </View>
-        <View style={styles.itemWrap}>
-          <Text appearance="hint" category="label">
-            Скидка в %
-          </Text>
-          <Input
-            style={{backgroundColor: 'transparent', borderWidth: 0}}
-            selectTextOnFocus
-            keyboardType="decimal-pad"
-            textStyle={styles.percentage}
-          />
-        </View>
+        {route.params.type === TradeOptionsTypes.SALE && (
+          <View style={styles.itemWrap}>
+            <Text appearance="hint" category="label">
+              Скидка в %
+            </Text>
+            <Input
+              style={{backgroundColor: 'transparent', borderWidth: 0}}
+              selectTextOnFocus
+              keyboardType="decimal-pad"
+              textStyle={styles.percentage}
+            />
+          </View>
+        )}
       </Layout>
     </TouchableWithoutFeedback>
   );
