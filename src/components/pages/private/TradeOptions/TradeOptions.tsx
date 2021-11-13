@@ -19,7 +19,10 @@ import {
 } from '../../../../redux/actions/private/tradeActions';
 import {initialTradeSession} from '../../../../redux/reducers/private/tradeReducer';
 import Preloader from '../../../loaders/Preloader';
-import {TAB_TYPES} from '../../../../redux/types/private/trade.types';
+import {
+  TAB_TYPES,
+  TradeSessionDetail,
+} from '../../../../redux/types/private/trade.types';
 
 type Props = {
   navigation: NativeStackNavigationProp<PrivateStackNavigator, 'TradeOptions'>;
@@ -66,7 +69,12 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
 
   const goBack = () => navigation.goBack();
   const navToAddProduct = () => navigation.navigate('AddProduct');
-  const navToAddProductModal = () => navigation.navigate('AddProductModal');
+  const navToAddProductModal = (detail: TradeSessionDetail) =>
+    navigation.navigate('AddProductModal', {
+      detail,
+      callback: () => {},
+      type: 'edit',
+    });
   const navToPaymentModal = () => navigation.navigate('PaymentModal');
 
   useEffect(() => {
@@ -90,7 +98,7 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
           ListEmptyComponent={() => (
             <ListEmptyComponent navToAddProduct={navToAddProduct} />
           )}
-          data={details.map(detail => ({...detail, remainder: detail.amount}))}
+          data={details}
           renderItem={props => (
             <ListItem
               {...props}

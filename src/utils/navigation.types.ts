@@ -1,5 +1,8 @@
 import {SetDate} from '.';
-import {TAB_TYPES} from '../redux/types/private/trade.types';
+import {
+  TAB_TYPES,
+  TradeSessionDetail,
+} from '../redux/types/private/trade.types';
 import {User} from './api.types';
 
 export type PublicStackNavigator = {
@@ -36,7 +39,11 @@ export type PrivateStackNavigator = {
     deleteId: number;
     type: TradeOptionsTypes;
   };
-  AddProductModal: undefined;
+  AddProductModal: {
+    type: 'edit' | 'new';
+    detail: TradeSessionDetail;
+    callback: () => void;
+  };
   PaymentModal: undefined;
 };
 

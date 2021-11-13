@@ -9,8 +9,11 @@ import {
   Text,
   useStyleSheet,
 } from '@ui-kitten/components';
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {ImageProps, TouchableWithoutFeedback, View} from 'react-native';
+import {useAppDispatch, useAppSelector} from '../../redux';
+import {setTradeSession} from '../../redux/actions/private/tradeActions';
+import {TradeSessionDetail} from '../../redux/types/private/trade.types';
 import {PrivateStackNavigator} from '../../utils/navigation.types';
 
 const Product = (props?: Partial<ImageProps>) => (
@@ -29,18 +32,55 @@ type Props = {
 };
 
 const AddProductModal: React.FC<Props> = ({navigation, route}) => {
+  const dispatch = useAppDispatch();
+  const tradeSession = useAppSelector(state => state.trade.tradeSession);
+
+  const ref = useRef<Input>(null);
   const styles = useStyleSheet(Styles);
   const goBack = () => navigation.goBack();
+
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
+
+  const [amount, setAmount] = useState<string>(
+    route.params.type === 'new' ? '1' : route.params.detail.amount.toString(),
+  );
+  const [cost, setCost] = useState<string>(route.params.detail.cost.toFixed(2));
+
+  const hanldeOk = () => {
+    const details = [...tradeSession.details];
+    const index = details.findIndex(
+      d => d.gProductId === route.params.detail.gProductId,
+    );
+    const detail: TradeSessionDetail = {
+      gProductId: route.params.detail.gProductId,
+      name: route.params.detail.name,
+      remainder: route.params.detail.remainder,
+      amount: Number(amount),
+      cost: Number(cost),
+    };
+    if (index > -1) details[index] = detail;
+    else details.push(detail);
+    dispatch(setTradeSession({...tradeSession, details}));
+    navigation.goBack();
+    route.params.callback();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={goBack}>
       <View style={styles.wrap}>
         <Layout style={styles.form}>
           <Text category="h6" style={{textAlign: 'center'}}>
-            Товар 1
+            {route.params.detail.name}
           </Text>
-          <Text style={{textAlign: 'center'}}>Остаток: 42 шт.</Text>
+          <Text style={{textAlign: 'center'}} appearance="hint">
+            Остаток: {route.params.detail.remainder} шт.
+          </Text>
           <Input
+            ref={ref}
+            value={amount}
+            onChangeText={setAmount}
             accessoryLeft={Product}
             placeholder="Количество"
             style={{marginTop: 30}}
@@ -48,6 +88,8 @@ const AddProductModal: React.FC<Props> = ({navigation, route}) => {
             keyboardType="decimal-pad"
           />
           <Input
+            value={cost}
+            onChangeText={setCost}
             accessoryLeft={Price}
             placeholder="Цена"
             style={{marginTop: 15}}
@@ -61,7 +103,9 @@ const AddProductModal: React.FC<Props> = ({navigation, route}) => {
               appearance="outline">
               Отмена
             </Button>
-            <Button style={{flex: 1, marginLeft: 5}}>Ок</Button>
+            <Button onPress={hanldeOk} style={{flex: 1, marginLeft: 5}}>
+              Ок
+            </Button>
           </View>
         </Layout>
       </View>

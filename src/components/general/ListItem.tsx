@@ -18,7 +18,7 @@ interface Props extends ListRenderItemInfo<TradeSessionDetail> {
   theme: Record<string, string>;
   disabled?: boolean;
   modal?: boolean;
-  onPress?: () => void;
+  onPress?: (detail: TradeSessionDetail) => void;
 }
 
 const ListItem: React.FC<Props> = ({
@@ -43,7 +43,7 @@ const ListItem: React.FC<Props> = ({
     return (
       <TouchableHighlight
         disabled={disabled}
-        onPress={onPress}
+        onPress={() => onPress && onPress(item)}
         onLongPress={toggle}
         key={index}
         style={styles.wrap}
@@ -67,7 +67,7 @@ const ListItem: React.FC<Props> = ({
                 borderLeftColor: theme['color-primary-500'],
               },
             ]}>
-            {item.remainder} шт.
+            {item.amount} шт.
           </Text>
           <Text
             status="primary"

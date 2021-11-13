@@ -1,12 +1,8 @@
-import {useFocusEffect} from '@react-navigation/core';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Layout, List, useTheme} from '@ui-kitten/components';
-import React, {Fragment, useCallback, useState} from 'react';
+import React, {Fragment, useCallback, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../../redux';
-import {
-  clearRemainders,
-  getRemainders,
-} from '../../../../redux/actions/private/remaindersActions';
+import {getRemainders} from '../../../../redux/actions/private/remaindersActions';
 import {TradeSessionDetail} from '../../../../redux/types/private/trade.types';
 import {PrivateStackNavigator} from '../../../../utils/navigation.types';
 import FooterLoader from '../../../general/FooterLoader';
@@ -50,12 +46,9 @@ const AddProduct: React.FC<Props> = ({navigation}) => {
     [currentGTochkaId, search],
   );
 
-  useFocusEffect(
-    useCallback(() => {
-      loadRemainders(false, 0, remainders.descending);
-      return () => dispatch(clearRemainders());
-    }, [loadRemainders]),
-  );
+  useEffect(() => {
+    loadRemainders(false, 0, remainders.descending);
+  }, []);
 
   const handleRefresh = () => loadRemainders(false, 0, remainders.descending);
 
@@ -72,7 +65,12 @@ const AddProduct: React.FC<Props> = ({navigation}) => {
     }
   };
 
-  const navToAddProductModal = () => navigation.navigate('AddProductModal');
+  const navToAddProductModal = (detail: TradeSessionDetail) =>
+    navigation.navigate('AddProductModal', {
+      detail,
+      callback: navigation.goBack,
+      type: 'new',
+    });
 
   const RenderFooter = () => (isDataLoaded ? <Fragment /> : <FooterLoader />);
 
@@ -92,7 +90,6 @@ const AddProduct: React.FC<Props> = ({navigation}) => {
         data={details.map<TradeSessionDetail>(detail => ({
           ...detail,
           remainder: detail.amount,
-          amount: 1,
         }))}
         renderItem={props => (
           <ListItem {...props} theme={theme} onPress={navToAddProductModal} />
