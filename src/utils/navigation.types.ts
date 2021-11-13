@@ -1,4 +1,5 @@
 import {SetDate} from '.';
+import {TAB_TYPES} from '../redux/types/private/trade.types';
 import {User} from './api.types';
 
 export type PublicStackNavigator = {
@@ -16,7 +17,9 @@ export enum TradeOptionsTypes {
 
 type TradeOptions = {
   type: TradeOptionsTypes;
+  sessionType: TAB_TYPES;
   edit: boolean;
+  newTrade: boolean;
   recId?: number;
   zakazId?: number;
 };

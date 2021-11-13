@@ -27,18 +27,33 @@ type Props = {
 };
 
 const TradeOptions: React.FC<Props> = ({navigation, route}) => {
-  const {type, zakazId, edit, recId} = route.params;
+  const {type, sessionType, zakazId, edit, recId, newTrade} = route.params;
 
   const dispatch = useAppDispatch();
   const details = useAppSelector(state => state.trade.tradeSession.details);
+  const data = useAppSelector(state => state.trade.tradeSession);
   const [loading, setLoding] = useState<boolean>(true);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   useEffect(() => {
     if (type === TradeOptionsTypes.RECEIPT && zakazId) {
       dispatch(getZakazInfo(zakazId, edit, TAB_TYPES.SALES)).then(() =>
         setLoding(false),
       );
-    } else setLoding(false);
+    } else {
+      dispatch(
+        setTradeSession({
+          ...initialTradeSession,
+          edit,
+          type: sessionType,
+          newTrade,
+        }),
+      );
+      setLoding(false);
+    }
   }, [type]);
 
   useEffect(() => {
@@ -75,7 +90,7 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
           ListEmptyComponent={() => (
             <ListEmptyComponent navToAddProduct={navToAddProduct} />
           )}
-          data={details}
+          data={details.map(detail => ({...detail, remainder: detail.amount}))}
           renderItem={props => (
             <ListItem
               {...props}

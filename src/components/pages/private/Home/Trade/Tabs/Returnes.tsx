@@ -2,6 +2,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Button, Layout, List, Text} from '@ui-kitten/components';
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {TAB_TYPES} from '../../../../../../redux/types/private/trade.types';
 import {
   PrivateStackNavigator,
   TradeOptionsTypes,
@@ -15,7 +16,9 @@ const Returnes: React.FC<Props> = ({navigation}) => {
   const navToNewReturn = () =>
     navigation.navigate('TradeOptions', {
       type: TradeOptionsTypes.RETURN,
-      edit: false,
+      sessionType: TAB_TYPES.RETURN,
+      edit: true,
+      newTrade: true,
     });
 
   const ListHeaderComponent = useCallback(() => {

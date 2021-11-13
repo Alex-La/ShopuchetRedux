@@ -38,7 +38,7 @@ const ListHeaderComponent: React.FC = () => {
             Дата:
           </Text>
           <Datepicker
-            disabled={!tradeSession.edit}
+            disabled={!route.params.edit}
             controlStyle={styles.datepicker}
             date={date}
             onSelect={setDate}

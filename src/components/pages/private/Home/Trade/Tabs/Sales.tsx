@@ -16,6 +16,7 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 import usePrevious from '../../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {getSales} from '../../../../../../redux/actions/private/tradeActions';
+import {TAB_TYPES} from '../../../../../../redux/types/private/trade.types';
 import {convertDate} from '../../../../../../utils';
 import {SalesDetail} from '../../../../../../utils/api.types';
 import {
@@ -73,7 +74,9 @@ const Sales: React.FC<Props> = ({navigation}) => {
   const navToNewTrade = () =>
     navigation.navigate('TradeOptions', {
       type: TradeOptionsTypes.SALE,
-      edit: false,
+      sessionType: TAB_TYPES.SALES,
+      edit: true,
+      newTrade: true,
     });
 
   const ListHeaderComponent = useCallback(() => {
@@ -151,7 +154,9 @@ const ListItem: React.FC<ListItemProps> = ({
     setVisible(false);
     navigation.navigate('TradeOptions', {
       edit: true,
+      newTrade: false,
       type: TradeOptionsTypes.RECEIPT,
+      sessionType: TAB_TYPES.SALES,
       recId: item.recId,
       zakazId: item.zakazId,
     });
@@ -161,7 +166,9 @@ const ListItem: React.FC<ListItemProps> = ({
     setVisible(false);
     navigation.navigate('TradeOptions', {
       edit: false,
+      newTrade: false,
       type: TradeOptionsTypes.RECEIPT,
+      sessionType: TAB_TYPES.SALES,
       recId: item.recId,
       zakazId: item.zakazId,
     });

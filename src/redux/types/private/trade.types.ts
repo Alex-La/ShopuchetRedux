@@ -35,6 +35,7 @@ export type TradeSessionDetail = {
 
 export type TradeSession = {
   edit: boolean;
+  newTrade: boolean;
   type: TAB_TYPES;
   date: string;
   payedSumm: number;

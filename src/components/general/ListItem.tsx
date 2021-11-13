@@ -67,7 +67,7 @@ const ListItem: React.FC<Props> = ({
                 borderLeftColor: theme['color-primary-500'],
               },
             ]}>
-            {item.amount} шт.
+            {item.remainder} шт.
           </Text>
           <Text
             status="primary"

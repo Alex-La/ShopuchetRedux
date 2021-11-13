@@ -7,6 +7,7 @@ import {
   clearRemainders,
   getRemainders,
 } from '../../../../redux/actions/private/remaindersActions';
+import {TradeSessionDetail} from '../../../../redux/types/private/trade.types';
 import {PrivateStackNavigator} from '../../../../utils/navigation.types';
 import FooterLoader from '../../../general/FooterLoader';
 import ListItem from '../../../general/ListItem';
@@ -88,7 +89,11 @@ const AddProduct: React.FC<Props> = ({navigation}) => {
           backgroundColor: theme['background-basic-color-1'],
           paddingVertical: 10,
         }}
-        data={details}
+        data={details.map<TradeSessionDetail>(detail => ({
+          ...detail,
+          remainder: detail.amount,
+          amount: 1,
+        }))}
         renderItem={props => (
           <ListItem {...props} theme={theme} onPress={navToAddProductModal} />
         )}

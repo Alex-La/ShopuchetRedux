@@ -1,3 +1,4 @@
+import {RouteProp, useRoute} from '@react-navigation/native';
 import {Button, Layout, Text} from '@ui-kitten/components';
 import React from 'react';
 import {
@@ -7,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import {useAppSelector} from '../../../../redux';
+import {PrivateStackNavigator} from '../../../../utils/navigation.types';
 
 type Props = {
   goBack: () => void;
@@ -14,8 +16,10 @@ type Props = {
 };
 
 const ListFooterComponent: React.FC<Props> = ({goBack, handlePay}) => {
-  const {summ, payedSumm, summCash, summNoncash, summBonus, edit} =
-    useAppSelector(state => state.trade.tradeSession);
+  const {summ, payedSumm, summCash, summNoncash, summBonus} = useAppSelector(
+    state => state.trade.tradeSession,
+  );
+  const route = useRoute<RouteProp<PrivateStackNavigator, 'TradeOptions'>>();
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -42,7 +46,7 @@ const ListFooterComponent: React.FC<Props> = ({goBack, handlePay}) => {
           <Text status="primary">{summBonus?.toFixed(2)}</Text>
         </View>
 
-        {edit && (
+        {route.params.edit && (
           <View style={styles.buttonsWrap}>
             <Button
               onPress={goBack}

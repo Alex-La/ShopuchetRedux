@@ -35,6 +35,7 @@ const initialSklad: Tab<Sklad> = {
 
 export const initialTradeSession: TradeSession = {
   type: TAB_TYPES.SALES,
+  newTrade: false,
   edit: false,
   date: '',
   payedSumm: 0,
