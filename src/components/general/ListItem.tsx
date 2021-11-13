@@ -1,5 +1,5 @@
 import {Icon, MenuItem, OverflowMenu, Text} from '@ui-kitten/components';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   ImageProps,
   ListRenderItemInfo,
@@ -8,6 +8,8 @@ import {
   View,
 } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import {useAppDispatch, useAppSelector} from '../../redux';
+import {setTradeSession} from '../../redux/actions/private/tradeActions';
 import {TradeSessionDetail} from '../../redux/types/private/trade.types';
 
 const Trash = (props?: Partial<ImageProps>) => (
@@ -29,6 +31,8 @@ const ListItem: React.FC<Props> = ({
   modal,
   onPress,
 }) => {
+  const dispatch = useAppDispatch();
+  const tradeSession = useAppSelector(state => state.trade.tradeSession);
   const [visibale, setVisibale] = useState<boolean>(false);
 
   const toggle = () => {
@@ -37,6 +41,18 @@ const ListItem: React.FC<Props> = ({
       enableVibrateFallback: true,
       ignoreAndroidSystemSettings: true,
     });
+  };
+
+  const handleDelete = () => {
+    dispatch(
+      setTradeSession({
+        ...tradeSession,
+        details: tradeSession.details.filter(
+          data => data.gProductId !== item.gProductId,
+        ),
+      }),
+    );
+    setVisibale(false);
   };
 
   const RenderAnchor = useCallback(() => {
@@ -92,7 +108,7 @@ const ListItem: React.FC<Props> = ({
       backdropStyle={{backgroundColor: theme['color-basic-transparent-focus']}}
       visible={modal && visibale}
       placement="bottom end">
-      <MenuItem title="Удалить" accessoryLeft={Trash} />
+      <MenuItem title="Удалить" accessoryLeft={Trash} onPress={handleDelete} />
     </OverflowMenu>
   );
 };
