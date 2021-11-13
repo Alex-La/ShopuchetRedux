@@ -8,6 +8,8 @@ import Navigator from './src/navigator/Navigator';
 import {Provider as ReduxProvider} from 'react-redux';
 import store from './src/redux/store';
 import {Theme, ThemeContextProvider} from './src/context/ThemeContext';
+import mapping from './mapping.json';
+
 import {useColorScheme} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
@@ -30,7 +32,7 @@ export default (): React.ReactFragment => {
   return (
     <>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva[theme]}>
+      <ApplicationProvider {...eva} theme={eva[theme]} customMapping={mapping}>
         <ReduxProvider store={store}>
           <ThemeContextProvider theme={theme} setTheme={setTheme}>
             <Navigator />

@@ -1,6 +1,7 @@
 import {Layout, Text} from '@ui-kitten/components';
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
+import {useAppSelector} from '../../../../redux';
 import Box from '../../../icons/Box';
 
 type Props = {
@@ -8,8 +9,13 @@ type Props = {
 };
 
 const ListEmptyComponent: React.FC<Props> = ({navToAddProduct}) => {
+  const edit = useAppSelector(state => state.trade.tradeSession.edit);
+
   return (
-    <TouchableOpacity style={styles.wrap} onPress={navToAddProduct}>
+    <TouchableOpacity
+      disabled={!edit}
+      style={styles.wrap}
+      onPress={navToAddProduct}>
       <Layout style={styles.box}>
         <Box />
         <Text category="h4" status="primary">

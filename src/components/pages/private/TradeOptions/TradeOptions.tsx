@@ -85,9 +85,11 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
             />
           )}
         />
-        <Button style={styles.addButton} onPress={navToAddProduct}>
-          <Plus />
-        </Button>
+        {edit && (
+          <Button style={styles.addButton} onPress={navToAddProduct}>
+            <Plus />
+          </Button>
+        )}
       </View>
       <ListFooterComponent goBack={goBack} handlePay={navToPaymentModal} />
     </>

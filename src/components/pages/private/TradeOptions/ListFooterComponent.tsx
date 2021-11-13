@@ -14,9 +14,8 @@ type Props = {
 };
 
 const ListFooterComponent: React.FC<Props> = ({goBack, handlePay}) => {
-  const {summ, payedSumm, summCash, summNoncash, summBonus} = useAppSelector(
-    state => state.trade.tradeSession,
-  );
+  const {summ, payedSumm, summCash, summNoncash, summBonus, edit} =
+    useAppSelector(state => state.trade.tradeSession);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -43,17 +42,19 @@ const ListFooterComponent: React.FC<Props> = ({goBack, handlePay}) => {
           <Text status="primary">{summBonus?.toFixed(2)}</Text>
         </View>
 
-        <View style={styles.buttonsWrap}>
-          <Button
-            onPress={goBack}
-            appearance="outline"
-            style={{flex: 1, marginRight: 5}}>
-            Отмена
-          </Button>
-          <Button style={{flex: 1, marginLeft: 5}} onPress={handlePay}>
-            Сохранить
-          </Button>
-        </View>
+        {edit && (
+          <View style={styles.buttonsWrap}>
+            <Button
+              onPress={goBack}
+              appearance="outline"
+              style={{flex: 1, marginRight: 5}}>
+              Отмена
+            </Button>
+            <Button style={{flex: 1, marginLeft: 5}} onPress={handlePay}>
+              Сохранить
+            </Button>
+          </View>
+        )}
       </Layout>
     </TouchableWithoutFeedback>
   );

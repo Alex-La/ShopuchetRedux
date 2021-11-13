@@ -1,0 +1,20 @@
+{
+  "components": {
+    "Datepicker": {
+      "appearances": {
+        "default": {
+          "variantGroups": {
+            "status": {
+              "basic": {
+                "textColor": "color-primary-default"
+              },
+              "disabled": {
+                "textColor": "color-primary-default"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
