@@ -34,6 +34,7 @@ const initialSklad: Tab<Sklad> = {
 };
 
 export const initialTradeSession: TradeSession = {
+  discount: 0,
   type: TAB_TYPES.SALES,
   newTrade: false,
   edit: false,

@@ -1,13 +1,14 @@
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {Button, Layout, Text} from '@ui-kitten/components';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Keyboard,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {useAppSelector} from '../../../../redux';
+import {useAppDispatch, useAppSelector} from '../../../../redux';
+import {setTradeSession} from '../../../../redux/actions/private/tradeActions';
 import {PrivateStackNavigator} from '../../../../utils/navigation.types';
 
 type Props = {
@@ -16,9 +17,9 @@ type Props = {
 };
 
 const ListFooterComponent: React.FC<Props> = ({goBack, handlePay}) => {
-  const {summ, payedSumm, summCash, summNoncash, summBonus} = useAppSelector(
-    state => state.trade.tradeSession,
-  );
+  const {summ, payedSumm, summCash, summNoncash, summBonus, discount, details} =
+    useAppSelector(state => state.trade.tradeSession);
+
   const route = useRoute<RouteProp<PrivateStackNavigator, 'TradeOptions'>>();
 
   return (
@@ -26,7 +27,12 @@ const ListFooterComponent: React.FC<Props> = ({goBack, handlePay}) => {
       <Layout style={styles.wrap} level="2">
         <View style={styles.row}>
           <Text appearance="hint">Сумма:</Text>
-          <Text status="primary">{summ?.toFixed(2)}</Text>
+          <Text status="primary">
+            {(
+              details.reduce((acc, d) => acc + d.cost * d.amount, 0) *
+              (1 - discount / 100)
+            ).toFixed(2)}
+          </Text>
         </View>
         <View style={styles.row}>
           <Text appearance="hint">Оплачено:</Text>

@@ -9,26 +9,43 @@ import {
 } from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
 import {Keyboard, TouchableWithoutFeedback, View} from 'react-native';
-import {useAppSelector} from '../../../../redux';
+import {useAppDispatch, useAppSelector} from '../../../../redux';
+import {setTradeSession} from '../../../../redux/actions/private/tradeActions';
 import {
   PrivateStackNavigator,
   TradeOptionsTypes,
 } from '../../../../utils/navigation.types';
 
 const ListHeaderComponent: React.FC = () => {
+  const dispatch = useAppDispatch();
   const tradeSession = useAppSelector(state => state.trade.tradeSession);
 
   const styles = useStyleSheet(Styles);
   const route = useRoute<RouteProp<PrivateStackNavigator, 'TradeOptions'>>();
 
   const [date, setDate] = useState<Date>(new Date());
-  const [discount, setDiscount] = useState<string>('0.00');
+  const [discount, setDiscount] = useState<string>(
+    tradeSession.discount.toFixed(2),
+  );
 
   useEffect(() => {
     if (tradeSession.date.length) setDate(new Date(tradeSession.date));
   }, [tradeSession.date]);
 
   const handleBlur = () => setDiscount(dis => Number(dis).toFixed(2));
+
+  const handleChangeDate = (date: Date) => {
+    dispatch(setTradeSession({...tradeSession, date: date.toString()}));
+    setDate(date);
+  };
+
+  useEffect(() => {
+    setDiscount(tradeSession.discount.toString());
+  }, [tradeSession.discount]);
+
+  const handleChangeDiscount = (text: string) => {
+    dispatch(setTradeSession({...tradeSession, discount: Number(text)}));
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -41,7 +58,7 @@ const ListHeaderComponent: React.FC = () => {
             disabled={!route.params.edit}
             controlStyle={styles.datepicker}
             date={date}
-            onSelect={setDate}
+            onSelect={handleChangeDate}
           />
         </View>
         {route.params.type === TradeOptionsTypes.SALE && (
@@ -51,7 +68,7 @@ const ListHeaderComponent: React.FC = () => {
             </Text>
             <Input
               value={discount}
-              onChangeText={setDiscount}
+              onChangeText={handleChangeDiscount}
               onBlur={handleBlur}
               style={{backgroundColor: 'transparent', borderWidth: 0}}
               selectTextOnFocus

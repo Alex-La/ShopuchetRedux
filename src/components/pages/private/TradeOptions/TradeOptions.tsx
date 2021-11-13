@@ -38,13 +38,9 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
   const [loading, setLoding] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     if (type === TradeOptionsTypes.RECEIPT && zakazId) {
-      dispatch(getZakazInfo(zakazId, edit, TAB_TYPES.SALES)).then(() =>
-        setLoding(false),
+      dispatch(getZakazInfo(zakazId, edit, newTrade, TAB_TYPES.SALES)).then(
+        () => setLoding(false),
       );
     } else {
       dispatch(
@@ -98,13 +94,17 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
           ListEmptyComponent={() => (
             <ListEmptyComponent navToAddProduct={navToAddProduct} />
           )}
-          data={details}
+          data={details.map(detail => ({
+            ...detail,
+            cost: detail.cost * (1 - data.discount / 100),
+          }))}
           renderItem={props => (
             <ListItem
               {...props}
               theme={theme}
               modal
               onPress={navToAddProductModal}
+              disabled={!edit}
             />
           )}
         />

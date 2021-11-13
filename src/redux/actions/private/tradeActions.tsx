@@ -89,6 +89,7 @@ export const getZakazInfo =
   (
     zakazid: number,
     edit: boolean,
+    newTrade: boolean,
     type: TAB_TYPES,
   ): ThunkAction<Promise<void>, RootState, any, TradeActions> =>
   async dispatch => {
@@ -97,7 +98,9 @@ export const getZakazInfo =
       .then(res => {
         dispatch(
           setTradeSession({
+            discount: 0,
             edit,
+            newTrade,
             type,
             ...res.data.head,
             details: res.data.details.map<TradeSessionDetail>(det => ({

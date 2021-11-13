@@ -34,6 +34,7 @@ export type TradeSessionDetail = {
 };
 
 export type TradeSession = {
+  discount: number;
   edit: boolean;
   newTrade: boolean;
   type: TAB_TYPES;
