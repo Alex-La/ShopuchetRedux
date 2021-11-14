@@ -1,4 +1,4 @@
-package com.shopuchet;
+package com.kz.shopuchet;
 
 import android.os.Bundle;
 
