@@ -40,7 +40,7 @@ const Edit = (props?: Partial<ImageProps>) => (
 
 type Props = {
   navigation: NativeStackNavigationProp<PrivateStackNavigator>;
-  route: RouteProp<TradeTopTabNavigator, 'Sales'>;
+  route: RouteProp<TradeTopTabNavigator, 'Incomes'>;
 };
 
 const Incomes: React.FC<Props> = ({navigation, route}) => {
@@ -168,7 +168,7 @@ const ListItem: React.FC<ListItemProps> = ({
     navigation.navigate('DeleteTradeModal', {
       refresh: reload,
       deleteId: item.skladId,
-      type: TradeOptionsTypes.SALE,
+      type: TradeOptionsTypes.INCOME,
       sessionType: TAB_TYPES.INCOME,
     });
   };
@@ -178,8 +178,8 @@ const ListItem: React.FC<ListItemProps> = ({
     navigation.navigate('TradeOptions', {
       edit: true,
       newTrade: false,
-      type: TradeOptionsTypes.RECEIPT,
-      sessionType: TAB_TYPES.SALES,
+      type: TradeOptionsTypes.INCOME,
+      sessionType: TAB_TYPES.INCOME,
       recId: item.recId,
       zakazId: item.skladId,
       typeId: item.skladId,
@@ -191,8 +191,8 @@ const ListItem: React.FC<ListItemProps> = ({
     navigation.navigate('TradeOptions', {
       edit: false,
       newTrade: false,
-      type: TradeOptionsTypes.RECEIPT,
-      sessionType: TAB_TYPES.SALES,
+      type: TradeOptionsTypes.INCOME,
+      sessionType: TAB_TYPES.INCOME,
       recId: item.recId,
       zakazId: item.skladId,
       typeId: item.skladId,

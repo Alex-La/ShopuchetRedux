@@ -3,10 +3,16 @@ import {convertDate} from '../..';
 import {Sales, Sklad, ZakazInfo} from '../../api.types';
 import axiosInstance from '../axiosInstance';
 
-type GProducts = {
+type GProductsSale = {
   gProductId: number;
   amount: number;
   cost: number;
+};
+
+export type GProductsReceipt = {
+  gProductId: number;
+  amount: number;
+  price: number;
 };
 
 export type Body = {
@@ -15,21 +21,25 @@ export type Body = {
   summNoncash: number;
   summBonus: number;
   date: string;
-  gProducts: GProducts[];
 };
 
 export interface SellBody extends Body {
   gTochkaId: number;
+  gProducts: GProductsSale[];
 }
 export interface SellEditBody extends Body {
   zakazId: number;
+  gProducts: GProductsSale[];
 }
 export interface ReceiptBody extends Body {
   gTochkaId: number;
   type: number;
+  gProducts: GProductsReceipt[];
 }
 export interface ReceiptEditBody extends Body {
   skladId: number;
+  gProducts: GProductsReceipt[];
+
   type: number;
 }
 

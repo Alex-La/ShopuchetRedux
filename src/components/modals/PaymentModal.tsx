@@ -22,12 +22,13 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {useAppDispatch, useAppSelector} from '../../redux';
+import {useAppSelector} from '../../redux';
 import {TAB_TYPES} from '../../redux/types/private/trade.types';
 import {convertDateTime} from '../../utils';
 import api from '../../utils/api/api';
 import {
   Body,
+  GProductsReceipt,
   ReceiptBody,
   ReceiptEditBody,
   SellBody,
@@ -49,7 +50,6 @@ type Props = {
 };
 
 const PaymentModal: React.FC<Props> = ({navigation, route}) => {
-  const dispatch = useAppDispatch();
   const {details, discount, type, newTrade, typeId, date} = useAppSelector(
     state => state.trade.tradeSession,
   );
@@ -97,8 +97,9 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
       summNoncash: Number(summNocash),
       summBonus: Number(summBonus),
       date: convertDateTime(date),
-      gProducts: details,
     };
+
+    console.log(body);
 
     switch (type) {
       case TAB_TYPES.SALES:
@@ -106,6 +107,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
           const selBody: SellBody = {
             ...body,
             gTochkaId: typeId,
+            gProducts: details,
           };
           api.trade
             .sell(selBody)
@@ -118,6 +120,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
           const selEdBody: SellEditBody = {
             ...body,
             zakazId: typeId,
+            gProducts: details,
           };
           api.trade
             .sellEdit(selEdBody)
@@ -134,6 +137,10 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
             ...body,
             type: 0,
             gTochkaId: typeId,
+            gProducts: details.map<GProductsReceipt>(d => ({
+              ...d,
+              price: d.cost,
+            })),
           };
           api.trade
             .receipt(recBody)
@@ -147,6 +154,10 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
             ...body,
             type: 0,
             skladId: typeId,
+            gProducts: details.map<GProductsReceipt>(d => ({
+              ...d,
+              price: d.cost,
+            })),
           };
           api.trade
             .receiptEdit(recEdBody)
@@ -163,6 +174,10 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
             ...body,
             type: 1,
             gTochkaId: typeId,
+            gProducts: details.map<GProductsReceipt>(d => ({
+              ...d,
+              price: d.cost,
+            })),
           };
           api.trade
             .receipt(retBody)
@@ -176,6 +191,10 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
             ...body,
             type: 1,
             skladId: typeId,
+            gProducts: details.map<GProductsReceipt>(d => ({
+              ...d,
+              price: d.cost,
+            })),
           };
           api.trade
             .receiptEdit(retEdBody)
