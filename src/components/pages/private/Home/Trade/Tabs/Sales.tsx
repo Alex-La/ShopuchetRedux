@@ -1,4 +1,4 @@
-import {useFocusEffect} from '@react-navigation/core';
+import {RouteProp, useFocusEffect} from '@react-navigation/core';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   Button,
@@ -10,7 +10,7 @@ import {
   Text,
   useTheme,
 } from '@ui-kitten/components';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ImageProps, ListRenderItemInfo, StyleSheet, View} from 'react-native';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import usePrevious from '../../../../../../hooks/previous.hook';
@@ -22,6 +22,7 @@ import {SalesDetail} from '../../../../../../utils/api.types';
 import {
   PrivateStackNavigator,
   TradeOptionsTypes,
+  TradeTopTabNavigator,
 } from '../../../../../../utils/navigation.types';
 
 const Trash = (props?: Partial<ImageProps>) => (
@@ -34,9 +35,10 @@ const Edit = (props?: Partial<ImageProps>) => (
 
 type Props = {
   navigation: NativeStackNavigationProp<PrivateStackNavigator>;
+  route: RouteProp<TradeTopTabNavigator, 'Sales'>;
 };
 
-const Sales: React.FC<Props> = ({navigation}) => {
+const Sales: React.FC<Props> = ({navigation, route}) => {
   const theme = useTheme();
 
   const dispatch = useAppDispatch();
@@ -56,6 +58,13 @@ const Sales: React.FC<Props> = ({navigation}) => {
       dispatch(getSales(currentGTochkaId, date.datebegin, date.dateend));
   }, [currentGTochkaId, date]);
 
+  useEffect(() => {
+    if (route.params.reload) {
+      loadSales();
+      navigation.setParams({reload: false});
+    }
+  }, [route.params]);
+
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaId) {
@@ -72,11 +81,13 @@ const Sales: React.FC<Props> = ({navigation}) => {
   const handleRefresh = () => loadSales();
 
   const navToNewTrade = () =>
+    currentGTochkaId &&
     navigation.navigate('TradeOptions', {
       type: TradeOptionsTypes.SALE,
       sessionType: TAB_TYPES.SALES,
       edit: true,
       newTrade: true,
+      typeId: currentGTochkaId,
     });
 
   const ListHeaderComponent = useCallback(() => {
@@ -147,6 +158,7 @@ const ListItem: React.FC<ListItemProps> = ({
       refresh: reload,
       deleteId: item.zakazId,
       type: TradeOptionsTypes.SALE,
+      sessionType: TAB_TYPES.INCOME,
     });
   };
 
@@ -159,6 +171,7 @@ const ListItem: React.FC<ListItemProps> = ({
       sessionType: TAB_TYPES.SALES,
       recId: item.recId,
       zakazId: item.zakazId,
+      typeId: item.zakazId,
     });
   };
 
@@ -171,6 +184,7 @@ const ListItem: React.FC<ListItemProps> = ({
       sessionType: TAB_TYPES.SALES,
       recId: item.recId,
       zakazId: item.zakazId,
+      typeId: item.zakazId,
     });
   };
 

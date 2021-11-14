@@ -1,4 +1,5 @@
-import {RouteProp} from '@react-navigation/core';
+import {CompositeNavigationProp, RouteProp} from '@react-navigation/core';
+import {MaterialTopTabNavigationProp} from '@react-navigation/material-top-tabs';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   Button,
@@ -12,7 +13,8 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import {EvaStatus} from '@ui-kitten/components/devsupport';
-import React, {useState} from 'react';
+import {AxiosResponse} from 'axios';
+import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
   StyleProp,
@@ -20,78 +22,265 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {PrivateStackNavigator} from '../../utils/navigation.types';
+import {useAppDispatch, useAppSelector} from '../../redux';
+import {TAB_TYPES} from '../../redux/types/private/trade.types';
+import {convertDateTime} from '../../utils';
+import api from '../../utils/api/api';
+import {
+  Body,
+  ReceiptBody,
+  ReceiptEditBody,
+  SellBody,
+  SellEditBody,
+} from '../../utils/api/routes/trade';
+import {
+  PrivateStackNavigator,
+  TradeTopTabNavigator,
+} from '../../utils/navigation.types';
+import {show} from '../../utils/snackbar';
+import Preloader from '../loaders/Preloader';
 
 type Props = {
-  navigation: NativeStackNavigationProp<PrivateStackNavigator, 'PaymentModal'>;
+  navigation: CompositeNavigationProp<
+    NativeStackNavigationProp<PrivateStackNavigator, 'PaymentModal'>,
+    MaterialTopTabNavigationProp<TradeTopTabNavigator>
+  >;
   route: RouteProp<PrivateStackNavigator, 'PaymentModal'>;
 };
 
 const PaymentModal: React.FC<Props> = ({navigation, route}) => {
+  const dispatch = useAppDispatch();
+  const {details, discount, type, newTrade, typeId, date} = useAppSelector(
+    state => state.trade.tradeSession,
+  );
+
   const styles = useStyleSheet(Styles);
   const goBack = () => navigation.goBack();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [method, setMethod] = useState<number>(0);
   const [bonus, setBonus] = useState<boolean>(false);
+
+  const [summCash, setSummCash] = useState<string>('');
+  const [summNocash, setSummNocash] = useState<string>('');
+  const [summBonus, setSummBonus] = useState<string>('');
+
+  useEffect(() => {
+    const summ =
+      details.reduce((acc, d) => acc + d.cost * d.amount, 0) *
+      (1 - discount / 100);
+    if (method === 0 || method === 2) {
+      setSummCash(summ.toFixed(2));
+      setSummNocash('');
+    } else if (method === 1) {
+      setSummCash('');
+      setSummNocash(summ.toFixed(2));
+    }
+  }, [details, discount, method]);
+
+  const handleError = (response: AxiosResponse) => {
+    show({text: response.data as string, type: 'error'});
+    setLoading(false);
+  };
+
+  const handleSuccess = (text: string) => {
+    show({text, type: 'success'});
+    setLoading(false);
+  };
+
+  const handleSave = () => {
+    setLoading(true);
+
+    const body: Body = {
+      summ: Number(summCash) + Number(summNocash) + Number(summBonus),
+      summCash: Number(summCash),
+      summNoncash: Number(summNocash),
+      summBonus: Number(summBonus),
+      date: convertDateTime(date),
+      gProducts: details,
+    };
+
+    switch (type) {
+      case TAB_TYPES.SALES:
+        if (newTrade) {
+          const selBody: SellBody = {
+            ...body,
+            gTochkaId: typeId,
+          };
+          api.trade
+            .sell(selBody)
+            .then(res => {
+              navigation.navigate('Sales', {reload: true});
+              handleSuccess(res.data);
+            })
+            .catch(e => handleError(e.response));
+        } else {
+          const selEdBody: SellEditBody = {
+            ...body,
+            zakazId: typeId,
+          };
+          api.trade
+            .sellEdit(selEdBody)
+            .then(res => {
+              navigation.navigate('Sales', {reload: true});
+              handleSuccess(res.data);
+            })
+            .catch(e => handleError(e.response));
+        }
+        break;
+      case TAB_TYPES.INCOME:
+        if (newTrade) {
+          const recBody: ReceiptBody = {
+            ...body,
+            type: 0,
+            gTochkaId: typeId,
+          };
+          api.trade
+            .receipt(recBody)
+            .then(res => {
+              navigation.navigate('Incomes', {reload: true});
+              handleSuccess(res.data);
+            })
+            .catch(e => handleError(e.response));
+        } else {
+          const recEdBody: ReceiptEditBody = {
+            ...body,
+            type: 0,
+            skladId: typeId,
+          };
+          api.trade
+            .receiptEdit(recEdBody)
+            .then(res => {
+              navigation.navigate('Incomes', {reload: true});
+              handleSuccess(res.data);
+            })
+            .catch(e => handleError(e.response));
+        }
+        break;
+      case TAB_TYPES.RETURN:
+        if (newTrade) {
+          const retBody: ReceiptBody = {
+            ...body,
+            type: 1,
+            gTochkaId: typeId,
+          };
+          api.trade
+            .receipt(retBody)
+            .then(res => {
+              navigation.navigate('Returns', {reload: true});
+              handleSuccess(res.data);
+            })
+            .catch(e => handleError(e.response));
+        } else {
+          const retEdBody: ReceiptEditBody = {
+            ...body,
+            type: 1,
+            skladId: typeId,
+          };
+          api.trade
+            .receiptEdit(retEdBody)
+            .then(res => {
+              navigation.navigate('Returns', {reload: true});
+              handleSuccess(res.data);
+            })
+            .catch(e => handleError(e.response));
+        }
+        break;
+      default:
+        setLoading(false);
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.wrap}>
         <Layout style={styles.form}>
-          <Text category="h5">{'Оплата'}</Text>
-          <Method method={method} setMethod={setMethod} />
-
-          <View style={styles.toggle}>
-            <Text>Оплата бонусами:</Text>
-            <Toggle checked={bonus} onChange={setBonus} />
-          </View>
-
-          {method === 2 ? (
-            <>
-              <Input
-                style={{marginTop: 24}}
-                label="Сумма наличными"
-                selectTextOnFocus
-                keyboardType="decimal-pad"
-              />
-              <Input
-                style={{marginTop: 16}}
-                label="Сумма безналом"
-                selectTextOnFocus
-                keyboardType="decimal-pad"
-              />
-            </>
+          {loading ? (
+            <Preloader />
           ) : (
-            <Input
-              style={{marginTop: 24}}
-              label="Сумма к оплате"
-              selectTextOnFocus
-              keyboardType="decimal-pad"
-            />
-          )}
-          {bonus && (
-            <Input
-              style={{marginTop: 16}}
-              label="Сумма бонусами"
-              selectTextOnFocus
-              keyboardType="decimal-pad"
-            />
-          )}
+            <>
+              <Text category="h5">{'Оплата'}</Text>
+              <Method method={method} setMethod={setMethod} />
 
-          <View style={styles.all}>
-            <Text appearance="hint">Итог:</Text>
-            <Text status="primary">5000</Text>
-          </View>
+              <View style={styles.toggle}>
+                <Text>Оплата бонусами:</Text>
+                <Toggle checked={bonus} onChange={setBonus} />
+              </View>
 
-          <View style={{flexDirection: 'row'}}>
-            <Button
-              onPress={goBack}
-              style={{flex: 1, marginRight: 5}}
-              appearance="outline">
-              Отмена
-            </Button>
-            <Button style={{flex: 1, marginLeft: 5}}>Оплата</Button>
-          </View>
+              {method === 2 ? (
+                <>
+                  <Input
+                    value={summCash}
+                    onChangeText={setSummCash}
+                    onBlur={() => setSummCash(text => Number(text).toFixed(2))}
+                    style={{marginTop: 24}}
+                    label="Сумма наличными"
+                    selectTextOnFocus
+                    keyboardType="decimal-pad"
+                  />
+                  <Input
+                    value={summNocash}
+                    onChangeText={setSummNocash}
+                    onBlur={() =>
+                      setSummNocash(text => Number(text).toFixed(2))
+                    }
+                    style={{marginTop: 16}}
+                    label="Сумма безналом"
+                    selectTextOnFocus
+                    keyboardType="decimal-pad"
+                  />
+                </>
+              ) : (
+                <Input
+                  value={method === 0 ? summCash : summNocash}
+                  onChangeText={method === 0 ? setSummCash : setSummNocash}
+                  onBlur={() =>
+                    method === 0
+                      ? setSummCash(text => Number(text).toFixed(2))
+                      : setSummNocash(text => Number(text).toFixed(2))
+                  }
+                  style={{marginTop: 24}}
+                  label="Сумма к оплате"
+                  selectTextOnFocus
+                  keyboardType="decimal-pad"
+                />
+              )}
+              {bonus && (
+                <Input
+                  value={summBonus}
+                  onChangeText={setSummBonus}
+                  onBlur={() => setSummBonus(text => Number(text).toFixed(2))}
+                  style={{marginTop: 16}}
+                  label="Сумма бонусами"
+                  selectTextOnFocus
+                  keyboardType="decimal-pad"
+                />
+              )}
+
+              <View style={styles.all}>
+                <Text appearance="hint">Итог:</Text>
+                <Text status="primary">
+                  {(
+                    Number(summCash) +
+                    Number(summNocash) +
+                    Number(summBonus)
+                  ).toFixed(2)}
+                </Text>
+              </View>
+
+              <View style={{flexDirection: 'row'}}>
+                <Button
+                  onPress={goBack}
+                  style={{flex: 1, marginRight: 5}}
+                  appearance="outline">
+                  Отмена
+                </Button>
+                <Button style={{flex: 1, marginLeft: 5}} onPress={handleSave}>
+                  Оплата
+                </Button>
+              </View>
+            </>
+          )}
         </Layout>
       </View>
     </TouchableWithoutFeedback>
@@ -156,7 +345,13 @@ const Styles = StyleService.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
-  form: {padding: 20, borderRadius: 5, width: '100%', alignItems: 'center'},
+  form: {
+    padding: 20,
+    borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+    minHeight: '50%',
+  },
   toggle: {
     marginTop: 24,
     flexDirection: 'row',

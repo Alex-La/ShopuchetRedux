@@ -2,8 +2,10 @@ import {RouteProp, useRoute} from '@react-navigation/native';
 import {Layout, Text} from '@ui-kitten/components';
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {useAppSelector} from '../../../../redux';
-import {PrivateStackNavigator} from '../../../../utils/navigation.types';
+import {
+  PrivateStackNavigator,
+  TradeOptionsTypes,
+} from '../../../../utils/navigation.types';
 import Box from '../../../icons/Box';
 
 type Props = {
@@ -13,6 +15,19 @@ type Props = {
 const ListEmptyComponent: React.FC<Props> = ({navToAddProduct}) => {
   const route = useRoute<RouteProp<PrivateStackNavigator, 'TradeOptions'>>();
 
+  const renderTitle = () => {
+    switch (route.params.type) {
+      case TradeOptionsTypes.SALE:
+        return 'Добавьте товар';
+      case TradeOptionsTypes.INCOME:
+        return 'Добавьте товар для прихода';
+      case TradeOptionsTypes.RETURN:
+        return 'Добавьте возврат';
+      default:
+        return '';
+    }
+  };
+
   return (
     <TouchableOpacity
       disabled={!route.params.edit}
@@ -21,7 +36,7 @@ const ListEmptyComponent: React.FC<Props> = ({navToAddProduct}) => {
       <Layout style={styles.box}>
         <Box />
         <Text category="h4" status="primary">
-          Добавьте товар
+          {renderTitle()}
         </Text>
       </Layout>
     </TouchableOpacity>

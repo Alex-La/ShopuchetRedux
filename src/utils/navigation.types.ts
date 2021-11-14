@@ -20,6 +20,7 @@ export enum TradeOptionsTypes {
 
 type TradeOptions = {
   type: TradeOptionsTypes;
+  typeId: number;
   sessionType: TAB_TYPES;
   edit: boolean;
   newTrade: boolean;
@@ -38,6 +39,7 @@ export type PrivateStackNavigator = {
     refresh: () => void;
     deleteId: number;
     type: TradeOptionsTypes;
+    sessionType: TAB_TYPES;
   };
   AddProductModal: {
     type: 'edit' | 'new';
@@ -57,10 +59,14 @@ export type DrawerNavigator = {
   Profile: undefined;
 };
 
+type TradeNav = {
+  reload: boolean;
+};
+
 export type TradeTopTabNavigator = {
-  Sales: undefined;
-  Incomes: undefined;
-  Returns: undefined;
+  Sales: TradeNav;
+  Incomes: TradeNav;
+  Returns: TradeNav;
 };
 
 export type ReportsTopTabNavigator = {

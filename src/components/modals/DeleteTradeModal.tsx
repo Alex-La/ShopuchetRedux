@@ -14,6 +14,7 @@ import {
   deleteReceipt,
   deleteSale,
 } from '../../redux/actions/private/tradeActions';
+import {TAB_TYPES} from '../../redux/types/private/trade.types';
 import {
   PrivateStackNavigator,
   TradeOptionsTypes,
@@ -29,7 +30,9 @@ type Props = {
 
 const DeleteTradeModal: React.FC<Props> = ({navigation, route}) => {
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(state => state.trade.loading);
+  const loading = useAppSelector(
+    state => state.trade.tabs[route.params.sessionType].loading,
+  );
 
   const styles = useStyleSheet(Styles);
   const goBack = () => navigation.goBack();
@@ -53,8 +56,17 @@ const DeleteTradeModal: React.FC<Props> = ({navigation, route}) => {
           .catch(goBack);
         break;
       case TradeOptionsTypes.INCOME:
+        dispatch(deleteReceipt(route.params.deleteId, TAB_TYPES.INCOME))
+          .then(text => {
+            Alert.alert('Информация', text, [
+              {
+                onPress,
+              },
+            ]);
+          })
+          .catch(goBack);
       case TradeOptionsTypes.RETURN:
-        dispatch(deleteReceipt(route.params.deleteId))
+        dispatch(deleteReceipt(route.params.deleteId, TAB_TYPES.RETURN))
           .then(text => {
             Alert.alert('Информация', text, [
               {
@@ -69,12 +81,23 @@ const DeleteTradeModal: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
+  const renderName = () => {
+    switch (route.params.sessionType) {
+      case TAB_TYPES.SALES:
+        return 'Вы точно хотите удалить продажу?!';
+      case TAB_TYPES.INCOME:
+        return 'Вы точно хотите удалить приход?!';
+      case TAB_TYPES.RETURN:
+        return 'Вы точно хотите удалить возврат?!';
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={goBack}>
       <View style={styles.wrap}>
         <Layout style={styles.form}>
           <Text category="h5" style={{textAlign: 'center'}} status="primary">
-            Вы точно хотите удалить продажу?!
+            {renderName()}
           </Text>
           <Button
             disabled={loading}

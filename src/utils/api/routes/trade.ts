@@ -3,6 +3,36 @@ import {convertDate} from '../..';
 import {Sales, Sklad, ZakazInfo} from '../../api.types';
 import axiosInstance from '../axiosInstance';
 
+type GProducts = {
+  gProductId: number;
+  amount: number;
+  cost: number;
+};
+
+export type Body = {
+  summ: number;
+  summCash: number;
+  summNoncash: number;
+  summBonus: number;
+  date: string;
+  gProducts: GProducts[];
+};
+
+export interface SellBody extends Body {
+  gTochkaId: number;
+}
+export interface SellEditBody extends Body {
+  zakazId: number;
+}
+export interface ReceiptBody extends Body {
+  gTochkaId: number;
+  type: number;
+}
+export interface ReceiptEditBody extends Body {
+  skladId: number;
+  type: number;
+}
+
 const trade = {
   getSales: (gtochkaid: number, datebegin: Date, dateend: Date) =>
     axiosInstance.get<Sales>(
@@ -59,6 +89,26 @@ const trade = {
     axiosInstance.post<object, AxiosResponse<object>, number[]>(
       '/api/deletereceipt',
       skladIds,
+    ),
+  sell: (data: SellBody) =>
+    axiosInstance.post<string, AxiosResponse<string>, SellBody>(
+      '/api/sell',
+      data,
+    ),
+  sellEdit: (data: SellEditBody) =>
+    axiosInstance.post<string, AxiosResponse<string>, SellEditBody>(
+      '/api/selledit',
+      data,
+    ),
+  receipt: (data: ReceiptBody) =>
+    axiosInstance.post<string, AxiosResponse<string>, ReceiptBody>(
+      '/api/receipt',
+      data,
+    ),
+  receiptEdit: (data: ReceiptEditBody) =>
+    axiosInstance.post<string, AxiosResponse<string>, ReceiptEditBody>(
+      '/api/receiptedit',
+      data,
     ),
 };
 

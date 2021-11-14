@@ -244,12 +244,20 @@ export type SkladDetail = {
   details: SkladItemDetail[];
 };
 
+export type SkladHead = {
+  cntReceipt: number;
+  cntReturn: number;
+  sumReceipt: number;
+  sumReturn: number;
+};
+
 export type Sklad = {
   currentPage: number;
   hasNext: boolean;
   hasPrevious: boolean;
   totalPages: number;
   details: SkladDetail[];
+  head: SkladHead;
 };
 
 export type ZakazInfoHead = {

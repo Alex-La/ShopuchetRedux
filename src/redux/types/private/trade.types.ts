@@ -38,6 +38,7 @@ export type TradeSession = {
   edit: boolean;
   newTrade: boolean;
   type: TAB_TYPES;
+  typeId: number;
   date: string;
   payedSumm: number;
   summ: number;

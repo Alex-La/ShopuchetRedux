@@ -21,13 +21,14 @@ export const monthNames = [
   'Декабрь',
 ];
 
+function pad(s: number) {
+  return s < 10 ? '0' + s : s;
+}
+
 export function convertDate(
   inputFormat: Date | string,
   fetch: boolean = true,
 ): string {
-  function pad(s: number) {
-    return s < 10 ? '0' + s : s;
-  }
   var d = new Date(inputFormat);
   if (!fetch)
     return (
@@ -38,6 +39,20 @@ export function convertDate(
     );
   return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('.');
 }
+
+export function convertDateTime(inputFormat: Date | string): string {
+  var d = new Date(inputFormat);
+  const date = [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join(
+    '.',
+  );
+  const time = [
+    pad(d.getHours()),
+    pad(d.getMinutes()),
+    pad(d.getSeconds()),
+  ].join(':');
+  return date + ' ' + time;
+}
+
 export type SetDateAction = {
   type: string;
   index: number;

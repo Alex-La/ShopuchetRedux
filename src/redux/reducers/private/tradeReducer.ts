@@ -1,5 +1,5 @@
 import {getDayRange, SetDateAction} from '../../../utils';
-import {Sales, Sklad} from '../../../utils/api.types';
+import {Sales, Sklad, SkladHead} from '../../../utils/api.types';
 import {
   SetIncomeAction,
   SetLoadingAction,
@@ -22,6 +22,13 @@ const initialSale: Tab<Sales> = {
   },
 };
 
+const initialHead: SkladHead = {
+  cntReceipt: 0,
+  cntReturn: 0,
+  sumReceipt: 0,
+  sumReturn: 0,
+};
+
 const initialSklad: Tab<Sklad> = {
   loading: false,
   data: {
@@ -30,15 +37,17 @@ const initialSklad: Tab<Sklad> = {
     hasPrevious: false,
     totalPages: 0,
     details: [],
+    head: initialHead,
   },
 };
 
 export const initialTradeSession: TradeSession = {
   discount: 0,
   type: TAB_TYPES.SALES,
+  typeId: 0,
   newTrade: false,
   edit: false,
-  date: '',
+  date: new Date().toString(),
   payedSumm: 0,
   summ: 0,
   summBonus: 0,

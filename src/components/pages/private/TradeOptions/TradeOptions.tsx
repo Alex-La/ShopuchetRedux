@@ -30,7 +30,8 @@ type Props = {
 };
 
 const TradeOptions: React.FC<Props> = ({navigation, route}) => {
-  const {type, sessionType, zakazId, edit, recId, newTrade} = route.params;
+  const {type, typeId, sessionType, zakazId, edit, recId, newTrade} =
+    route.params;
 
   const dispatch = useAppDispatch();
   const details = useAppSelector(state => state.trade.tradeSession.details);
@@ -39,13 +40,14 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     if (type === TradeOptionsTypes.RECEIPT && zakazId) {
-      dispatch(getZakazInfo(zakazId, edit, newTrade, TAB_TYPES.SALES)).then(
-        () => setLoding(false),
-      );
+      dispatch(
+        getZakazInfo(zakazId, edit, newTrade, TAB_TYPES.SALES, typeId),
+      ).then(() => setLoding(false));
     } else {
       dispatch(
         setTradeSession({
           ...initialTradeSession,
+          typeId,
           edit,
           type: sessionType,
           newTrade,

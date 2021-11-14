@@ -39,6 +39,7 @@ const Trade: React.FC = () => {
         options={{
           tabBarLabel: ({focused}) => renderLabel('Продажи', focused),
         }}
+        initialParams={{reload: false}}
       />
       <TopTab.Screen
         name="Incomes"
@@ -46,6 +47,7 @@ const Trade: React.FC = () => {
         options={{
           tabBarLabel: ({focused}) => renderLabel('Приходы', focused),
         }}
+        initialParams={{reload: false}}
       />
       <TopTab.Screen
         name="Returns"
@@ -53,6 +55,7 @@ const Trade: React.FC = () => {
         options={{
           tabBarLabel: ({focused}) => renderLabel('Возвраты', focused),
         }}
+        initialParams={{reload: false}}
       />
     </TopTab.Navigator>
   );

@@ -1,10 +1,13 @@
 import {ThunkAction} from 'redux-thunk';
 import {DateRange, SetDateAction} from '../../../utils';
-import {Sales} from '../../../utils/api.types';
+import {Sales, Sklad} from '../../../utils/api.types';
 import api from '../../../utils/api/api';
+import {SellBody} from '../../../utils/api/routes/trade';
 import {RootState} from '../../store';
 import {
+  SetIncomeAction,
   SetLoadingAction,
+  SetReturnAction,
   SetSalesAction,
   SetTradeSessionAction,
   TAB_TYPES,
@@ -42,6 +45,24 @@ export const setSales = (sales: Sales): SetSalesAction => ({
   payload: sales,
 });
 
+export const setIncome = (
+  loadMore: boolean,
+  income: Sklad,
+): SetIncomeAction => ({
+  type: TRADE_ACTION_TYPES.SET_INCOME,
+  loadMore,
+  payload: income,
+});
+
+export const setReturns = (
+  loadMore: boolean,
+  returns: Sklad,
+): SetReturnAction => ({
+  type: TRADE_ACTION_TYPES.SET_RETURN,
+  loadMore,
+  payload: returns,
+});
+
 export const getSales =
   (
     gtochkaid: number,
@@ -58,6 +79,50 @@ export const getSales =
       })
       .catch(e => {
         dispatch(setLoading(false, TAB_TYPES.SALES));
+        dispatch(handleError(e.response));
+      });
+  };
+
+export const getIncome =
+  (
+    loadMore: boolean,
+    gtochkaid: number,
+    datebegin: Date,
+    dateend: Date,
+    page: number,
+  ): ThunkAction<any, RootState, unknown, TradeActions> =>
+  dispatch => {
+    dispatch(setLoading(true, TAB_TYPES.INCOME));
+    api.trade
+      .getIncome(gtochkaid, datebegin, dateend, page)
+      .then(res => {
+        dispatch(setIncome(loadMore, res.data));
+        dispatch(setLoading(false, TAB_TYPES.INCOME));
+      })
+      .catch(e => {
+        dispatch(setLoading(false, TAB_TYPES.INCOME));
+        dispatch(handleError(e.response));
+      });
+  };
+
+export const getReturns =
+  (
+    loadMore: boolean,
+    gtochkaid: number,
+    datebegin: Date,
+    dateend: Date,
+    page: number,
+  ): ThunkAction<any, RootState, unknown, TradeActions> =>
+  dispatch => {
+    dispatch(setLoading(true, TAB_TYPES.RETURN));
+    api.trade
+      .getReturn(gtochkaid, datebegin, dateend, page)
+      .then(res => {
+        dispatch(setIncome(loadMore, res.data));
+        dispatch(setLoading(false, TAB_TYPES.RETURN));
+      })
+      .catch(e => {
+        dispatch(setLoading(false, TAB_TYPES.RETURN));
         dispatch(handleError(e.response));
       });
   };
@@ -91,6 +156,7 @@ export const getZakazInfo =
     edit: boolean,
     newTrade: boolean,
     type: TAB_TYPES,
+    typeId: number,
   ): ThunkAction<Promise<void>, RootState, any, TradeActions> =>
   async dispatch => {
     return await api.trade
@@ -99,6 +165,7 @@ export const getZakazInfo =
         dispatch(
           setTradeSession({
             discount: 0,
+            typeId,
             edit,
             newTrade,
             type,
@@ -138,3 +205,18 @@ export const deleteReceipt =
         }),
     );
   };
+
+export const sell =
+  (
+    data: SellBody,
+  ): ThunkAction<Promise<string>, RootState, unknown, TradeActions> =>
+  async dispatch =>
+    await new Promise((resolve, reject) =>
+      api.trade
+        .sell(data)
+        .then(res => resolve(res.data))
+        .catch(e => {
+          dispatch(handleError(e.response));
+          reject(e);
+        }),
+    );

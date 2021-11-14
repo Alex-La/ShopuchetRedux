@@ -19,6 +19,7 @@ const Returnes: React.FC<Props> = ({navigation}) => {
       sessionType: TAB_TYPES.RETURN,
       edit: true,
       newTrade: true,
+      typeId: 1, //wro
     });
 
   const ListHeaderComponent = useCallback(() => {
