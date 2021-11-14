@@ -99,8 +99,6 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
       date: convertDateTime(date),
     };
 
-    console.log(body);
-
     switch (type) {
       case TAB_TYPES.SALES:
         if (newTrade) {

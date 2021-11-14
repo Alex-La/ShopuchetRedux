@@ -8,7 +8,6 @@ const axiosInstance = axios.create({baseURL: baseUrl});
 
 axiosInstance.interceptors.request.use(async config => {
   const accessToken = await AsyncStorage.getItem('accessToken');
-  console.log(config.url, accessToken);
   if (accessToken && config.headers)
     config.headers['X-Auth-Token'] = accessToken;
   return config;

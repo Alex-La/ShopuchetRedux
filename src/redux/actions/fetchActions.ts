@@ -12,7 +12,6 @@ export const setAppLoading = (loading: boolean): SetAppLoadingAction => ({
 
 export const handleError =
   (response: AxiosResponse<string>) => (dispatch: AppDispatch) => {
-    console.log('Handle error log:', response.status, response.data);
     if (response.status === 401)
       return AsyncStorage.removeItem('accessToken').then(() =>
         AsyncStorage.removeItem('refreshToken').then(() =>

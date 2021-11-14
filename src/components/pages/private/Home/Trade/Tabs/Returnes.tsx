@@ -83,7 +83,6 @@ const Returnes: React.FC<Props> = ({navigation, route}) => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('focus');
       if (currentGTochkaId) {
         if (
           currentGTochkaId !== prevGTochkaId ||
