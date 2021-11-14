@@ -91,7 +91,7 @@ const Incomes: React.FC<Props> = ({navigation, route}) => {
         )
           loadIncomes(false, 0);
       }
-    }, [currentGTochkaId, prevGTochkaId, date, prevDatebegin, prevDateend]),
+    }, [currentGTochkaId, date]),
   );
 
   const handleRefresh = () => loadIncomes(false, 0);
@@ -128,6 +128,7 @@ const Incomes: React.FC<Props> = ({navigation, route}) => {
         onRefresh={handleRefresh}
         ListHeaderComponent={ListHeaderComponent}
         data={details}
+        style={{backgroundColor: theme['background-color-1']}}
         renderItem={props => (
           <ListItem
             {...props}

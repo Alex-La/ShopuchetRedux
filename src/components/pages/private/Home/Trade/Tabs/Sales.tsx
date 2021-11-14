@@ -75,7 +75,7 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
         )
           loadSales();
       }
-    }, [currentGTochkaId, prevGTochkaId, date, prevDatebegin, prevDateend]),
+    }, [currentGTochkaId, date]),
   );
 
   const handleRefresh = () => loadSales();
