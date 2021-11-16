@@ -47,6 +47,7 @@ const TradeOptions: React.FC<Props> = ({navigation, route}) => {
       dispatch(
         setTradeSession({
           ...initialTradeSession,
+          details: route.params.details || [],
           typeId,
           edit,
           type: sessionType,

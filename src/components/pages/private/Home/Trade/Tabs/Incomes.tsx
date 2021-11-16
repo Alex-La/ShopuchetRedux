@@ -21,7 +21,10 @@ import {
 import usePrevious from '../../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {getIncome} from '../../../../../../redux/actions/private/tradeActions';
-import {TAB_TYPES} from '../../../../../../redux/types/private/trade.types';
+import {
+  TAB_TYPES,
+  TradeSessionDetail,
+} from '../../../../../../redux/types/private/trade.types';
 import {convertDate} from '../../../../../../utils';
 import {SkladDetail} from '../../../../../../utils/api.types';
 import {
@@ -184,6 +187,13 @@ const ListItem: React.FC<ListItemProps> = ({
       recId: item.recId,
       zakazId: item.skladId,
       typeId: item.skladId,
+      details: item.details.map<TradeSessionDetail>(item => ({
+        ...item,
+        remainder: item.remainAmount,
+        name: item.gProduct.name,
+        gProductId: item.gProduct.gProductId,
+        cost: item.price,
+      })),
     });
   };
 
@@ -197,14 +207,15 @@ const ListItem: React.FC<ListItemProps> = ({
       recId: item.recId,
       zakazId: item.skladId,
       typeId: item.skladId,
+      details: item.details.map<TradeSessionDetail>(item => ({
+        ...item,
+        remainder: item.remainAmount,
+        name: item.gProduct.name,
+        gProductId: item.gProduct.gProductId,
+        cost: item.price,
+      })),
     });
   };
-
-  const renderDate = useCallback(() => {
-    if (dateIndex === 0) {
-      return `в ${new Date(item.date).toLocaleTimeString()}`;
-    } else return `от ${convertDate(item.date)}`;
-  }, []);
 
   const RenderAnchor = () => (
     <View
@@ -221,7 +232,7 @@ const ListItem: React.FC<ListItemProps> = ({
           borderColor: theme['color-basic-500'],
         }}>
         <Text category="p2" status="primary">
-          {`Чек № ${item.recId} ${renderDate()}`}
+          {`Чек № ${item.recId} от ${convertDate(item.date)}`}
         </Text>
         {item.details.slice(0, 3).map((item, index) => (
           <Text key={index} category="label" numberOfLines={1}>

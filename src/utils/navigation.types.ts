@@ -26,6 +26,7 @@ type TradeOptions = {
   newTrade: boolean;
   recId?: number;
   zakazId?: number;
+  details?: TradeSessionDetail[];
 };
 
 export type PrivateStackNavigator = {

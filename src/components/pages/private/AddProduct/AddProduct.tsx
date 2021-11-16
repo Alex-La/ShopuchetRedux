@@ -48,7 +48,7 @@ const AddProduct: React.FC<Props> = ({navigation}) => {
 
   useEffect(() => {
     loadRemainders(false, 0, remainders.descending);
-  }, []);
+  }, [remainders.descending, search]);
 
   const handleRefresh = () => loadRemainders(false, 0, remainders.descending);
 

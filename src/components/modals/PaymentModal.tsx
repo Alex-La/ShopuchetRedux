@@ -24,7 +24,7 @@ import {
 } from 'react-native';
 import {useAppSelector} from '../../redux';
 import {TAB_TYPES} from '../../redux/types/private/trade.types';
-import {convertDateTime} from '../../utils';
+import {convertDate, convertDateTime} from '../../utils';
 import api from '../../utils/api/api';
 import {
   Body,
@@ -96,7 +96,8 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
       summCash: Number(summCash),
       summNoncash: Number(summNocash),
       summBonus: Number(summBonus),
-      date: convertDateTime(date),
+      date:
+        type === TAB_TYPES.SALES ? convertDateTime(date) : convertDate(date),
     };
 
     switch (type) {
