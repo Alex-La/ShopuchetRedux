@@ -58,7 +58,7 @@ const Returnes: React.FC<Props> = ({navigation, route}) => {
   const prevDatebegin = usePrevious<Date>(date.datebegin);
   const prevDateend = usePrevious<Date>(date.dateend);
 
-  const loadIncomes = useCallback(
+  const loadReturns = useCallback(
     (loadMore: boolean, page: number) => {
       if (currentGTochkaId)
         dispatch(
@@ -76,7 +76,7 @@ const Returnes: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     if (route.params.reload) {
-      loadIncomes(false, 0);
+      loadReturns(false, 0);
       navigation.setParams({reload: false});
     }
   }, [route.params]);
@@ -89,12 +89,12 @@ const Returnes: React.FC<Props> = ({navigation, route}) => {
           date.datebegin !== prevDatebegin ||
           date.dateend !== prevDateend
         )
-          loadIncomes(false, 0);
+          loadReturns(false, 0);
       }
     }, [currentGTochkaId, date]),
   );
 
-  const handleRefresh = () => loadIncomes(false, 0);
+  const handleRefresh = () => loadReturns(false, 0);
 
   const navToNewReturn = () =>
     currentGTochkaId &&
@@ -135,7 +135,7 @@ const Returnes: React.FC<Props> = ({navigation, route}) => {
             dateIndex={index}
             theme={theme}
             navigation={navigation}
-            reload={() => loadIncomes(false, 0)}
+            reload={() => loadReturns(false, 0)}
           />
         )}
       />

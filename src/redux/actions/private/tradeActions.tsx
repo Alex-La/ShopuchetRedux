@@ -118,7 +118,7 @@ export const getReturns =
     api.trade
       .getReturn(gtochkaid, datebegin, dateend, page)
       .then(res => {
-        dispatch(setIncome(loadMore, res.data));
+        dispatch(setReturns(loadMore, res.data));
         dispatch(setLoading(false, TAB_TYPES.RETURN));
       })
       .catch(e => {
