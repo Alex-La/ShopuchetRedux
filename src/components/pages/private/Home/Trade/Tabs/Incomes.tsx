@@ -217,6 +217,13 @@ const ListItem: React.FC<ListItemProps> = ({
     });
   };
 
+  const renderDate = useCallback(() => {
+    const dateArray = (item.date as string).split(' ');
+    if (dateIndex === 0) {
+      return `в ${dateArray[1]}`;
+    } else return `от ${dateArray[0]}`;
+  }, [item.details]);
+
   const RenderAnchor = () => (
     <View
       style={{
@@ -232,7 +239,7 @@ const ListItem: React.FC<ListItemProps> = ({
           borderColor: theme['color-basic-500'],
         }}>
         <Text category="p2" status="primary">
-          {`Чек № ${item.recId} от ${convertDate(item.date)}`}
+          {`Чек № ${item.recId} ${renderDate()}`}
         </Text>
         {item.details.slice(0, 3).map((item, index) => (
           <Text key={index} category="label" numberOfLines={1}>

@@ -96,9 +96,13 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
       summCash: Number(summCash),
       summNoncash: Number(summNocash),
       summBonus: Number(summBonus),
-      date:
-        type === TAB_TYPES.SALES ? convertDateTime(date) : convertDate(date),
+      date: convertDateTime(date),
     };
+
+    const saleDetails = details.map(detail => ({
+      ...detail,
+      cost: detail.cost * (1 - discount / 100),
+    }));
 
     switch (type) {
       case TAB_TYPES.SALES:
@@ -106,7 +110,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
           const selBody: SellBody = {
             ...body,
             gTochkaId: typeId,
-            gProducts: details,
+            gProducts: saleDetails,
           };
           api.trade
             .sell(selBody)
@@ -119,7 +123,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
           const selEdBody: SellEditBody = {
             ...body,
             zakazId: typeId,
-            gProducts: details,
+            gProducts: saleDetails,
           };
           api.trade
             .sellEdit(selEdBody)
@@ -136,7 +140,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
             ...body,
             type: 0,
             gTochkaId: typeId,
-            gProducts: details.map<GProductsReceipt>(d => ({
+            gProducts: saleDetails.map<GProductsReceipt>(d => ({
               ...d,
               price: d.cost,
             })),
@@ -153,7 +157,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
             ...body,
             type: 0,
             skladId: typeId,
-            gProducts: details.map<GProductsReceipt>(d => ({
+            gProducts: saleDetails.map<GProductsReceipt>(d => ({
               ...d,
               price: d.cost,
             })),
@@ -173,7 +177,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
             ...body,
             type: 1,
             gTochkaId: typeId,
-            gProducts: details.map<GProductsReceipt>(d => ({
+            gProducts: saleDetails.map<GProductsReceipt>(d => ({
               ...d,
               price: d.cost,
             })),
@@ -190,7 +194,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
             ...body,
             type: 1,
             skladId: typeId,
-            gProducts: details.map<GProductsReceipt>(d => ({
+            gProducts: saleDetails.map<GProductsReceipt>(d => ({
               ...d,
               price: d.cost,
             })),
@@ -220,10 +224,12 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
               <Text category="h5">{'Оплата'}</Text>
               <Method method={method} setMethod={setMethod} />
 
-              <View style={styles.toggle}>
-                <Text>Оплата бонусами:</Text>
-                <Toggle checked={bonus} onChange={setBonus} />
-              </View>
+              {type === TAB_TYPES.SALES && (
+                <View style={styles.toggle}>
+                  <Text>Оплата бонусами:</Text>
+                  <Toggle checked={bonus} onChange={setBonus} />
+                </View>
+              )}
 
               {method === 2 ? (
                 <>
