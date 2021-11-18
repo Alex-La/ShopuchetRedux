@@ -380,7 +380,6 @@ const Styles = StyleService.create({
     backgroundColor: 'color-primary-transparent-100',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
   },
   form: {
     padding: 20,
