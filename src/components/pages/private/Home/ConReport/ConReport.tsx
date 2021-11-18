@@ -1,18 +1,12 @@
 import {useFocusEffect} from '@react-navigation/core';
-import {
-  Datepicker,
-  Divider,
-  Icon,
-  Layout,
-  Text,
-  useTheme,
-} from '@ui-kitten/components';
+import {Divider, Icon, Layout, Text, useTheme} from '@ui-kitten/components';
 import React, {useCallback, useState} from 'react';
+import DatePicker from 'react-native-date-picker';
 import {ImageProps, StyleSheet, TouchableOpacity, View} from 'react-native';
 import usePrevious from '../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
 import {getConReport} from '../../../../../redux/actions/private/conReportActions';
-import {incrementDecrementDate} from '../../../../../utils';
+import {convertDate, incrementDecrementDate} from '../../../../../utils';
 import RefreshScrollView from '../../../../loaders/RefreshScrollView';
 
 const ConReport: React.FC = () => {
@@ -27,6 +21,7 @@ const ConReport: React.FC = () => {
   const prevGTochkaId = usePrevious<number>(currentGTochkaId);
 
   const [date, setDate] = useState<Date>(new Date());
+  const [open, setOpen] = useState<boolean>(false);
 
   const loadConReport = useCallback(
     (date: Date) => {
@@ -53,6 +48,14 @@ const ConReport: React.FC = () => {
     setDate(newDate);
   };
 
+  const handleOpen = () => setOpen(true);
+  const handleCancel = () => setOpen(false);
+  const handleConfirm = (date: Date) => {
+    setOpen(false);
+    loadConReport(date);
+    setDate(date);
+  };
+
   const ArrowLeft = (props: Partial<ImageProps>) => (
     <TouchableOpacity onPress={decreaseDate} disabled={loading}>
       <Icon
@@ -74,22 +77,22 @@ const ConReport: React.FC = () => {
   );
 
   const handleRefresh = () => loadConReport(date);
-  const handeleChangeDate = (date: Date) => {
-    loadConReport(date);
-    setDate(date);
-  };
 
   return (
     <Layout style={styles.wrap}>
       <RefreshScrollView refreshing={loading} onRefresh={handleRefresh}>
         <View style={styles.date}>
           <ArrowLeft width={25} height={25} />
-          <Datepicker
-            disabled={loading}
-            style={{marginHorizontal: 10}}
-            size="small"
+          <TouchableOpacity onPress={handleOpen}>
+            <Text status="primary">{convertDate(date)}</Text>
+          </TouchableOpacity>
+          <DatePicker
+            modal
+            mode="date"
+            open={open}
             date={date}
-            onSelect={handeleChangeDate}
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
           />
           <ArrowRight width={25} height={25} />
         </View>
@@ -234,9 +237,10 @@ const styles = StyleSheet.create({
   wrap: {flex: 1},
   date: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 10,
+    paddingHorizontal: 16,
   },
   info: {
     padding: 16,
