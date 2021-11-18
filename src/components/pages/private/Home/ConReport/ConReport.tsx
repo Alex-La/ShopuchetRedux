@@ -3,7 +3,6 @@ import {Divider, Icon, Layout, Text, useTheme} from '@ui-kitten/components';
 import React, {useCallback, useState} from 'react';
 import DatePicker from 'react-native-date-picker';
 import {ImageProps, StyleSheet, TouchableOpacity, View} from 'react-native';
-import usePrevious from '../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
 import {getConReport} from '../../../../../redux/actions/private/conReportActions';
 import {convertDate, incrementDecrementDate} from '../../../../../utils';
