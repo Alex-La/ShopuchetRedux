@@ -28,6 +28,12 @@ const AvgReceipt: React.FC = () => {
   const loading = useAppSelector(
     state => state.reports.tabs.avgReceipt.loading,
   );
+  const percent =
+    100 /
+    Math.max.apply(
+      null,
+      avgReceipt.data.map(item => item.avg),
+    );
   const currentGTochkaid = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
@@ -76,16 +82,19 @@ const AvgReceipt: React.FC = () => {
       onRefresh={handleRefresh}
       ListHeaderComponent={ListHeader}
       data={avgReceipt.data}
-      renderItem={props => <ListItem {...props} theme={theme} />}
+      renderItem={props => (
+        <ListItem {...props} theme={theme} percent={percent} />
+      )}
     />
   );
 };
 
 interface ListItemProps extends ListRenderItemInfo<TAvgReceipt> {
   theme: Record<string, string>;
+  percent: number;
 }
 
-const ListItem: React.FC<ListItemProps> = ({item, index, theme}) => {
+const ListItem: React.FC<ListItemProps> = ({item, index, theme, percent}) => {
   return (
     <TouchableWithoutFeedback key={index}>
       <View style={{margin: 15}}>
@@ -95,10 +104,13 @@ const ListItem: React.FC<ListItemProps> = ({item, index, theme}) => {
             styles.chart,
             {
               backgroundColor: theme['color-primary-500'],
-              width: `${item.avg / 100}%`,
+              minWidth: 100,
+              width: `${item.avg * percent}%`,
             },
           ]}>
-          <Text style={styles.text}>{item.avg.toFixed(2)}</Text>
+          <Text style={styles.text} category="p2">
+            {item.avg.toFixed(2)}
+          </Text>
         </View>
       </View>
     </TouchableWithoutFeedback>
