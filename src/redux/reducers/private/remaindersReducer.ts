@@ -5,6 +5,7 @@ import {
   REMAINDERS_ACTION_TYPES,
   SetDescendingAction,
   SetLoadingAction,
+  SetRefreshingAction,
   SetRemaindersAction,
 } from '../../types/private/remainders.types';
 
@@ -18,6 +19,7 @@ const initialData: TRemainders = {
 
 export const initialState: Remainders = {
   loading: false,
+  refreshing: false,
   descending: true,
   data: initialData,
 };
@@ -30,6 +32,9 @@ export const remainders = (
     case REMAINDERS_ACTION_TYPES.SET_LOADING:
       const loadingAction = action as SetLoadingAction;
       return {...state, loading: loadingAction.payload};
+    case REMAINDERS_ACTION_TYPES.SET_REFRESHING:
+      const refreshingAction = action as SetRefreshingAction;
+      return {...state, refreshing: refreshingAction.payload};
     case REMAINDERS_ACTION_TYPES.SET_DESCENDING:
       const descendingAction = action as SetDescendingAction;
       return {...state, descending: descendingAction.payload};

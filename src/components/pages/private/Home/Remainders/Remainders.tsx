@@ -13,6 +13,7 @@ import {
   getRemainders,
 } from '../../../../../redux/actions/private/remaindersActions';
 import FooterLoader from '../../../../general/FooterLoader';
+import Preloader from '../../../../loaders/Preloader';
 
 const Remainders: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -23,16 +24,23 @@ const Remainders: React.FC = () => {
   const remainders = useAppSelector(state => state.remainders);
   const details = useAppSelector(state => state.remainders.data.details);
   const loading = useAppSelector(state => state.remainders.loading);
+  const refreshing = useAppSelector(state => state.remainders.refreshing);
 
   const [cnt, setCnt] = useState<string>('');
   const [filter, setFilter] = useState<string>('');
   const [isDataLoaded, setIsDataLoaded] = useState<boolean>(true);
 
   const loadRemainders = useCallback(
-    (loadMore: boolean, page: number, descending: boolean) => {
+    (
+      refreshing: boolean,
+      loadMore: boolean,
+      page: number,
+      descending: boolean,
+    ) => {
       if (currentGTochkaId)
         return dispatch(
           getRemainders(
+            refreshing,
             loadMore,
             currentGTochkaId,
             page,
@@ -47,7 +55,7 @@ const Remainders: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
-      loadRemainders(false, 0, remainders.descending);
+      loadRemainders(false, false, 0, remainders.descending);
       return () => dispatch(clearRemainders());
     }, []),
   );
@@ -77,12 +85,13 @@ const Remainders: React.FC = () => {
   );
 
   const handleRefreshOrSearch = () =>
-    loadRemainders(false, 0, remainders.descending);
+    loadRemainders(true, false, 0, remainders.descending);
 
   const handleLoadMore = () => {
     if (isDataLoaded && remainders.data.hasNext) {
       setIsDataLoaded(false);
       loadRemainders(
+        false,
         true,
         remainders.data.currentPage + 1,
         remainders.descending,
@@ -93,6 +102,8 @@ const Remainders: React.FC = () => {
   };
 
   const RenderFooter = () => (isDataLoaded ? <Fragment /> : <FooterLoader />);
+
+  if (loading) return <Preloader />;
 
   return (
     <Layout style={{flex: 1}}>
@@ -117,7 +128,7 @@ const Remainders: React.FC = () => {
 
       <List
         ListFooterComponent={RenderFooter}
-        refreshing={loading}
+        refreshing={refreshing}
         onRefresh={handleRefreshOrSearch}
         data={details}
         renderItem={RenderItem}

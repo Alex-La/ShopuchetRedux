@@ -7,6 +7,7 @@ import {TradeSessionDetail} from '../../../../redux/types/private/trade.types';
 import {PrivateStackNavigator} from '../../../../utils/navigation.types';
 import FooterLoader from '../../../general/FooterLoader';
 import ListItem from '../../../general/ListItem';
+import Preloader from '../../../loaders/Preloader';
 import ListHeaderComponent from './ListHeaderComponent';
 
 type Props = {
@@ -24,15 +25,22 @@ const AddProduct: React.FC<Props> = ({navigation}) => {
   const remainders = useAppSelector(state => state.remainders);
   const details = useAppSelector(state => state.remainders.data.details);
   const loading = useAppSelector(state => state.remainders.loading);
+  const refreshing = useAppSelector(state => state.remainders.refreshing);
 
   const [search, setSearch] = useState<string>('');
   const [isDataLoaded, setIsDataLoaded] = useState<boolean>(true);
 
   const loadRemainders = useCallback(
-    (loadMore: boolean, page: number, descending: boolean) => {
+    (
+      refreshing: boolean,
+      loadMore: boolean,
+      page: number,
+      descending: boolean,
+    ) => {
       if (currentGTochkaId)
         return dispatch(
           getRemainders(
+            refreshing,
             loadMore,
             currentGTochkaId,
             page,
@@ -47,15 +55,17 @@ const AddProduct: React.FC<Props> = ({navigation}) => {
   );
 
   useEffect(() => {
-    loadRemainders(false, 0, remainders.descending);
+    loadRemainders(false, false, 0, remainders.descending);
   }, [remainders.descending, search]);
 
-  const handleRefresh = () => loadRemainders(false, 0, remainders.descending);
+  const handleRefresh = () =>
+    loadRemainders(true, false, 0, remainders.descending);
 
   const handleLoadMore = () => {
     if (isDataLoaded && remainders.data.hasNext) {
       setIsDataLoaded(false);
       loadRemainders(
+        false,
         true,
         remainders.data.currentPage + 1,
         remainders.descending,
@@ -74,11 +84,13 @@ const AddProduct: React.FC<Props> = ({navigation}) => {
 
   const RenderFooter = () => (isDataLoaded ? <Fragment /> : <FooterLoader />);
 
+  if (loading) return <Preloader />;
+
   return (
     <Layout style={{flex: 1}}>
       <ListHeaderComponent value={search} setValue={setSearch} />
       <List
-        refreshing={loading}
+        refreshing={refreshing}
         onRefresh={handleRefresh}
         onEndReachedThreshold={0.2}
         onEndReached={handleLoadMore}

@@ -8,12 +8,18 @@ import {
   REMAINDERS_ACTION_TYPES,
   SetDescendingAction,
   SetLoadingAction,
+  SetRefreshingAction,
   SetRemaindersAction,
 } from '../../types/private/remainders.types';
 import {handleError} from '../fetchActions';
 
 export const setLoading = (loading: boolean): SetLoadingAction => ({
   type: REMAINDERS_ACTION_TYPES.SET_LOADING,
+  payload: loading,
+});
+
+export const setRefreshing = (loading: boolean): SetRefreshingAction => ({
+  type: REMAINDERS_ACTION_TYPES.SET_REFRESHING,
   payload: loading,
 });
 
@@ -37,6 +43,7 @@ export const clearRemainders = (): ClearRemaindersAction => ({
 
 export const getRemainders =
   (
+    refreshing: boolean,
     loadMore: boolean,
     gtochkaid: number,
     page: number,
@@ -47,10 +54,12 @@ export const getRemainders =
   ): ThunkAction<Promise<void>, RootState, unknown, RemaindersActions> =>
   async dispatch =>
     await new Promise((resolve, reject) => {
-      if (!loadMore) dispatch(setLoading(true));
+      if (refreshing) dispatch(setRefreshing(true));
+      else if (!loadMore) dispatch(setLoading(true));
       api.remainders
         .getRemainders(gtochkaid, page, descending, cnt, filter, rows)
         .then(res => {
+          dispatch(setRefreshing(false));
           dispatch(setLoading(false));
           dispatch(setRemainders(loadMore, res.data));
           resolve();
@@ -58,6 +67,7 @@ export const getRemainders =
         .catch(e => {
           dispatch(handleError(e.response));
           dispatch(setLoading(false));
+          dispatch(setRefreshing(false));
           reject(e);
         });
     });

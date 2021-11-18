@@ -1,5 +1,12 @@
 import React from 'react';
-import {Divider, Icon, Layout, Text, useTheme} from '@ui-kitten/components';
+import {
+  Divider,
+  Icon,
+  Layout,
+  Spinner,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import {
   ImageProps,
   Keyboard,
