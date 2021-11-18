@@ -33,7 +33,7 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
 
   const {reportsDate, tradeDate} = useAppSelector(({reports, trade}) => ({
     reportsDate: reports.date,
-    tradeDate: reports.date,
+    tradeDate: trade.date,
   }));
 
   const subtitle = useAppSelector(state => state.main.tradePoint?.name);

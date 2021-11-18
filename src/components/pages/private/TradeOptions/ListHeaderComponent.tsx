@@ -1,22 +1,30 @@
 import {RouteProp, useRoute} from '@react-navigation/core';
 import {
-  Datepicker,
   Input,
   Layout,
   StyleService,
   Text,
   useStyleSheet,
+  useTheme,
 } from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
-import {Keyboard, TouchableWithoutFeedback, View} from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import {
+  Keyboard,
+  TouchableWithoutFeedback,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../redux';
 import {setTradeSession} from '../../../../redux/actions/private/tradeActions';
 import {
   PrivateStackNavigator,
   TradeOptionsTypes,
 } from '../../../../utils/navigation.types';
+import {convertDate} from '../../../../utils';
 
 const ListHeaderComponent: React.FC = () => {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const tradeSession = useAppSelector(state => state.trade.tradeSession);
 
@@ -24,6 +32,8 @@ const ListHeaderComponent: React.FC = () => {
   const route = useRoute<RouteProp<PrivateStackNavigator, 'TradeOptions'>>();
 
   const [date, setDate] = useState<Date>(new Date());
+  const [open, setOpen] = useState<boolean>(false);
+
   const [discount, setDiscount] = useState<string>(
     tradeSession.discount.toFixed(2),
   );
@@ -34,7 +44,10 @@ const ListHeaderComponent: React.FC = () => {
 
   const handleBlur = () => setDiscount(dis => Number(dis).toFixed(2));
 
-  const handleChangeDate = (date: Date) => {
+  const handleOpen = () => setOpen(true);
+  const handleCancel = () => setOpen(false);
+  const handleConfirm = (date: Date) => {
+    setOpen(false);
     dispatch(setTradeSession({...tradeSession, date: date.toString()}));
     setDate(date);
   };
@@ -54,11 +67,23 @@ const ListHeaderComponent: React.FC = () => {
           <Text appearance="hint" category="label">
             Дата:
           </Text>
-          <Datepicker
-            disabled={!route.params.edit}
-            controlStyle={styles.datepicker}
+          <TouchableOpacity onPress={handleOpen} disabled={!route.params.edit}>
+            <Text status="primary" style={{padding: 10}}>
+              {convertDate(date)}
+            </Text>
+          </TouchableOpacity>
+          <DatePicker
+            modal
+            mode="date"
+            open={open}
             date={date}
-            onSelect={handleChangeDate}
+            maximumDate={new Date()}
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
+            textColor={theme['color-primary-500']}
+            title="Выберете дату"
+            confirmText="Ок"
+            cancelText="Отмена"
           />
         </View>
         {route.params.type === TradeOptionsTypes.SALE && (
@@ -87,6 +112,7 @@ const Styles = StyleService.create({
   itemWrap: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     borderBottomColor: 'color-primary-500',
     borderBottomWidth: 1,
     marginHorizontal: 5,

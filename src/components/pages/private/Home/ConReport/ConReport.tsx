@@ -91,8 +91,13 @@ const ConReport: React.FC = () => {
             mode="date"
             open={open}
             date={date}
+            maximumDate={new Date()}
             onConfirm={handleConfirm}
             onCancel={handleCancel}
+            textColor={theme['color-primary-500']}
+            title="Выберете дату"
+            confirmText="Ок"
+            cancelText="Отмена"
           />
           <ArrowRight width={25} height={25} />
         </View>

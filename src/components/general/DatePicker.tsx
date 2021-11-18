@@ -7,7 +7,7 @@ import {
   Text,
   useTheme,
 } from '@ui-kitten/components';
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useAppDispatch} from '../../redux';
 import {
@@ -70,7 +70,7 @@ const DatePicker: React.FC<Props> = ({
     setVisible(false);
   };
 
-  const RenderAnchor = () => {
+  const RenderAnchor = useCallback(() => {
     return (
       <TouchableOpacity
         style={{borderRadius: 12}}
@@ -87,7 +87,7 @@ const DatePicker: React.FC<Props> = ({
         </Layout>
       </TouchableOpacity>
     );
-  };
+  }, [items, date, selectedIndex]);
 
   return (
     <OverflowMenu
