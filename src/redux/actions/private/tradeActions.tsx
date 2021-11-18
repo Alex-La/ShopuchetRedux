@@ -7,6 +7,7 @@ import {RootState} from '../../store';
 import {
   SetIncomeAction,
   SetLoadingAction,
+  SetRefreshingAction,
   SetReturnAction,
   SetSalesAction,
   SetTradeSessionAction,
@@ -29,6 +30,15 @@ export const setLoading = (
   tab: TAB_TYPES,
 ): SetLoadingAction => ({
   type: TRADE_ACTION_TYPES.SET_LOADING,
+  payload: loading,
+  tab,
+});
+
+export const setRefreshing = (
+  loading: boolean,
+  tab: TAB_TYPES,
+): SetRefreshingAction => ({
+  type: TRADE_ACTION_TYPES.SET_REFRESHING,
   payload: loading,
   tab,
 });
@@ -65,19 +75,23 @@ export const setReturns = (
 
 export const getSales =
   (
+    refreshing: boolean,
     gtochkaid: number,
     datebegin: Date,
     dateend: Date,
   ): ThunkAction<any, RootState, unknown, TradeActions> =>
   dispatch => {
-    dispatch(setLoading(true, TAB_TYPES.SALES));
+    if (refreshing) dispatch(setRefreshing(true, TAB_TYPES.SALES));
+    else dispatch(setLoading(true, TAB_TYPES.SALES));
     api.trade
       .getSales(gtochkaid, datebegin, dateend)
       .then(res => {
         dispatch(setSales(res.data));
+        dispatch(setRefreshing(false, TAB_TYPES.SALES));
         dispatch(setLoading(false, TAB_TYPES.SALES));
       })
       .catch(e => {
+        dispatch(setRefreshing(false, TAB_TYPES.SALES));
         dispatch(setLoading(false, TAB_TYPES.SALES));
         dispatch(handleError(e.response));
       });
@@ -85,6 +99,7 @@ export const getSales =
 
 export const getIncome =
   (
+    refreshing: boolean,
     loadMore: boolean,
     gtochkaid: number,
     datebegin: Date,
@@ -92,21 +107,25 @@ export const getIncome =
     page: number,
   ): ThunkAction<any, RootState, unknown, TradeActions> =>
   dispatch => {
-    dispatch(setLoading(true, TAB_TYPES.INCOME));
+    if (refreshing) dispatch(setRefreshing(true, TAB_TYPES.INCOME));
+    else dispatch(setLoading(true, TAB_TYPES.INCOME));
     api.trade
       .getIncome(gtochkaid, datebegin, dateend, page)
       .then(res => {
         dispatch(setIncome(loadMore, res.data));
         dispatch(setLoading(false, TAB_TYPES.INCOME));
+        dispatch(setRefreshing(false, TAB_TYPES.INCOME));
       })
       .catch(e => {
         dispatch(setLoading(false, TAB_TYPES.INCOME));
+        dispatch(setRefreshing(false, TAB_TYPES.INCOME));
         dispatch(handleError(e.response));
       });
   };
 
 export const getReturns =
   (
+    refreshing: boolean,
     loadMore: boolean,
     gtochkaid: number,
     datebegin: Date,
@@ -114,15 +133,18 @@ export const getReturns =
     page: number,
   ): ThunkAction<any, RootState, unknown, TradeActions> =>
   dispatch => {
-    dispatch(setLoading(true, TAB_TYPES.RETURN));
+    if (refreshing) dispatch(setRefreshing(true, TAB_TYPES.RETURN));
+    else dispatch(setLoading(true, TAB_TYPES.RETURN));
     api.trade
       .getReturn(gtochkaid, datebegin, dateend, page)
       .then(res => {
         dispatch(setReturns(loadMore, res.data));
         dispatch(setLoading(false, TAB_TYPES.RETURN));
+        dispatch(setRefreshing(false, TAB_TYPES.RETURN));
       })
       .catch(e => {
         dispatch(setLoading(false, TAB_TYPES.RETURN));
+        dispatch(setRefreshing(false, TAB_TYPES.RETURN));
         dispatch(handleError(e.response));
       });
   };

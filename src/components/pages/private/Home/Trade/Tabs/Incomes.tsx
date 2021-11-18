@@ -30,6 +30,7 @@ import {
   TradeOptionsTypes,
   TradeTopTabNavigator,
 } from '../../../../../../utils/navigation.types';
+import Preloader from '../../../../../loaders/Preloader';
 
 const Trash = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="trash-2-outline" />
@@ -49,6 +50,9 @@ const Incomes: React.FC<Props> = ({navigation, route}) => {
 
   const dispatch = useAppDispatch();
   const loading = useAppSelector(state => state.trade.tabs.income.loading);
+  const refreshing = useAppSelector(
+    state => state.trade.tabs.income.refreshing,
+  );
   const {head, details} = useAppSelector(state => state.trade.tabs.income.data);
   const date = useAppSelector(state => state.trade.date);
   const index = useAppSelector(state => state.trade.index);
@@ -57,10 +61,11 @@ const Incomes: React.FC<Props> = ({navigation, route}) => {
   );
 
   const loadIncomes = useCallback(
-    (loadMore: boolean, page: number) => {
+    (refreshing: boolean, loadMore: boolean, page: number) => {
       if (currentGTochkaId)
         dispatch(
           getIncome(
+            refreshing,
             loadMore,
             currentGTochkaId,
             date.datebegin,
@@ -74,7 +79,7 @@ const Incomes: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     if (route.params.reload) {
-      loadIncomes(false, 0);
+      loadIncomes(false, false, 0);
       navigation.setParams({reload: false});
     }
   }, [route.params]);
@@ -82,12 +87,12 @@ const Incomes: React.FC<Props> = ({navigation, route}) => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaId) {
-        loadIncomes(false, 0);
+        loadIncomes(false, false, 0);
       }
     }, [currentGTochkaId, date]),
   );
 
-  const handleRefresh = () => loadIncomes(false, 0);
+  const handleRefresh = () => loadIncomes(true, false, 0);
 
   const navToNewIncome = () =>
     currentGTochkaId &&
@@ -114,10 +119,12 @@ const Incomes: React.FC<Props> = ({navigation, route}) => {
     );
   }, [head]);
 
+  if (loading) return <Preloader />;
+
   return (
     <Layout style={styles.wrap}>
       <List
-        refreshing={loading}
+        refreshing={refreshing}
         onRefresh={handleRefresh}
         ListHeaderComponent={ListHeaderComponent}
         data={details}
@@ -128,7 +135,7 @@ const Incomes: React.FC<Props> = ({navigation, route}) => {
             dateIndex={index}
             theme={theme}
             navigation={navigation}
-            reload={() => loadIncomes(false, 0)}
+            reload={() => loadIncomes(false, false, 0)}
           />
         )}
       />

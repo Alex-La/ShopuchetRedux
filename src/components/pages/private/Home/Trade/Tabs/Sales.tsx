@@ -23,6 +23,7 @@ import {
   TradeOptionsTypes,
   TradeTopTabNavigator,
 } from '../../../../../../utils/navigation.types';
+import Preloader from '../../../../../loaders/Preloader';
 
 const Trash = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="trash-2-outline" />
@@ -42,6 +43,7 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
 
   const dispatch = useAppDispatch();
   const loading = useAppSelector(state => state.trade.tabs.sales.loading);
+  const refreshing = useAppSelector(state => state.trade.tabs.sales.refreshing);
   const {sales, details} = useAppSelector(state => state.trade.tabs.sales.data);
   const date = useAppSelector(state => state.trade.date);
   const index = useAppSelector(state => state.trade.index);
@@ -49,14 +51,19 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
     state => state.main.tradePoint?.gTochkaId,
   );
 
-  const loadSales = useCallback(() => {
-    if (currentGTochkaId)
-      dispatch(getSales(currentGTochkaId, date.datebegin, date.dateend));
-  }, [currentGTochkaId, date]);
+  const loadSales = useCallback(
+    (refreshing: boolean) => {
+      if (currentGTochkaId)
+        dispatch(
+          getSales(refreshing, currentGTochkaId, date.datebegin, date.dateend),
+        );
+    },
+    [currentGTochkaId, date],
+  );
 
   useEffect(() => {
     if (route.params.reload) {
-      loadSales();
+      loadSales(false);
       navigation.setParams({reload: false});
     }
   }, [route.params]);
@@ -64,12 +71,12 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaId) {
-        loadSales();
+        loadSales(false);
       }
     }, [currentGTochkaId, date]),
   );
 
-  const handleRefresh = () => loadSales();
+  const handleRefresh = () => loadSales(true);
 
   const navToNewTrade = () =>
     currentGTochkaId &&
@@ -100,11 +107,13 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
     );
   }, [sales]);
 
+  if (loading) return <Preloader />;
+
   return (
     <Layout style={styles.wrap}>
       <List
         ListHeaderComponent={ListHeaderComponent}
-        refreshing={loading}
+        refreshing={refreshing}
         onRefresh={handleRefresh}
         style={{backgroundColor: theme['background-color-1']}}
         data={details}
@@ -114,7 +123,7 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
             dateIndex={index}
             theme={theme}
             navigation={navigation}
-            reload={loadSales}
+            reload={() => loadSales(false)}
           />
         )}
       />

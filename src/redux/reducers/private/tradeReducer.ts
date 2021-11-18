@@ -3,6 +3,7 @@ import {Sales, Sklad, SkladHead} from '../../../utils/api.types';
 import {
   SetIncomeAction,
   SetLoadingAction,
+  SetRefreshingAction,
   SetReturnAction,
   SetSalesAction,
   SetTradeSessionAction,
@@ -16,6 +17,7 @@ import {
 
 const initialSale: Tab<Sales> = {
   loading: false,
+  refreshing: false,
   data: {
     sales: {cnt: 0, income: 0, summ: 0},
     details: [],
@@ -31,6 +33,7 @@ const initialHead: SkladHead = {
 
 const initialSklad: Tab<Sklad> = {
   loading: false,
+  refreshing: false,
   data: {
     currentPage: 0,
     hasNext: false,
@@ -81,6 +84,18 @@ export const trade = (
           [loadingAction.tab]: {
             ...state.tabs[loadingAction.tab],
             loading: loadingAction.payload,
+          },
+        },
+      };
+    case TRADE_ACTION_TYPES.SET_REFRESHING:
+      const refAction = action as SetRefreshingAction;
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          [refAction.tab]: {
+            ...state.tabs[refAction.tab],
+            refreshing: refAction.payload,
           },
         },
       };

@@ -3,6 +3,7 @@ import {Sales, Sklad} from '../../../utils/api.types';
 
 export type Tab<T> = {
   loading: boolean;
+  refreshing: boolean;
   data: T;
 };
 
@@ -50,6 +51,7 @@ export type TradeSession = {
 
 export enum TRADE_ACTION_TYPES {
   SET_LOADING = 'TRADE_ACTION/SET_LOADING',
+  SET_REFRESHING = 'TRADE_ACTION/SET_REFRESHING',
   SET_DATE = 'TRADE_ACTION/SET_DATE',
   SET_SALES = 'TRADE_ACTION/SET_SALES',
   SET_INCOME = 'TRADE_ACTION/SET_INCOME',
@@ -58,6 +60,12 @@ export enum TRADE_ACTION_TYPES {
 }
 
 export type SetLoadingAction = {
+  type: string;
+  payload: boolean;
+  tab: TAB_TYPES;
+};
+
+export type SetRefreshingAction = {
   type: string;
   payload: boolean;
   tab: TAB_TYPES;
@@ -91,4 +99,5 @@ export type TradeActions =
   | SetIncomeAction
   | SetReturnAction
   | SetTradeSessionAction
-  | SetLoadingAction;
+  | SetLoadingAction
+  | SetRefreshingAction;
