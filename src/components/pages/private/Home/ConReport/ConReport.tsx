@@ -7,12 +7,14 @@ import {useAppDispatch, useAppSelector} from '../../../../../redux';
 import {getConReport} from '../../../../../redux/actions/private/conReportActions';
 import {convertDate, incrementDecrementDate} from '../../../../../utils';
 import RefreshScrollView from '../../../../loaders/RefreshScrollView';
+import Preloader from '../../../../loaders/Preloader';
 
 const ConReport: React.FC = () => {
   const theme = useTheme();
 
   const dispatch = useAppDispatch();
   const loading = useAppSelector(state => state.conReport.loading);
+  const refreshing = useAppSelector(state => state.conReport.refreshing);
   const conReport = useAppSelector(state => state.conReport.conReport);
   const currentGTochkaId = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
@@ -22,26 +24,27 @@ const ConReport: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
 
   const loadConReport = useCallback(
-    (date: Date) => {
-      if (currentGTochkaId) dispatch(getConReport(currentGTochkaId, date));
+    (refreshing: boolean, date: Date) => {
+      if (currentGTochkaId)
+        dispatch(getConReport(refreshing, currentGTochkaId, date));
     },
     [currentGTochkaId],
   );
 
   useFocusEffect(
     useCallback(() => {
-      loadConReport(date);
+      loadConReport(false, date);
     }, [currentGTochkaId]),
   );
 
   const increaseDate = () => {
     const newDate = incrementDecrementDate(date, 'inc');
-    loadConReport(newDate);
+    loadConReport(true, newDate);
     setDate(newDate);
   };
   const decreaseDate = () => {
     const newDate = incrementDecrementDate(date, 'dec');
-    loadConReport(newDate);
+    loadConReport(true, newDate);
     setDate(newDate);
   };
 
@@ -49,7 +52,7 @@ const ConReport: React.FC = () => {
   const handleCancel = () => setOpen(false);
   const handleConfirm = (date: Date) => {
     setOpen(false);
-    loadConReport(date);
+    loadConReport(true, date);
     setDate(date);
   };
 
@@ -73,11 +76,13 @@ const ConReport: React.FC = () => {
     </TouchableOpacity>
   );
 
-  const handleRefresh = () => loadConReport(date);
+  const handleRefresh = () => loadConReport(true, date);
+
+  if (loading) return <Preloader />;
 
   return (
     <Layout style={styles.wrap}>
-      <RefreshScrollView refreshing={loading} onRefresh={handleRefresh}>
+      <RefreshScrollView refreshing={refreshing} onRefresh={handleRefresh}>
         <View style={styles.date}>
           <ArrowLeft width={25} height={25} />
           <TouchableOpacity onPress={handleOpen}>

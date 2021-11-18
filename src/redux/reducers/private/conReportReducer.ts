@@ -4,10 +4,12 @@ import {
   CON_REPORT_ACTION_TYPES,
   SetConReportAction,
   SetLoadingAction,
+  SetRefreshingAction,
 } from '../../types/private/conReport.types';
 
 export const initialState: ConReport = {
   loading: false,
+  refreshing: false,
   conReport: {
     sales: {
       cnt: 0,
@@ -41,6 +43,8 @@ export const conReport = (
   switch (action.type) {
     case CON_REPORT_ACTION_TYPES.SET_LOADING:
       return {...state, loading: (action as SetLoadingAction).payload};
+    case CON_REPORT_ACTION_TYPES.SET_REFRESHING:
+      return {...state, refreshing: (action as SetRefreshingAction).payload};
     case CON_REPORT_ACTION_TYPES.SET_CON_REPORT:
       return {...state, conReport: (action as SetConReportAction).payload};
     default:
