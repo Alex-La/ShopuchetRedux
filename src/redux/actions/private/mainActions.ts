@@ -47,16 +47,20 @@ const setMainGrahp = (data: MainGraph[]): SetMainGraphAction => ({
 });
 
 export const getTradePoints =
-  (): ThunkAction<void, RootState, unknown, MainActions> => dispatch => {
-    dispatch(setAppLoading(true));
+  (refreshing: boolean): ThunkAction<void, RootState, unknown, MainActions> =>
+  dispatch => {
+    if (refreshing) dispatch(setLoading(true));
+    else dispatch(setAppLoading(true));
     api.main
       .getTradePoints()
       .then(res => {
         dispatch(setTradePoints(res.data));
         dispatch(setTradePoint(res.data[0] || null));
         dispatch(setAppLoading(false));
+        dispatch(setLoading(false));
       })
       .catch(e => {
+        dispatch(setLoading(false));
         dispatch(setAppLoading(false));
         dispatch(handleError(e.response));
       });
