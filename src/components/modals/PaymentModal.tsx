@@ -14,7 +14,7 @@ import {
 } from '@ui-kitten/components';
 import {EvaStatus} from '@ui-kitten/components/devsupport';
 import {AxiosResponse} from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   Keyboard,
   StyleProp,
@@ -213,6 +213,19 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
+  const title = useMemo(() => {
+    switch (type) {
+      case TAB_TYPES.SALES:
+        return 'Оплата';
+      case TAB_TYPES.INCOME:
+        return 'Приход';
+      case TAB_TYPES.RETURN:
+        return 'Возврат';
+      default:
+        return '';
+    }
+  }, [type]);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.wrap}>
@@ -221,7 +234,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
             <Preloader />
           ) : (
             <>
-              <Text category="h5">{'Оплата'}</Text>
+              <Text category="h5">{title}</Text>
               <Method method={method} setMethod={setMethod} />
 
               {type === TAB_TYPES.SALES && (

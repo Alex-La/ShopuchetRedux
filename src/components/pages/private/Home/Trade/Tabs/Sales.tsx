@@ -149,7 +149,7 @@ const ListItem: React.FC<ListItemProps> = ({
       refresh: reload,
       deleteId: item.zakazId,
       type: TradeOptionsTypes.SALE,
-      sessionType: TAB_TYPES.INCOME,
+      sessionType: TAB_TYPES.SALES,
     });
   };
 
