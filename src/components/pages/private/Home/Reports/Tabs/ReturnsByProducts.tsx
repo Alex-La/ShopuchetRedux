@@ -5,6 +5,7 @@ import {ListRenderItemInfo, StyleSheet, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {
   getReturnsProducts,
+  setLoading,
   setReduce,
 } from '../../../../../../redux/actions/private/reportsActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
@@ -65,6 +66,7 @@ const ReturnsByProducts: React.FC = () => {
       if (currentGTochkaid) {
         loadSalesGroups(false, false, 0, !returnsByProducts.reduce);
       }
+      return () => dispatch(setLoading(true, TAB_TYPES.RETURNS_PRODUCTS));
     }, [currentGTochkaid, date]),
   );
 

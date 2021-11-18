@@ -19,7 +19,10 @@ import {
   View,
 } from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
-import {getIncome} from '../../../../../../redux/actions/private/tradeActions';
+import {
+  getIncome,
+  setLoading,
+} from '../../../../../../redux/actions/private/tradeActions';
 import {
   TAB_TYPES,
   TradeSessionDetail,
@@ -89,6 +92,7 @@ const Incomes: React.FC<Props> = ({navigation, route}) => {
       if (currentGTochkaId) {
         loadIncomes(false, false, 0);
       }
+      return () => dispatch(setLoading(true, TAB_TYPES.INCOME));
     }, [currentGTochkaId, date]),
   );
 

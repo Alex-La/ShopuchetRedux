@@ -14,7 +14,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {ImageProps, ListRenderItemInfo, StyleSheet, View} from 'react-native';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
-import {getSales} from '../../../../../../redux/actions/private/tradeActions';
+import {
+  getSales,
+  setLoading,
+} from '../../../../../../redux/actions/private/tradeActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/trade.types';
 import {convertDate} from '../../../../../../utils';
 import {SalesDetail} from '../../../../../../utils/api.types';
@@ -73,6 +76,7 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
       if (currentGTochkaId) {
         loadSales(false);
       }
+      return () => dispatch(setLoading(true, TAB_TYPES.SALES));
     }, [currentGTochkaId, date]),
   );
 

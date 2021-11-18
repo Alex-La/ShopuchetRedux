@@ -19,7 +19,10 @@ import {
   View,
 } from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
-import {getReturns} from '../../../../../../redux/actions/private/tradeActions';
+import {
+  getReturns,
+  setLoading,
+} from '../../../../../../redux/actions/private/tradeActions';
 import {
   TAB_TYPES,
   TradeSessionDetail,
@@ -89,6 +92,7 @@ const Returnes: React.FC<Props> = ({navigation, route}) => {
       if (currentGTochkaId) {
         loadReturns(false, false, 0);
       }
+      return () => dispatch(setLoading(true, TAB_TYPES.RETURN));
     }, [currentGTochkaId, date]),
   );
 

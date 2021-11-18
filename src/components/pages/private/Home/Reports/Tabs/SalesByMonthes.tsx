@@ -5,6 +5,7 @@ import {ListRenderItemInfo, StyleSheet, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {
   getSalesMonth,
+  setLoading,
   setReduce,
 } from '../../../../../../redux/actions/private/reportsActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
@@ -49,6 +50,7 @@ const SalesByMonthes: React.FC = () => {
       if (currentGTochkaid) {
         loadSalesMonth(false);
       }
+      return () => dispatch(setLoading(true, TAB_TYPES.SALES_MONTH));
     }, [currentGTochkaid, date]),
   );
 

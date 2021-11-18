@@ -8,7 +8,7 @@ import {
 } from '../../types/private/conReport.types';
 
 export const initialState: ConReport = {
-  loading: false,
+  loading: true,
   refreshing: false,
   conReport: {
     sales: {

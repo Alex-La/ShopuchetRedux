@@ -18,7 +18,7 @@ import {
 } from '../../types/private/reports.types';
 
 const salesObject = {
-  loading: false,
+  loading: true,
   refreshing: false,
   reduce: false,
   data: {
@@ -29,7 +29,7 @@ const salesObject = {
 
 const initialReturns: Tab<ReturnsProducts> = {
   reduce: false,
-  loading: false,
+  loading: true,
   refreshing: false,
   data: {
     currentPage: 0,
@@ -43,7 +43,7 @@ const initialReturns: Tab<ReturnsProducts> = {
 
 const initialTopSales: Tab<TopSales> = {
   reduce: false,
-  loading: false,
+  loading: true,
   refreshing: false,
   data: {
     currentPage: 0,
@@ -57,7 +57,7 @@ const initialTopSales: Tab<TopSales> = {
 
 const initialAvgReceipt: Tab<AvgReceipt[]> = {
   reduce: false,
-  loading: false,
+  loading: true,
   refreshing: false,
   data: [],
 };

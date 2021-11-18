@@ -10,6 +10,7 @@ import {
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {
   getAvgReceipt,
+  setLoading,
   setReduce,
 } from '../../../../../../redux/actions/private/reportsActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
@@ -61,6 +62,7 @@ const AvgReceipt: React.FC = () => {
       if (currentGTochkaid) {
         loadAvgReceipt(false);
       }
+      return () => dispatch(setLoading(true, TAB_TYPES.AVG_RECEIPT));
     }, [currentGTochkaid, date]),
   );
 

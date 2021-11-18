@@ -5,6 +5,7 @@ import {StyleSheet, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {
   getTopSales,
+  setLoading,
   setReduce,
 } from '../../../../../../redux/actions/private/reportsActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
@@ -48,6 +49,7 @@ const TopSellingProducts: React.FC = () => {
       if (currentGTochkaid) {
         loadTopSales(false, !reduce);
       }
+      return () => dispatch(setLoading(true, TAB_TYPES.TOP_SALES));
     }, [currentGTochkaid, date]),
   );
 

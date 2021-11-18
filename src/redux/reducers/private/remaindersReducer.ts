@@ -18,7 +18,7 @@ const initialData: TRemainders = {
 };
 
 export const initialState: Remainders = {
-  loading: false,
+  loading: true,
   refreshing: false,
   descending: true,
   data: initialData,

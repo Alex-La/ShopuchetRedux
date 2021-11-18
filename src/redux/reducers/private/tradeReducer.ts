@@ -16,7 +16,7 @@ import {
 } from '../../types/private/trade.types';
 
 const initialSale: Tab<Sales> = {
-  loading: false,
+  loading: true,
   refreshing: false,
   data: {
     sales: {cnt: 0, income: 0, summ: 0},
@@ -32,7 +32,7 @@ const initialHead: SkladHead = {
 };
 
 const initialSklad: Tab<Sklad> = {
-  loading: false,
+  loading: true,
   refreshing: false,
   data: {
     currentPage: 0,
