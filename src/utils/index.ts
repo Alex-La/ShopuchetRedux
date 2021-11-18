@@ -30,6 +30,7 @@ export function convertDate(
   fetch: boolean = true,
 ): string {
   var d = new Date(inputFormat);
+  console.log(d.getDate());
   if (!fetch)
     return (
       d.getDate() +

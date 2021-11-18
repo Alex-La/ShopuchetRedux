@@ -180,10 +180,10 @@ const ListItem: React.FC<ListItemProps> = ({
   };
 
   const renderDate = useCallback(() => {
-    if (dateIndex === 0) {
-      return `в ${new Date(item.date).toLocaleTimeString()}`;
-    } else return `от ${convertDate(item.date)}`;
-  }, []);
+    const dateArray = item.date.split('T');
+    if (dateIndex === 0) return `в ${dateArray[1]}`;
+    else return `от ${convertDate(dateArray[0])}`;
+  }, [item]);
 
   const RenderAnchor = () => (
     <View
