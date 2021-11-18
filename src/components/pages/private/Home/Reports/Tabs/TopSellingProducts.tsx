@@ -9,6 +9,7 @@ import {
 } from '../../../../../../redux/actions/private/reportsActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
 import {getColor} from '../../../../../../utils';
+import Preloader from '../../../../../loaders/Preloader';
 import RefreshScrollView from '../../../../../loaders/RefreshScrollView';
 import DateRangeAndSort from '../DateRangeAndSort';
 import PieChart from '../PieChart';
@@ -19,15 +20,19 @@ const TopSellingProducts: React.FC = () => {
   const reduce = useAppSelector(state => state.reports.tabs.topSales.reduce);
   const data = useAppSelector(state => state.reports.tabs.topSales.data);
   const loading = useAppSelector(state => state.reports.tabs.topSales.loading);
+  const refreshing = useAppSelector(
+    state => state.reports.tabs.topSales.refreshing,
+  );
   const currentGTochkaid = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
 
   const loadTopSales = useCallback(
-    (descending: boolean) => {
+    (refreshing: boolean, descending: boolean) => {
       if (currentGTochkaid)
         dispatch(
           getTopSales(
+            refreshing,
             currentGTochkaid,
             date.datebegin,
             date.dateend,
@@ -41,15 +46,15 @@ const TopSellingProducts: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaid) {
-        loadTopSales(!reduce);
+        loadTopSales(false, !reduce);
       }
     }, [currentGTochkaid, date]),
   );
 
-  const handleRefresh = () => loadTopSales(!reduce);
+  const handleRefresh = () => loadTopSales(true, !reduce);
   const handleReduce = () => {
     dispatch(setReduce(!reduce, TAB_TYPES.TOP_SALES));
-    loadTopSales(reduce);
+    loadTopSales(false, reduce);
   };
 
   const ListHeader = () => (
@@ -79,9 +84,11 @@ const TopSellingProducts: React.FC = () => {
     </Layout>
   );
 
+  if (loading) return <Preloader />;
+
   return (
     <Layout style={{flex: 1}}>
-      <RefreshScrollView refreshing={loading} onRefresh={handleRefresh}>
+      <RefreshScrollView refreshing={refreshing} onRefresh={handleRefresh}>
         <ListHeader />
         <View style={{padding: 16}}>
           {data.details.map((item, index) => (

@@ -15,6 +15,7 @@ import {
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
 import {convertDate} from '../../../../../../utils';
 import {AvgReceipt as TAvgReceipt} from '../../../../../../utils/api.types';
+import Preloader from '../../../../../loaders/Preloader';
 import DateRangeAndSort from '../DateRangeAndSort';
 
 const AvgReceipt: React.FC = () => {
@@ -27,6 +28,9 @@ const AvgReceipt: React.FC = () => {
   const loading = useAppSelector(
     state => state.reports.tabs.avgReceipt.loading,
   );
+  const refreshing = useAppSelector(
+    state => state.reports.tabs.avgReceipt.refreshing,
+  );
   const percent =
     100 /
     Math.max.apply(
@@ -37,23 +41,33 @@ const AvgReceipt: React.FC = () => {
     state => state.main.tradePoint?.gTochkaId,
   );
 
-  const loadAvgReceipt = useCallback(() => {
-    if (currentGTochkaid)
-      dispatch(getAvgReceipt(currentGTochkaid, date.datebegin, date.dateend));
-  }, [currentGTochkaid, date]);
+  const loadAvgReceipt = useCallback(
+    (refreshing: boolean) => {
+      if (currentGTochkaid)
+        dispatch(
+          getAvgReceipt(
+            refreshing,
+            currentGTochkaid,
+            date.datebegin,
+            date.dateend,
+          ),
+        );
+    },
+    [currentGTochkaid, date],
+  );
 
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaid) {
-        loadAvgReceipt();
+        loadAvgReceipt(false);
       }
     }, [currentGTochkaid, date]),
   );
 
-  const handleRefresh = () => loadAvgReceipt();
+  const handleRefresh = () => loadAvgReceipt(true);
   const handleReduce = () => {
     dispatch(setReduce(!reduce, TAB_TYPES.AVG_RECEIPT));
-    loadAvgReceipt();
+    loadAvgReceipt(false);
   };
 
   const ListHeader = () => (
@@ -66,10 +80,12 @@ const AvgReceipt: React.FC = () => {
     </Layout>
   );
 
+  if (loading) return <Preloader />;
+
   return (
     <List
       style={{backgroundColor: theme['background-basic-color-1']}}
-      refreshing={loading}
+      refreshing={refreshing}
       onRefresh={handleRefresh}
       ListHeaderComponent={ListHeader}
       data={avgReceipt.data}

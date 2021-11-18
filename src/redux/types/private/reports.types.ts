@@ -11,6 +11,7 @@ import {
 export type Tab<T> = {
   reduce: boolean;
   loading: boolean;
+  refreshing: boolean;
   data: T;
 };
 
@@ -41,6 +42,7 @@ export enum TAB_TYPES {
 export enum REPORTS_ACTION_TYPES {
   SET_DATE = 'REPORTS_ACTION/SET_DATE',
   SET_LOADING = 'REPORTS_ACTION/SET_LOADING',
+  SET_REFRESHING = 'REPORTS_ACTION/SET_REFRESHING',
   SET_REDUCE = 'REPORTS_ACTION/SET_REDUCE',
   SET_SALES_GROUPS = 'REPORTS_ACTION/SET_SALES_GROUPS',
   SET_SALES_PRODUCTS = 'REPORTS_ACTION/SET_SALES_PRODUCTS',
@@ -51,6 +53,12 @@ export enum REPORTS_ACTION_TYPES {
 }
 
 export type SetLoadingAction = {
+  type: string;
+  payload: boolean;
+  tab: TAB_TYPES;
+};
+
+export type SetRefreshingAction = {
   type: string;
   payload: boolean;
   tab: TAB_TYPES;
@@ -96,6 +104,7 @@ export type SetAvgReceiptAction = {
 export type ReportsActions =
   | SetDateAction
   | SetLoadingAction
+  | SetRefreshingAction
   | SetReduceAction
   | SetSalesGroupsAction
   | SetSalesProductsAction

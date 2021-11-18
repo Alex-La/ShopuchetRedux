@@ -7,6 +7,7 @@ import {
   SetAvgReceiptAction,
   SetLoadingAction,
   SetReduceAction,
+  SetRefreshingAction,
   SetReturnsProductsAction,
   SetSalesGroupsAction,
   SetSalesMonthAction,
@@ -18,6 +19,7 @@ import {
 
 const salesObject = {
   loading: false,
+  refreshing: false,
   reduce: false,
   data: {
     head: {cnt: 0, summ: 0, income: 0},
@@ -28,6 +30,7 @@ const salesObject = {
 const initialReturns: Tab<ReturnsProducts> = {
   reduce: false,
   loading: false,
+  refreshing: false,
   data: {
     currentPage: 0,
     hasNext: false,
@@ -41,6 +44,7 @@ const initialReturns: Tab<ReturnsProducts> = {
 const initialTopSales: Tab<TopSales> = {
   reduce: false,
   loading: false,
+  refreshing: false,
   data: {
     currentPage: 0,
     hasNext: false,
@@ -54,6 +58,7 @@ const initialTopSales: Tab<TopSales> = {
 const initialAvgReceipt: Tab<AvgReceipt[]> = {
   reduce: false,
   loading: false,
+  refreshing: false,
   data: [],
 };
 
@@ -88,6 +93,18 @@ export const reports = (
           [loadingAction.tab]: {
             ...state.tabs[loadingAction.tab],
             loading: loadingAction.payload,
+          },
+        },
+      };
+    case REPORTS_ACTION_TYPES.SET_REFRESHING:
+      const refAction = action as SetRefreshingAction;
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          [refAction.tab]: {
+            ...state.tabs[refAction.tab],
+            refreshing: refAction.payload,
           },
         },
       };

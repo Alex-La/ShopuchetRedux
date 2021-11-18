@@ -11,6 +11,7 @@ import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
 import {even} from '../../../../../../utils';
 import {ReturnsProductsDetail} from '../../../../../../utils/api.types';
 import FooterLoader from '../../../../../general/FooterLoader';
+import Preloader from '../../../../../loaders/Preloader';
 import DateRangeAndSort from '../DateRangeAndSort';
 
 const ReturnsByProducts: React.FC = () => {
@@ -23,6 +24,9 @@ const ReturnsByProducts: React.FC = () => {
   const loading = useAppSelector(
     state => state.reports.tabs.returnsByProducts.loading,
   );
+  const refreshing = useAppSelector(
+    state => state.reports.tabs.returnsByProducts.refreshing,
+  );
   const returnsByProducts = useAppSelector(
     state => state.reports.tabs.returnsByProducts,
   );
@@ -34,10 +38,16 @@ const ReturnsByProducts: React.FC = () => {
   const [isDataLoaded, setIsDataLoaded] = useState<boolean>(true);
 
   const loadSalesGroups = useCallback(
-    (loadMore: boolean, page: number, descending: boolean) => {
+    (
+      refreshing: boolean,
+      loadMore: boolean,
+      page: number,
+      descending: boolean,
+    ) => {
       if (currentGTochkaid)
         return dispatch(
           getReturnsProducts(
+            refreshing,
             loadMore,
             currentGTochkaid,
             date.datebegin,
@@ -53,23 +63,24 @@ const ReturnsByProducts: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaid) {
-        loadSalesGroups(false, 0, !returnsByProducts.reduce);
+        loadSalesGroups(false, false, 0, !returnsByProducts.reduce);
       }
     }, [currentGTochkaid, date]),
   );
 
   const handleReduce = () => {
     dispatch(setReduce(!returnsByProducts.reduce, TAB_TYPES.RETURNS_PRODUCTS));
-    loadSalesGroups(false, 0, !returnsByProducts.reduce);
+    loadSalesGroups(false, false, 0, !returnsByProducts.reduce);
   };
 
   const handleRefresh = () =>
-    loadSalesGroups(false, 0, returnsByProducts.reduce);
+    loadSalesGroups(true, false, 0, returnsByProducts.reduce);
 
   const handleLoadMore = () => {
     if (isDataLoaded && returnsByProducts.data.hasNext) {
       setIsDataLoaded(false);
       loadSalesGroups(
+        false,
         true,
         returnsByProducts.data.currentPage + 1,
         returnsByProducts.reduce,
@@ -108,9 +119,11 @@ const ReturnsByProducts: React.FC = () => {
 
   const ListFooter = () => (isDataLoaded ? <Fragment /> : <FooterLoader />);
 
+  if (loading) return <Preloader />;
+
   return (
     <List
-      refreshing={loading}
+      refreshing={refreshing}
       onRefresh={handleRefresh}
       data={details}
       ListHeaderComponent={ListHeader}

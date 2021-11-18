@@ -10,6 +10,7 @@ import {
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
 import {even} from '../../../../../../utils';
 import {SalesProductsDetails} from '../../../../../../utils/api.types';
+import Preloader from '../../../../../loaders/Preloader';
 import SalesHeader from '../SalesHeader';
 
 const SalesByGroups: React.FC = () => {
@@ -20,27 +21,44 @@ const SalesByGroups: React.FC = () => {
   const loading = useAppSelector(
     state => state.reports.tabs.salesGroups.loading,
   );
+  const refreshing = useAppSelector(
+    state => state.reports.tabs.salesGroups.refreshing,
+  );
   const currentGTochkaid = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
 
-  const loadSalesGroups = useCallback(() => {
-    if (currentGTochkaid)
-      dispatch(getSalesGroups(currentGTochkaid, date.datebegin, date.dateend));
-  }, [currentGTochkaid, date]);
+  const loadSalesGroups = useCallback(
+    (refreshing: boolean) => {
+      if (currentGTochkaid)
+        dispatch(
+          getSalesGroups(
+            refreshing,
+            currentGTochkaid,
+            date.datebegin,
+            date.dateend,
+          ),
+        );
+    },
+    [currentGTochkaid, date],
+  );
 
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaid) {
-        loadSalesGroups();
+        loadSalesGroups(false);
       }
     }, [currentGTochkaid, date]),
   );
 
   const handleReduce = () => {
     dispatch(setReduce(!reduce, TAB_TYPES.SALES_GROUPS));
-    loadSalesGroups();
+    loadSalesGroups(false);
   };
+
+  const handleRefresh = () => loadSalesGroups(true);
+
+  if (loading) return <Preloader />;
 
   return (
     <List
@@ -52,8 +70,8 @@ const SalesByGroups: React.FC = () => {
           head={data.head}
         />
       }
-      refreshing={loading}
-      onRefresh={loadSalesGroups}
+      refreshing={refreshing}
+      onRefresh={handleRefresh}
       data={data.details}
       renderItem={ListItem}
     />

@@ -10,6 +10,7 @@ import {
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
 import {even} from '../../../../../../utils';
 import {SalesProductsDetails} from '../../../../../../utils/api.types';
+import Preloader from '../../../../../loaders/Preloader';
 import SalesHeader from '../SalesHeader';
 
 const SalesByProducts: React.FC = () => {
@@ -22,30 +23,45 @@ const SalesByProducts: React.FC = () => {
   const loading = useAppSelector(
     state => state.reports.tabs.salesProducts.loading,
   );
+  const refreshing = useAppSelector(
+    state => state.reports.tabs.salesProducts.refreshing,
+  );
 
   const currentGTochkaid = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
 
-  const loadSalesProducts = useCallback(() => {
-    if (currentGTochkaid)
-      dispatch(
-        getSalesProducts(currentGTochkaid, date.datebegin, date.dateend),
-      );
-  }, [currentGTochkaid, date]);
+  const loadSalesProducts = useCallback(
+    (refreshing: boolean) => {
+      if (currentGTochkaid)
+        dispatch(
+          getSalesProducts(
+            refreshing,
+            currentGTochkaid,
+            date.datebegin,
+            date.dateend,
+          ),
+        );
+    },
+    [currentGTochkaid, date],
+  );
 
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaid) {
-        loadSalesProducts();
+        loadSalesProducts(false);
       }
     }, [currentGTochkaid, date]),
   );
 
   const handleReduce = () => {
     dispatch(setReduce(!reduce, TAB_TYPES.SALES_PRODUCTS));
-    loadSalesProducts();
+    loadSalesProducts(false);
   };
+
+  const handleRefresh = () => loadSalesProducts(true);
+
+  if (loading) return <Preloader />;
 
   return (
     <List
@@ -57,8 +73,8 @@ const SalesByProducts: React.FC = () => {
           head={data.head}
         />
       }
-      refreshing={loading}
-      onRefresh={loadSalesProducts}
+      refreshing={refreshing}
+      onRefresh={handleRefresh}
       data={data.details}
       renderItem={ListItem}
     />

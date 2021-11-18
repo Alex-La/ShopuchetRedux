@@ -10,6 +10,7 @@ import {
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
 import {convertDate, even} from '../../../../../../utils';
 import {SalesMonthDetails} from '../../../../../../utils/api.types';
+import Preloader from '../../../../../loaders/Preloader';
 import SalesHeader from '../SalesHeader';
 
 const SalesByMonthes: React.FC = () => {
@@ -20,28 +21,45 @@ const SalesByMonthes: React.FC = () => {
   const loading = useAppSelector(
     state => state.reports.tabs.salesMonth.loading,
   );
+  const refreshing = useAppSelector(
+    state => state.reports.tabs.salesMonth.refreshing,
+  );
 
   const currentGTochkaid = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
 
-  const loadSalesMonth = useCallback(() => {
-    if (currentGTochkaid)
-      dispatch(getSalesMonth(currentGTochkaid, date.datebegin, date.dateend));
-  }, [currentGTochkaid, date]);
+  const loadSalesMonth = useCallback(
+    (refreshing: boolean) => {
+      if (currentGTochkaid)
+        dispatch(
+          getSalesMonth(
+            refreshing,
+            currentGTochkaid,
+            date.datebegin,
+            date.dateend,
+          ),
+        );
+    },
+    [currentGTochkaid, date],
+  );
 
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaid) {
-        loadSalesMonth();
+        loadSalesMonth(false);
       }
     }, [currentGTochkaid, date]),
   );
 
   const handleReduce = () => {
     dispatch(setReduce(!reduce, TAB_TYPES.SALES_MONTH));
-    loadSalesMonth();
+    loadSalesMonth(false);
   };
+
+  const handleRefresh = () => loadSalesMonth(true);
+
+  if (loading) return <Preloader />;
 
   return (
     <List
@@ -53,8 +71,8 @@ const SalesByMonthes: React.FC = () => {
           head={data.head}
         />
       }
-      refreshing={loading}
-      onRefresh={loadSalesMonth}
+      refreshing={refreshing}
+      onRefresh={handleRefresh}
       data={data.details}
       renderItem={ListItem}
     />
