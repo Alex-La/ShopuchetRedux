@@ -63,12 +63,12 @@ const ListItem: React.FC<Props> = ({
         onLongPress={toggle}
         key={index}
         style={styles.wrap}
-        underlayColor={theme['color-primary-transparent-200']}>
+        underlayColor={theme['color-basic-transparent-200']}>
         <View
           style={[
             styles.item,
             {
-              borderColor: theme['color-primary-500'],
+              borderColor: theme['color-basic-600'],
             },
           ]}>
           <Text numberOfLines={1} status="primary" style={styles.product}>
