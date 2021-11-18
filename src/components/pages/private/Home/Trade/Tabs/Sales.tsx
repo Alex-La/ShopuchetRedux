@@ -13,7 +13,6 @@ import {
 import React, {useCallback, useEffect, useState} from 'react';
 import {ImageProps, ListRenderItemInfo, StyleSheet, View} from 'react-native';
 import {TouchableHighlight} from 'react-native-gesture-handler';
-import usePrevious from '../../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {getSales} from '../../../../../../redux/actions/private/tradeActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/trade.types';
@@ -49,9 +48,6 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
   const currentGTochkaId = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
-  const prevGTochkaId = usePrevious<number>(currentGTochkaId);
-  const prevDatebegin = usePrevious<Date>(date.datebegin);
-  const prevDateend = usePrevious<Date>(date.dateend);
 
   const loadSales = useCallback(() => {
     if (currentGTochkaId)
@@ -68,12 +64,7 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaId) {
-        if (
-          currentGTochkaId !== prevGTochkaId ||
-          date.datebegin !== prevDatebegin ||
-          date.dateend !== prevDateend
-        )
-          loadSales();
+        loadSales();
       }
     }, [currentGTochkaId, date]),
   );

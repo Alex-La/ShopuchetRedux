@@ -18,7 +18,6 @@ const ConReport: React.FC = () => {
   const currentGTochkaId = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
-  const prevGTochkaId = usePrevious<number>(currentGTochkaId);
 
   const [date, setDate] = useState<Date>(new Date());
   const [open, setOpen] = useState<boolean>(false);
@@ -32,9 +31,8 @@ const ConReport: React.FC = () => {
 
   useFocusEffect(
     useCallback(() => {
-      if (currentGTochkaId && currentGTochkaId !== prevGTochkaId)
-        loadConReport(date);
-    }, [currentGTochkaId, prevGTochkaId]),
+      loadConReport(date);
+    }, [currentGTochkaId]),
   );
 
   const increaseDate = () => {

@@ -2,7 +2,6 @@ import {useFocusEffect} from '@react-navigation/core';
 import {Divider, Layout, Text} from '@ui-kitten/components';
 import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import usePrevious from '../../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {
   getTopSales,
@@ -23,9 +22,6 @@ const TopSellingProducts: React.FC = () => {
   const currentGTochkaid = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
-  const prevGTochkaId = usePrevious<number>(currentGTochkaid);
-  const prevDatebegin = usePrevious<Date>(date.datebegin);
-  const prevDateend = usePrevious<Date>(date.dateend);
 
   const loadTopSales = useCallback(
     (descending: boolean) => {
@@ -45,14 +41,9 @@ const TopSellingProducts: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaid) {
-        if (
-          currentGTochkaid !== prevGTochkaId ||
-          date.datebegin !== prevDatebegin ||
-          date.dateend !== prevDateend
-        )
-          loadTopSales(!reduce);
+        loadTopSales(!reduce);
       }
-    }, [currentGTochkaid, prevGTochkaId, date, prevDateend, prevDatebegin]),
+    }, [currentGTochkaid, date]),
   );
 
   const handleRefresh = () => loadTopSales(!reduce);

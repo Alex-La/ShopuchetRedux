@@ -8,7 +8,6 @@ import InfoItem from './InfoItem';
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
 import {getMainData} from '../../../../../redux/actions/private/mainActions';
 import {useFocusEffect} from '@react-navigation/core';
-import usePrevious from '../../../../../hooks/previous.hook';
 import MainGraph from './MainGraph';
 
 const Main: React.FC = () => {
@@ -17,13 +16,10 @@ const Main: React.FC = () => {
   const tradePoint = useAppSelector(state => state.main.tradePoint);
   const loading = useAppSelector(state => state.main.loading);
 
-  const prevTradePointId = usePrevious<number>(tradePoint?.gTochkaId);
-
   useFocusEffect(
     React.useCallback(() => {
-      if (tradePoint?.gTochkaId && tradePoint.gTochkaId !== prevTradePointId)
-        dispatch(getMainData(tradePoint.gTochkaId));
-    }, [tradePoint?.gTochkaId, prevTradePointId]),
+      if (tradePoint?.gTochkaId) dispatch(getMainData(tradePoint.gTochkaId));
+    }, [tradePoint?.gTochkaId]),
   );
 
   const onRefresh = () =>

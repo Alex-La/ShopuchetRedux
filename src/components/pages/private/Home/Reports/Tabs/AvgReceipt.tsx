@@ -1,13 +1,12 @@
 import {useFocusEffect} from '@react-navigation/core';
 import {Layout, List, Text, useTheme} from '@ui-kitten/components';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback} from 'react';
 import {
   ListRenderItemInfo,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import usePrevious from '../../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {
   getAvgReceipt,
@@ -37,9 +36,6 @@ const AvgReceipt: React.FC = () => {
   const currentGTochkaid = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
-  const prevGTochkaId = usePrevious<number>(currentGTochkaid);
-  const prevDatebegin = usePrevious<Date>(date.datebegin);
-  const prevDateend = usePrevious<Date>(date.dateend);
 
   const loadAvgReceipt = useCallback(() => {
     if (currentGTochkaid)
@@ -49,14 +45,9 @@ const AvgReceipt: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaid) {
-        if (
-          currentGTochkaid !== prevGTochkaId ||
-          date.datebegin !== prevDatebegin ||
-          date.dateend !== prevDateend
-        )
-          loadAvgReceipt();
+        loadAvgReceipt();
       }
-    }, [currentGTochkaid, prevGTochkaId, date, prevDateend, prevDatebegin]),
+    }, [currentGTochkaid, date]),
   );
 
   const handleRefresh = () => loadAvgReceipt();

@@ -2,7 +2,6 @@ import {useFocusEffect} from '@react-navigation/native';
 import {Layout, List, Text} from '@ui-kitten/components';
 import React, {useCallback} from 'react';
 import {ListRenderItemInfo, StyleSheet, View} from 'react-native';
-import usePrevious from '../../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {
   getSalesMonth,
@@ -25,9 +24,6 @@ const SalesByMonthes: React.FC = () => {
   const currentGTochkaid = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
-  const prevGTochkaId = usePrevious<number>(currentGTochkaid);
-  const prevDatebegin = usePrevious<Date>(date.datebegin);
-  const prevDateend = usePrevious<Date>(date.dateend);
 
   const loadSalesMonth = useCallback(() => {
     if (currentGTochkaid)
@@ -37,14 +33,9 @@ const SalesByMonthes: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaid) {
-        if (
-          currentGTochkaid !== prevGTochkaId ||
-          date.datebegin !== prevDatebegin ||
-          date.dateend !== prevDateend
-        )
-          loadSalesMonth();
+        loadSalesMonth();
       }
-    }, [currentGTochkaid, prevGTochkaId, date, prevDateend, prevDatebegin]),
+    }, [currentGTochkaid, date]),
   );
 
   const handleReduce = () => {

@@ -2,7 +2,6 @@ import {useFocusEffect} from '@react-navigation/core';
 import {IndexPath, Select, SelectItem, Text} from '@ui-kitten/components';
 import React, {useCallback} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import usePrevious from '../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
 import {getMainGraph} from '../../../../../redux/actions/private/mainActions';
 import {
@@ -31,7 +30,6 @@ const MainGraph: React.FC = () => {
   const currentTradePointId = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
-  const prevTradePointId = usePrevious<number>(currentTradePointId);
 
   const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
 
@@ -47,7 +45,7 @@ const MainGraph: React.FC = () => {
             displayValue.date.dateend,
           ),
         );
-    }, [currentTradePointId, prevTradePointId, displayValue]),
+    }, [currentTradePointId, displayValue]),
   );
 
   const renderOption = (data: DateSelect, index: number) => (

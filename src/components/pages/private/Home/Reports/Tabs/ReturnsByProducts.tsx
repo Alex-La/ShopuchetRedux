@@ -2,7 +2,6 @@ import {useFocusEffect} from '@react-navigation/core';
 import {Divider, Layout, List, Text} from '@ui-kitten/components';
 import React, {Fragment, useCallback, useState} from 'react';
 import {ListRenderItemInfo, StyleSheet, View} from 'react-native';
-import usePrevious from '../../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {
   getReturnsProducts,
@@ -31,9 +30,6 @@ const ReturnsByProducts: React.FC = () => {
   const currentGTochkaid = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
-  const prevGTochkaId = usePrevious<number>(currentGTochkaid);
-  const prevDatebegin = usePrevious<Date>(date.datebegin);
-  const prevDateend = usePrevious<Date>(date.dateend);
 
   const [isDataLoaded, setIsDataLoaded] = useState<boolean>(true);
 
@@ -57,14 +53,9 @@ const ReturnsByProducts: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaid) {
-        if (
-          currentGTochkaid !== prevGTochkaId ||
-          date.datebegin !== prevDatebegin ||
-          date.dateend !== prevDateend
-        )
-          loadSalesGroups(false, 0, !returnsByProducts.reduce);
+        loadSalesGroups(false, 0, !returnsByProducts.reduce);
       }
-    }, [currentGTochkaid, prevGTochkaId, date, prevDateend, prevDatebegin]),
+    }, [currentGTochkaid, date]),
   );
 
   const handleReduce = () => {

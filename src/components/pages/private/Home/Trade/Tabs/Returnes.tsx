@@ -18,14 +18,12 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import usePrevious from '../../../../../../hooks/previous.hook';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {getReturns} from '../../../../../../redux/actions/private/tradeActions';
 import {
   TAB_TYPES,
   TradeSessionDetail,
 } from '../../../../../../redux/types/private/trade.types';
-import {convertDate} from '../../../../../../utils';
 import {SkladDetail} from '../../../../../../utils/api.types';
 import {
   PrivateStackNavigator,
@@ -57,9 +55,6 @@ const Returnes: React.FC<Props> = ({navigation, route}) => {
   const currentGTochkaId = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
-  const prevGTochkaId = usePrevious<number>(currentGTochkaId);
-  const prevDatebegin = usePrevious<Date>(date.datebegin);
-  const prevDateend = usePrevious<Date>(date.dateend);
 
   const loadReturns = useCallback(
     (loadMore: boolean, page: number) => {
@@ -87,12 +82,7 @@ const Returnes: React.FC<Props> = ({navigation, route}) => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaId) {
-        if (
-          currentGTochkaId !== prevGTochkaId ||
-          date.datebegin !== prevDatebegin ||
-          date.dateend !== prevDateend
-        )
-          loadReturns(false, 0);
+        loadReturns(false, 0);
       }
     }, [currentGTochkaId, date]),
   );
