@@ -7,6 +7,7 @@ import {
 
 export type Main = {
   loading: boolean;
+  refreshing: boolean;
   tradePoints: TradePoints;
   tradePoint: TradePoint | undefined;
   mainData: MainData;
@@ -15,6 +16,7 @@ export type Main = {
 
 export enum MAIN_ACTION_TYPES {
   SET_LOADING = 'MAIN_ACTION/SET_LOADING',
+  SET_REFRESHING = 'MAIN_ACTION/SET_REFRESHING',
   SET_TRADE_POINTS = 'MAIN_ACTION/SET_TRADE_POINTS',
   SET_TRADE_POINT = 'MAIN_ACTION/SET_TRADE_POINT',
   SET_MAIN_DATA = 'MAIN_ACTION/SET_MAIN_DATA',
@@ -22,6 +24,11 @@ export enum MAIN_ACTION_TYPES {
 }
 
 export type SetLoadingAction = {
+  type: string;
+  payload: boolean;
+};
+
+export type SetRefreshingAction = {
   type: string;
   payload: boolean;
 };
@@ -48,6 +55,7 @@ export type SetMainGraphAction = {
 
 export type MainActions =
   | SetLoadingAction
+  | SetRefreshingAction
   | SetTradePointsAction
   | SetTradePointAction
   | SetMainDataAction

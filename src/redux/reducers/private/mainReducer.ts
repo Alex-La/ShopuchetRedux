@@ -6,6 +6,7 @@ import {
   SetLoadingAction,
   SetMainDataAction,
   SetMainGraphAction,
+  SetRefreshingAction,
   SetTradePointAction,
   SetTradePointsAction,
 } from '../../types/private/main.types';
@@ -33,6 +34,7 @@ const initialMainData: MainData = {
 
 export const initialState: Main = {
   loading: false,
+  refreshing: false,
   tradePoints: [],
   tradePoint: initialTradePoint,
   mainData: initialMainData,
@@ -43,6 +45,8 @@ export const main = (state: Main = initialState, action: MainActions): Main => {
   switch (action.type) {
     case MAIN_ACTION_TYPES.SET_LOADING:
       return {...state, loading: (action as SetLoadingAction).payload};
+    case MAIN_ACTION_TYPES.SET_REFRESHING:
+      return {...state, refreshing: (action as SetRefreshingAction).payload};
     case MAIN_ACTION_TYPES.SET_TRADE_POINTS:
       return {...state, tradePoints: (action as SetTradePointsAction).payload};
     case MAIN_ACTION_TYPES.SET_TRADE_POINT:

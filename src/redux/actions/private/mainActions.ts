@@ -7,7 +7,6 @@ import {
   TradePoints,
 } from '../../../utils/api.types';
 import {RootState} from '../../store';
-import {SetAppLoadingAction} from '../../types/fetch.types';
 import {
   SetMainDataAction,
   MAIN_ACTION_TYPES,
@@ -16,11 +15,18 @@ import {
   SetLoadingAction,
   SetMainGraphAction,
   MainActions,
+  SetRefreshingAction,
 } from '../../types/private/main.types';
 import {handleError, setAppLoading} from '../fetchActions';
+import {setRefreshing} from './remaindersActions';
 
 const setLoading = (loading: boolean): SetLoadingAction => ({
   type: MAIN_ACTION_TYPES.SET_LOADING,
+  payload: loading,
+});
+
+const SetRefreshing = (loading: boolean): SetRefreshingAction => ({
+  type: MAIN_ACTION_TYPES.SET_REFRESHING,
   payload: loading,
 });
 
@@ -67,17 +73,23 @@ export const getTradePoints =
   };
 
 export const getMainData =
-  (gtochkaid: number): ThunkAction<void, RootState, unknown, MainActions> =>
+  (
+    refreshing: boolean,
+    gtochkaid: number,
+  ): ThunkAction<void, RootState, unknown, MainActions> =>
   dispatch => {
-    dispatch(setLoading(true));
+    if (refreshing) dispatch(setRefreshing(true));
+    else dispatch(setLoading(true));
     api.main
       .getMain(gtochkaid)
       .then(res => {
         dispatch(setMainData(res.data));
         dispatch(setLoading(false));
+        dispatch(setRefreshing(false));
       })
       .catch(e => {
         dispatch(setLoading(false));
+        dispatch(setRefreshing(false));
         dispatch(handleError(e.response));
       });
   };
@@ -89,15 +101,15 @@ export const getMainGraph =
     dateend: Date,
   ): ThunkAction<any, RootState, unknown, MainActions> =>
   dispatch => {
-    dispatch(setLoading(true));
+    dispatch(setRefreshing(true));
     api.main
       .getMainGraph(gtochkaid, datebegin, dateend)
       .then(res => {
         dispatch(setMainGrahp(res.data));
-        dispatch(setLoading(false));
+        dispatch(setRefreshing(false));
       })
       .catch(e => {
-        dispatch(setLoading(false));
+        dispatch(setRefreshing(false));
         dispatch(handleError(e.response));
       });
   };

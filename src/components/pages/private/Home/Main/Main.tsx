@@ -1,33 +1,73 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Divider, Layout, Text} from '@ui-kitten/components';
+import {Divider, IndexPath, Layout, Text} from '@ui-kitten/components';
 
 import RefreshScrollView from '../../../../loaders/RefreshScrollView';
 import InfoItem from './InfoItem';
 
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
-import {getMainData} from '../../../../../redux/actions/private/mainActions';
+import {
+  getMainData,
+  getMainGraph,
+} from '../../../../../redux/actions/private/mainActions';
 import {useFocusEffect} from '@react-navigation/core';
 import MainGraph from './MainGraph';
+import Preloader from '../../../../loaders/Preloader';
+import {
+  DateRange,
+  getDayRange,
+  getMonthRange,
+  getWeekRange,
+} from '../../../../../utils';
+
+export type DateSelect = {
+  name: string;
+  date: DateRange;
+};
+
+const data: DateSelect[] = [
+  {name: 'День', date: getDayRange()},
+  {name: 'Неделя', date: getWeekRange()},
+  {name: 'Месяц', date: getMonthRange()},
+];
 
 const Main: React.FC = () => {
   const dispatch = useAppDispatch();
   const mainData = useAppSelector(state => state.main.mainData);
   const tradePoint = useAppSelector(state => state.main.tradePoint);
   const loading = useAppSelector(state => state.main.loading);
+  const refreshing = useAppSelector(state => state.main.refreshing);
+
+  const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
+  const displayValue = data[selectedIndex.row];
 
   useFocusEffect(
     React.useCallback(() => {
-      if (tradePoint?.gTochkaId) dispatch(getMainData(tradePoint.gTochkaId));
-    }, [tradePoint?.gTochkaId]),
+      if (tradePoint) dispatch(getMainData(false, tradePoint.gTochkaId));
+    }, [tradePoint]),
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (tradePoint)
+        dispatch(
+          getMainGraph(
+            tradePoint.gTochkaId,
+            displayValue.date.datebegin,
+            displayValue.date.dateend,
+          ),
+        );
+    }, [tradePoint, displayValue]),
   );
 
   const onRefresh = () =>
-    dispatch(getMainData(tradePoint ? tradePoint.gTochkaId : 0));
+    tradePoint && dispatch(getMainData(true, tradePoint.gTochkaId));
+
+  if (loading) return <Preloader />;
 
   return (
     <Layout style={styles.wrap}>
-      <RefreshScrollView refreshing={loading} onRefresh={onRefresh}>
+      <RefreshScrollView refreshing={refreshing} onRefresh={onRefresh}>
         <View style={styles.row}>
           <Text category="h6" status="primary">
             В кассе на сегодня:
@@ -40,7 +80,12 @@ const Main: React.FC = () => {
         <InfoItem title="Сегодня" info={mainData.day} />
         <InfoItem title="За последние 7 дней" info={mainData.week} />
         <InfoItem title="За последние 30 дней" info={mainData.month} />
-        <MainGraph />
+        <MainGraph
+          data={data}
+          displayValue={displayValue}
+          selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
+        />
       </RefreshScrollView>
     </Layout>
   );

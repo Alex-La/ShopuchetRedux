@@ -1,52 +1,24 @@
-import {useFocusEffect} from '@react-navigation/core';
 import {IndexPath, Select, SelectItem, Text} from '@ui-kitten/components';
-import React, {useCallback} from 'react';
+import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {useAppDispatch, useAppSelector} from '../../../../../redux';
-import {getMainGraph} from '../../../../../redux/actions/private/mainActions';
-import {
-  convertDate,
-  DateRange,
-  getDayRange,
-  getMonthRange,
-  getWeekRange,
-} from '../../../../../utils';
+import {useAppSelector} from '../../../../../redux';
+import {convertDate} from '../../../../../utils';
+import {DateSelect} from './Main';
 
-type DateSelect = {
-  name: string;
-  date: DateRange;
+type Props = {
+  displayValue: DateSelect;
+  selectedIndex: IndexPath;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<IndexPath>>;
+  data: DateSelect[];
 };
 
-const data: DateSelect[] = [
-  {name: 'День', date: getDayRange()},
-  {name: 'Неделя', date: getWeekRange()},
-  {name: 'Месяц', date: getMonthRange()},
-];
-
-const MainGraph: React.FC = () => {
-  const dispatch = useAppDispatch();
+const MainGraph: React.FC<Props> = ({
+  displayValue,
+  selectedIndex,
+  setSelectedIndex,
+  data,
+}) => {
   const mainGraph = useAppSelector(state => state.main.mainGraph);
-
-  const currentTradePointId = useAppSelector(
-    state => state.main.tradePoint?.gTochkaId,
-  );
-
-  const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
-
-  const displayValue = data[selectedIndex.row];
-
-  useFocusEffect(
-    useCallback(() => {
-      if (currentTradePointId)
-        dispatch(
-          getMainGraph(
-            currentTradePointId,
-            displayValue.date.datebegin,
-            displayValue.date.dateend,
-          ),
-        );
-    }, [currentTradePointId, displayValue]),
-  );
 
   const renderOption = (data: DateSelect, index: number) => (
     <SelectItem title={data.name} key={index} />
