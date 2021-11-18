@@ -22,29 +22,14 @@ const Friends: React.FC<Props> = ({navigation}) => {
   const tradePoints = useAppSelector(state => state.main.tradePoints);
 
   useEffect(() => {
-    dispatch(loadFriends(false));
-  }, []);
+    dispatch(loadFriends(false, tradePoints.length));
+  }, [tradePoints]);
 
-  const onRefresh = () => dispatch(loadFriends(true));
+  const onRefresh = () => dispatch(loadFriends(true, tradePoints.length));
 
   const navToModal = () => navigation.navigate('AddFriendModal');
 
   if (loading) return <Preloader />;
-
-  const data = friends.reduce<Friend[]>((prev, curr) => {
-    const index = prev.findIndex(friend => friend.login === curr.login);
-    if (index !== -1)
-      prev[index].nameGTochka =
-        prev[index].nameGTochka + ', ' + curr.nameGTochka;
-    else prev.push(curr);
-    return prev.map(pr => ({
-      ...pr,
-      nameGTochka:
-        pr.nameGTochka.split(',').length === tradePoints.length
-          ? 'Все торговые точки'
-          : pr.nameGTochka,
-    }));
-  }, []);
 
   return (
     <Layout style={{flex: 1}}>
@@ -52,7 +37,7 @@ const Friends: React.FC<Props> = ({navigation}) => {
         refreshing={refreshing}
         onRefresh={onRefresh}
         ItemSeparatorComponent={Divider}
-        data={data}
+        data={friends}
         renderItem={RenderItem}
       />
       <Divider />

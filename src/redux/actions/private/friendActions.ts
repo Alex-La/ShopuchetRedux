@@ -20,14 +20,16 @@ const setRefreshing = (loading: boolean): SetRefreshingAction => ({
   payload: loading,
 });
 
-const getFriends = (friends: Friend[]): GetFriendsAction => ({
+const getFriends = (friends: Friend[], length: number): GetFriendsAction => ({
   type: FRIENDS_ACTION_TYPES.GET_FRIENDS,
   payload: friends,
+  tradePointsLength: length,
 });
 
 export const loadFriends =
   (
     refreshing: boolean,
+    length: number,
   ): ThunkAction<
     void,
     RootState,
@@ -40,7 +42,7 @@ export const loadFriends =
     api.friends
       .getFriends()
       .then(res => {
-        dispatch(getFriends(res.data));
+        dispatch(getFriends(res.data, length));
         dispatch(setLoading(false));
         dispatch(setRefreshing(false));
       })
@@ -55,6 +57,7 @@ export const linkUser =
   (
     login: string,
     gtochkaids: string,
+    length: number,
   ): ThunkAction<Promise<string>, RootState, unknown, SetLoadingAction> =>
   async dispatch => {
     dispatch(setLoading(true));
@@ -62,7 +65,7 @@ export const linkUser =
       api.friends
         .linkUser(login, gtochkaids)
         .then(res => {
-          dispatch(loadFriends(false));
+          dispatch(loadFriends(false, length));
           resolve(res.data);
         })
         .catch(e => {

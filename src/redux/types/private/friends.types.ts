@@ -25,6 +25,7 @@ export type SetRefreshingAction = {
 export type GetFriendsAction = {
   type: string;
   payload: Friend[];
+  tradePointsLength: number;
 };
 
 export type FriendsActions =

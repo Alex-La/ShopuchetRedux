@@ -78,7 +78,7 @@ const AddFriendModal: React.FC<Props> = ({navigation}) => {
       '',
     );
 
-    dispatch(linkUser(email, friends)).then(text => {
+    dispatch(linkUser(email, friends, tradePoints.length)).then(text => {
       navigation.goBack();
       show({text, type: 'success'});
     });
