@@ -2,11 +2,11 @@ import {RouteProp} from '@react-navigation/core';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
   Button,
-  Input,
   Layout,
   StyleService,
   useStyleSheet,
   useTheme,
+  Text,
 } from '@ui-kitten/components';
 import React, {useState} from 'react';
 import {TouchableWithoutFeedback, View} from 'react-native';
@@ -31,69 +31,34 @@ const DatePickerModal: React.FC<Props> = ({navigation, route}) => {
   const goBack = () => navigation.goBack();
 
   const [datebegin, setDatebegin] = useState<Date>(new Date());
-  const [datebeginOpen, setDatebeginOpen] = useState<boolean>(false);
   const [dateend, setDateend] = useState<Date>(new Date());
-  const [dateendOpen, setDateendOpen] = useState<boolean>(false);
 
   const handleSave = () => {
     dispatch(route.params.setDate(3, {datebegin, dateend}));
     goBack();
   };
 
-  const handleDatebeginOpen = () => setDatebeginOpen(true);
-  const handleDatebeginCancel = () => setDatebeginOpen(false);
-  const handleDatebeginConfirm = (date: Date) => {
-    setDatebeginOpen(false);
-    setDatebegin(date);
-  };
-
-  const handleDateendOpen = () => setDateendOpen(true);
-  const handleDateendCancel = () => setDateendOpen(false);
-  const handleDateendConfirm = (date: Date) => {
-    setDateendOpen(false);
-    setDateend(date);
-  };
-
   return (
     <TouchableWithoutFeedback onPress={goBack}>
       <View style={styles.wrap}>
         <Layout style={styles.form}>
-          <Input
-            label="От:"
-            value={convertDate(datebegin)}
-            textStyle={{color: theme['color-primary-500']}}
-            showSoftInputOnFocus={false}
-            onPressIn={handleDatebeginOpen}
-          />
+          <Text>От: {convertDate(datebegin)}</Text>
           <DatePicker
-            modal
             mode="date"
-            open={datebeginOpen}
             date={datebegin}
+            onDateChange={setDatebegin}
             maximumDate={new Date()}
-            onConfirm={handleDatebeginConfirm}
-            onCancel={handleDatebeginCancel}
             textColor={theme['color-primary-500']}
             title="Выберете дату"
             confirmText="Ок"
             cancelText="Отмена"
           />
-          <Input
-            style={{marginTop: 10}}
-            label="До:"
-            value={convertDate(dateend)}
-            textStyle={{color: theme['color-primary-500']}}
-            showSoftInputOnFocus={false}
-            onPressIn={handleDateendOpen}
-          />
+          <Text>До: {convertDate(dateend)}</Text>
           <DatePicker
-            modal
             mode="date"
-            open={dateendOpen}
             date={dateend}
+            onDateChange={setDateend}
             maximumDate={new Date()}
-            onConfirm={handleDateendConfirm}
-            onCancel={handleDateendCancel}
             textColor={theme['color-primary-500']}
             title="Выберете дату"
             confirmText="Ок"
