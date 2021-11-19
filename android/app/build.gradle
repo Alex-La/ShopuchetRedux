@@ -134,8 +134,8 @@ android {
         applicationId "com.kz.shopuchet"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "2.4-internal"
+        versionCode 9
+        versionName "2.9"
     }
     splits {
         abi {
