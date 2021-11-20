@@ -56,38 +56,22 @@ const trade = {
     dateend: Date,
     page: number,
   ) =>
-    axiosInstance
-      .get<Sklad>(
-        `/api/readsklad?gtochkaid=${gtochkaid}&datebegin=${convertDate(
-          datebegin,
-        )}&dateend=${convertDate(dateend)}&page=${page}&rows=50`,
-      )
-      .then(res => ({
-        ...res,
-        data: {
-          ...res.data,
-          details: res.data.details.filter(i => i.type === 0),
-        },
-      })),
+    axiosInstance.get<Sklad>(
+      `/api/readsklad?gtochkaid=${gtochkaid}&datebegin=${convertDate(
+        datebegin,
+      )}&dateend=${convertDate(dateend)}&page=${page}&rows=20&type=0`,
+    ),
   getReturn: (
     gtochkaid: number,
     datebegin: Date,
     dateend: Date,
     page: number,
   ) =>
-    axiosInstance
-      .get<Sklad>(
-        `/api/readsklad?gtochkaid=${gtochkaid}&datebegin=${convertDate(
-          datebegin,
-        )}&dateend=${convertDate(dateend)}&page=${page}&rows=50`,
-      )
-      .then(res => ({
-        ...res,
-        data: {
-          ...res.data,
-          details: res.data.details.filter(i => i.type === 1),
-        },
-      })),
+    axiosInstance.get<Sklad>(
+      `/api/readsklad?gtochkaid=${gtochkaid}&datebegin=${convertDate(
+        datebegin,
+      )}&dateend=${convertDate(dateend)}&page=${page}&rows=20&type=1`,
+    ),
   getZakazInfo: (zakazid: number) =>
     axiosInstance.get<ZakazInfo>(`/api/readzakazdetails?zakazid=${zakazid}`),
   deleteSale: (zakazIds: number[]) =>

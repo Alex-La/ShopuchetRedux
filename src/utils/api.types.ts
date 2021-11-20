@@ -39,6 +39,7 @@ export type MainData = {
 export type MainGraph = {
   date: string;
   cnt: number;
+  summ: number;
   income: number;
 };
 

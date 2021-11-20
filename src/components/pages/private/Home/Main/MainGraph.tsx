@@ -1,5 +1,5 @@
 import {IndexPath, Select, SelectItem, Text} from '@ui-kitten/components';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {useAppSelector} from '../../../../../redux';
 import {convertDate} from '../../../../../utils';
@@ -19,6 +19,31 @@ const MainGraph: React.FC<Props> = ({
   data,
 }) => {
   const mainGraph = useAppSelector(state => state.main.mainGraph);
+  const [sumPercent, setSumPercent] = useState<number>(0);
+  const [incomePercent, setIncomPercent] = useState<number>(0);
+
+  useEffect(() => {
+    setSumPercent(
+      (100 /
+        Math.max.apply(
+          null,
+          mainGraph.map(item => item.summ),
+        )) *
+        1.8,
+    );
+    setIncomPercent(
+      (100 /
+        Math.max.apply(
+          null,
+          mainGraph.map(item => item.income),
+        )) *
+        1.8,
+    );
+  }, [mainGraph]);
+
+  useEffect(() => {
+    console.log(sumPercent, incomePercent);
+  }, [sumPercent, incomePercent]);
 
   const renderOption = (data: DateSelect, index: number) => (
     <SelectItem title={data.name} key={index} />
@@ -66,13 +91,14 @@ const MainGraph: React.FC<Props> = ({
         {mainGraph.map((item, index) => (
           <View style={{alignItems: 'center'}} key={index}>
             <View style={styles.graph}>
-              <View style={styles.cnt}>
-                <Text category="c2" style={styles.text}>
-                  {item.cnt}
+              <View style={[styles.cnt, {width: item.summ * sumPercent}]}>
+                <Text category="label" style={styles.text}>
+                  {item.summ?.toFixed(2)}
                 </Text>
               </View>
-              <View style={styles.income}>
-                <Text category="c2" style={styles.text}>
+              <View
+                style={[styles.income, {width: item.income * incomePercent}]}>
+                <Text category="label" style={styles.text}>
                   {item.income.toFixed(2)}
                 </Text>
               </View>
@@ -81,7 +107,7 @@ const MainGraph: React.FC<Props> = ({
               {convertDate(item.date)}
             </Text>
             <Text category="c2" style={{marginTop: 7, color: '#0066FF'}}>
-              {item.cnt}
+              {item.summ?.toFixed(2)}
             </Text>
             <Text category="c2" style={{color: '#5E9CFA'}}>
               {item.income.toFixed(2)}
@@ -105,16 +131,24 @@ const styles = StyleSheet.create({
   dot: {width: 8, height: 8, borderRadius: 8, marginRight: 4},
   graph: {
     width: 100,
-    height: 100,
+    height: 180,
     transform: [{rotate: '-90deg'}],
     justifyContent: 'center',
   },
-  cnt: {backgroundColor: '#0066FF', borderRadius: 2, paddingVertical: 5},
+  cnt: {
+    backgroundColor: '#0066FF',
+    borderRadius: 2,
+    paddingVertical: 5,
+    minWidth: 70,
+    transform: [{translateX: -40}],
+  },
   income: {
     backgroundColor: '#5E9CFA',
     marginTop: 6,
     borderRadius: 2,
     paddingVertical: 5,
+    minWidth: 70,
+    transform: [{translateX: -40}],
   },
   text: {color: 'white', textAlign: 'center'},
 });
