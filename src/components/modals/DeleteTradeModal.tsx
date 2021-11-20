@@ -7,7 +7,7 @@ import {
   Text,
   useStyleSheet,
 } from '@ui-kitten/components';
-import React from 'react';
+import React, {useState} from 'react';
 import {Alert, TouchableWithoutFeedback, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../redux';
 import {
@@ -30,19 +30,19 @@ type Props = {
 
 const DeleteTradeModal: React.FC<Props> = ({navigation, route}) => {
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(
-    state => state.trade.tabs[route.params.sessionType].loading,
-  );
+  const [loading, setLoading] = useState<boolean>(false);
 
   const styles = useStyleSheet(Styles);
   const goBack = () => navigation.goBack();
 
   const onPress = () => {
+    setLoading(false);
     route.params.refresh();
     goBack();
   };
 
   const onDelete = () => {
+    setLoading(true);
     switch (route.params.type) {
       case TradeOptionsTypes.SALE:
         dispatch(deleteSale(route.params.deleteId))
