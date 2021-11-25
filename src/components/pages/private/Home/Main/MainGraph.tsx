@@ -41,10 +41,6 @@ const MainGraph: React.FC<Props> = ({
     );
   }, [mainGraph]);
 
-  useEffect(() => {
-    console.log(sumPercent, incomePercent);
-  }, [sumPercent, incomePercent]);
-
   const renderOption = (data: DateSelect, index: number) => (
     <SelectItem title={data.name} key={index} />
   );
