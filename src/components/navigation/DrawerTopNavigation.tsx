@@ -53,10 +53,12 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <>
         <Layout style={styles.wrap}>
-          <TouchableOpacity onPress={navigation.openDrawer}>
+          <TouchableOpacity
+            onPress={navigation.openDrawer}
+            style={{padding: 16}}>
             <MenuIcon width={25} height={25} />
           </TouchableOpacity>
-          <View style={{marginLeft: 16}}>
+          <View>
             <Text category="s1">{options.title}</Text>
             {name !== 'Profile' && name !== 'Friends' && subtitle && (
               <Text category="label" appearance="hint">
@@ -88,7 +90,7 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
 const styles = StyleSheet.create({
   wrap: {
     flexDirection: 'row',
-    padding: 16,
+    paddingRight: 16,
     alignItems: 'center',
   },
 });

@@ -9,7 +9,7 @@ import {
   setReduce,
 } from '../../../../../../redux/actions/private/reportsActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
-import {convertDate, even} from '../../../../../../utils';
+import {convertDate, even, monthNames} from '../../../../../../utils';
 import {SalesMonthDetails} from '../../../../../../utils/api.types';
 import Preloader from '../../../../../loaders/Preloader';
 import SalesHeader from '../SalesHeader';
@@ -89,7 +89,7 @@ const ListItem: React.FC<ListRenderItemInfo<SalesMonthDetails>> = ({
     <Layout key={index} style={styles.wrap} level={even(index) ? '4' : '2'}>
       <View style={{flex: 2}}>
         <Text numberOfLines={1} style={{marginBottom: 5}} category="p2">
-          {convertDate(item.month)}
+          {monthNames[new Date(item.month).getMonth()]}
         </Text>
         <Text appearance="hint" category="label">
           {item.amount?.toFixed(2)}

@@ -33,10 +33,10 @@ const StackTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <>
         <Layout style={styles.wrap}>
-          <TouchableOpacity onPress={navigation.goBack}>
+          <TouchableOpacity onPress={navigation.goBack} style={{padding: 16}}>
             <BackIcon width={25} height={25} />
           </TouchableOpacity>
-          <View style={{marginLeft: 16}}>
+          <View>
             <Text category="s1">{options.title}</Text>
             {name !== 'TradePoint' && (
               <Text category="label" appearance="hint">
@@ -54,7 +54,7 @@ const StackTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
 const styles = StyleSheet.create({
   wrap: {
     flexDirection: 'row',
-    padding: 16,
+    paddingRight: 16,
     alignItems: 'center',
   },
 });
