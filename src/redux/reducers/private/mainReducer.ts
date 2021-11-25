@@ -51,14 +51,6 @@ export const main = (state: Main = initialState, action: MainActions): Main => {
       return {...state, tradePoints: (action as SetTradePointsAction).payload};
     case MAIN_ACTION_TYPES.SET_TRADE_POINT:
       const tradeAction = action as SetTradePointAction;
-      const index = state.tradePoints.findIndex(
-        item => item.gTochkaId === tradeAction.payload?.gTochkaId,
-      );
-      if (state.loading)
-        return {
-          ...state,
-          tradePoint: index !== -1 ? state.tradePoint : tradeAction.payload,
-        };
       return {...state, tradePoint: tradeAction.payload};
     case MAIN_ACTION_TYPES.SET_MAIN_DATA:
       return {...state, mainData: (action as SetMainDataAction).payload};
