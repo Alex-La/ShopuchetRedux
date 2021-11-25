@@ -3,8 +3,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   ImageProps,
   ListRenderItemInfo,
+  Platform,
   StyleSheet,
   TouchableHighlight,
+  Vibration,
   View,
 } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
@@ -37,10 +39,12 @@ const ListItem: React.FC<Props> = ({
 
   const toggle = () => {
     setVisibale(true);
-    ReactNativeHapticFeedback.trigger('longPress', {
-      enableVibrateFallback: true,
-      ignoreAndroidSystemSettings: true,
-    });
+    if (Platform.OS === 'android') Vibration.vibrate(100);
+    else
+      ReactNativeHapticFeedback.trigger('effectTick', {
+        enableVibrateFallback: true,
+        ignoreAndroidSystemSettings: true,
+      });
   };
 
   const handleDelete = () => {

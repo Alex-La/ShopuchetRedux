@@ -14,8 +14,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   ImageProps,
   ListRenderItemInfo,
+  Platform,
   StyleSheet,
   TouchableHighlight,
+  Vibration,
   View,
 } from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
@@ -34,6 +36,7 @@ import {
   TradeTopTabNavigator,
 } from '../../../../../../utils/navigation.types';
 import Preloader from '../../../../../loaders/Preloader';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 const Trash = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="trash-2-outline" />
@@ -166,7 +169,15 @@ const ListItem: React.FC<ListItemProps> = ({
   reload,
 }) => {
   const [visible, setVisible] = useState<boolean>(false);
-  const toggle = () => setVisible(true);
+  const toggle = () => {
+    setVisible(true);
+    if (Platform.OS === 'android') Vibration.vibrate(100);
+    else
+      ReactNativeHapticFeedback.trigger('effectTick', {
+        enableVibrateFallback: true,
+        ignoreAndroidSystemSettings: true,
+      });
+  };
 
   const navToDelete = () => {
     setVisible(false);
