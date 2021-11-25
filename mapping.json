@@ -28,7 +28,8 @@
     "text-subtitle-1-font-size": 19,
     "text-subtitle-2-font-size": 17,
 
-    "text-caption-1-font-size": 16,
-    "text-caption-2-font-size": 14
+    "text-caption-1-font-size": 18,
+    "text-caption-1-font-weight": "700",
+    "text-caption-2-font-size": 17
   }
 }

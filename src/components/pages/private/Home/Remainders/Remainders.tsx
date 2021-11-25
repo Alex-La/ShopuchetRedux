@@ -68,13 +68,15 @@ const Remainders: React.FC = () => {
       return (
         <Layout key={index} level={level} style={styles.tableHead}>
           <View style={{flex: 4}}>
-            <Text>{item.groupName}</Text>
-            <Text category="c1" appearance="hint" numberOfLines={1}>
+            <Text category="c1" style={{marginBottom: 6}}>
+              {item.groupName}
+            </Text>
+            <Text category="c2" appearance="hint" numberOfLines={1}>
               {item.name}
             </Text>
           </View>
           <View style={styles.tableRemainder}>
-            <Text category="c1" appearance="hint">
+            <Text category="c2" appearance="hint">
               {item.amount.toFixed(1)}
             </Text>
           </View>
