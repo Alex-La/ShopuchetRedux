@@ -17,5 +17,7 @@
       }
     }
   },
-  "strict": {}
+  "strict": {
+    "text-font-family": "Nunito-Regular"
+  }
 }
