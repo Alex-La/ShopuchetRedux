@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTheme} from '@ui-kitten/components';
-import React, {createContext, useEffect, useState} from 'react';
+import React, {createContext, useEffect} from 'react';
 import {StatusBar} from 'react-native';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import {useAppSelector} from '../redux';
 
 export type Theme = 'light' | 'dark';
 
@@ -26,6 +27,7 @@ export const ThemeContextProvider: React.FC<Props> = ({
   theme,
   setTheme,
 }) => {
+  const isAuth = useAppSelector(state => state.auth.isAuth);
   const uiTheme = useTheme();
 
   const toggleTheme = () => {
@@ -47,8 +49,18 @@ export const ThemeContextProvider: React.FC<Props> = ({
   return (
     <ThemeContext.Provider value={{theme, toggleTheme}}>
       <StatusBar
-        backgroundColor={uiTheme['background-basic-color-1']}
-        barStyle={theme === 'light' ? 'dark-content' : 'light-content'}
+        backgroundColor={
+          isAuth
+            ? uiTheme['color-primary-800']
+            : uiTheme['background-basic-color-1']
+        }
+        barStyle={
+          isAuth
+            ? 'light-content'
+            : theme === 'light'
+            ? 'dark-content'
+            : 'light-content'
+        }
       />
       {children}
     </ThemeContext.Provider>
