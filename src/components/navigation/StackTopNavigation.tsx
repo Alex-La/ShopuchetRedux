@@ -25,18 +25,19 @@ const StackTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
     <Icon
       {...props}
       name="arrow-ios-back-outline"
-      fill={theme['text-basic-color']}
+      fill={theme['color-control-default']}
     />
   );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Layout style={styles.wrap}>
+      <Layout
+        style={[styles.wrap, {backgroundColor: theme['color-primary-800']}]}>
         <TouchableOpacity onPress={navigation.goBack} style={{padding: 16}}>
           <BackIcon width={25} height={25} />
         </TouchableOpacity>
         <View>
-          <Text>{options.title}</Text>
+          <Text status="control">{options.title}</Text>
           {name !== 'TradePoint' && <Text appearance="hint">{subtitle}</Text>}
         </View>
       </Layout>

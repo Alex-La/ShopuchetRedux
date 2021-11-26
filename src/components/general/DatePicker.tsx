@@ -75,7 +75,11 @@ const DatePicker: React.FC<Props> = ({
       <TouchableOpacity
         style={{borderRadius: 12}}
         onPress={() => setVisible(true)}>
-        <Layout style={styles.wrap}>
+        <Layout
+          style={[
+            styles.wrap,
+            {backgroundColor: theme['color-control-default']},
+          ]}>
           {items[selectedIndex.row].icon}
           <Text status="primary" style={{marginLeft: 10}}>
             {selectedIndex.row === 3

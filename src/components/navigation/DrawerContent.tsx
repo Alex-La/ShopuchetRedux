@@ -28,14 +28,6 @@ const LogoutIcon = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="log-out-outline" />
 );
 
-const SunIcon = (props?: Partial<ImageProps>) => (
-  <Icon {...props} name="sun-outline" />
-);
-
-const MoonIcon = (props?: Partial<ImageProps>) => (
-  <Icon {...props} name="moon-outline" />
-);
-
 interface Props extends DrawerContentComponentProps {}
 
 const DrawerContent: React.FC<Props> = ({navigation}) => {
@@ -81,10 +73,30 @@ const DrawerContent: React.FC<Props> = ({navigation}) => {
 
   const logOut = () => dispatch(logout());
 
+  const SunIcon = (props?: Partial<ImageProps>) => (
+    <Icon
+      {...props}
+      name="sun-outline"
+      fill={uiTheme['color-control-default']}
+    />
+  );
+
+  const MoonIcon = (props?: Partial<ImageProps>) => (
+    <Icon
+      {...props}
+      name="moon-outline"
+      fill={uiTheme['color-control-default']}
+    />
+  );
+
   const renderHeader = useCallback(
     () => (
-      <Layout level="2" style={styles.header}>
-        <Text>Shopuchet</Text>
+      <Layout
+        style={[
+          styles.header,
+          {backgroundColor: uiTheme['color-primary-800']},
+        ]}>
+        <Text status="control">Shopuchet</Text>
         <TopNavigationAction
           icon={theme === 'light' ? SunIcon : MoonIcon}
           onPress={toggleTheme}

@@ -39,17 +39,22 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
   const subtitle = useAppSelector(state => state.main.tradePoint?.name);
 
   const MenuIcon = (props?: Partial<ImageProps>) => (
-    <Icon {...props} name="menu-outline" fill={theme['text-basic-color']} />
+    <Icon
+      {...props}
+      name="menu-outline"
+      fill={theme['color-control-default']}
+    />
   );
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Layout style={styles.wrap}>
+      <Layout
+        style={[styles.wrap, {backgroundColor: theme['color-primary-800']}]}>
         <TouchableOpacity onPress={navigation.openDrawer} style={{padding: 16}}>
           <MenuIcon width={25} height={25} />
         </TouchableOpacity>
         <View>
-          <Text>{options.title}</Text>
+          <Text status="control">{options.title}</Text>
           {name !== 'Profile' && name !== 'Friends' && subtitle && (
             <Text appearance="hint">{subtitle}</Text>
           )}
