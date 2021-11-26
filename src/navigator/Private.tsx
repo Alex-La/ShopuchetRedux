@@ -1,5 +1,5 @@
 import React from 'react';
-import {Layout} from '@ui-kitten/components';
+import {Layout, useTheme} from '@ui-kitten/components';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -16,14 +16,23 @@ import DatePickerModal from '../components/modals/DatePickerModal';
 import DeleteTradeModal from '../components/modals/DeleteTradeModal';
 import AddProductModal from '../components/modals/AddProductModal';
 import PaymentModal from '../components/modals/PaymentModal';
+import {View} from 'react-native';
 
 const Stack = createNativeStackNavigator<PrivateStackNavigator>();
 
 const Private: React.FC = () => {
   const {top, bottom} = useSafeAreaInsets();
+  const theme = useTheme();
 
   return (
-    <Layout style={{paddingTop: top, paddingBottom: bottom, flex: 1}}>
+    <Layout
+      style={{
+        paddingBottom: bottom,
+        flex: 1,
+      }}>
+      <View
+        style={{height: top, backgroundColor: theme['color-primary-800']}}
+      />
       <Stack.Navigator initialRouteName="Home">
         <Stack.Group
           screenOptions={{header: props => <StackTopNavigation {...props} />}}>
