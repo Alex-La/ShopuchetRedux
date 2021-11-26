@@ -93,7 +93,7 @@ const Login: React.FC<Props> = ({navigation}) => {
       <Layout style={styles.topWrap}>
         <TopNavigation accessoryRight={ThemeAction} />
         <Layout style={styles.wrap}>
-          <Text category="h2">ВХОД</Text>
+          <Text>ВХОД</Text>
           <Input
             value={email}
             onChangeText={handleChangeEmail}

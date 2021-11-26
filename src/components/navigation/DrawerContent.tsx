@@ -84,7 +84,7 @@ const DrawerContent: React.FC<Props> = ({navigation}) => {
   const renderHeader = useCallback(
     () => (
       <Layout level="2" style={styles.header}>
-        <Text category="h6">Shopuchet</Text>
+        <Text>Shopuchet</Text>
         <TopNavigationAction
           icon={theme === 'light' ? SunIcon : MoonIcon}
           onPress={toggleTheme}
@@ -99,7 +99,7 @@ const DrawerContent: React.FC<Props> = ({navigation}) => {
       <>
         <DrawerItem
           onPress={navToProfile}
-          title="Профиль"
+          title={props => <Text {...props}>Профиль</Text>}
           accessoryLeft={PersonIcon}
           style={{
             borderBottomWidth: 1,
@@ -107,7 +107,11 @@ const DrawerContent: React.FC<Props> = ({navigation}) => {
           }}
           selected={index === 7}
         />
-        <DrawerItem title="Выход" accessoryLeft={LogoutIcon} onPress={logOut} />
+        <DrawerItem
+          title={props => <Text {...props}>Выход</Text>}
+          accessoryLeft={LogoutIcon}
+          onPress={logOut}
+        />
       </>
     ),
     [uiTheme, index],
@@ -119,16 +123,34 @@ const DrawerContent: React.FC<Props> = ({navigation}) => {
       footer={renderFooter}
       selectedIndex={new IndexPath(index)}>
       <DrawerItem
-        title="Выбрать торговую точку"
+        title={props => <Text {...props}>Выбрать торговую точку</Text>}
         accessoryRight={ForwardIcon}
         onPress={navToTradePoint}
       />
-      <DrawerItem title="Главная" onPress={navToMain} />
-      <DrawerItem title="Сводный отчет" onPress={navToConReport} />
-      <DrawerItem title="Торговля" onPress={navToTrade} />
-      <DrawerItem title="Отчеты" onPress={navToReports} />
-      <DrawerItem title="Товарные остатки" onPress={navToRemainders} />
-      <DrawerItem title="Список друзей" onPress={navToFriends} />
+      <DrawerItem
+        title={props => <Text {...props}>Главная</Text>}
+        onPress={navToMain}
+      />
+      <DrawerItem
+        title={props => <Text {...props}>Сводный отчет</Text>}
+        onPress={navToConReport}
+      />
+      <DrawerItem
+        title={props => <Text {...props}>Торговля</Text>}
+        onPress={navToTrade}
+      />
+      <DrawerItem
+        title={props => <Text {...props}>Отчеты</Text>}
+        onPress={navToReports}
+      />
+      <DrawerItem
+        title={props => <Text {...props}>Товарные остатки</Text>}
+        onPress={navToRemainders}
+      />
+      <DrawerItem
+        title={props => <Text {...props}>Список друзей</Text>}
+        onPress={navToFriends}
+      />
     </Drawer>
   );
 };

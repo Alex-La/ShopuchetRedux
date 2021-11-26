@@ -99,13 +99,9 @@ const TopSellingProducts: React.FC = () => {
                 <View
                   style={[styles.dot, {backgroundColor: getColor(index)}]}
                 />
-                <Text category="p2" numberOfLines={1}>
-                  {item.name}
-                </Text>
+                <Text numberOfLines={1}>{item.name}</Text>
               </View>
-              <Text category="p2" appearance="hint">
-                {item.amount?.toFixed(2)}
-              </Text>
+              <Text appearance="hint">{item.amount?.toFixed(2)}</Text>
             </View>
           ))}
         </View>

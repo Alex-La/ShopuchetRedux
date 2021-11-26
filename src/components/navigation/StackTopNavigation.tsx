@@ -1,5 +1,5 @@
 import React from 'react';
-import {Divider, Icon, Layout, Text, useTheme} from '@ui-kitten/components';
+import {Icon, Layout, Text, useTheme} from '@ui-kitten/components';
 import {
   ImageProps,
   Keyboard,
@@ -31,22 +31,15 @@ const StackTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <>
-        <Layout style={styles.wrap}>
-          <TouchableOpacity onPress={navigation.goBack} style={{padding: 16}}>
-            <BackIcon width={25} height={25} />
-          </TouchableOpacity>
-          <View>
-            <Text category="s1">{options.title}</Text>
-            {name !== 'TradePoint' && (
-              <Text category="label" appearance="hint">
-                {subtitle}
-              </Text>
-            )}
-          </View>
-        </Layout>
-        <Divider />
-      </>
+      <Layout style={styles.wrap}>
+        <TouchableOpacity onPress={navigation.goBack} style={{padding: 16}}>
+          <BackIcon width={25} height={25} />
+        </TouchableOpacity>
+        <View>
+          <Text>{options.title}</Text>
+          {name !== 'TradePoint' && <Text appearance="hint">{subtitle}</Text>}
+        </View>
+      </Layout>
     </TouchableWithoutFeedback>
   );
 };

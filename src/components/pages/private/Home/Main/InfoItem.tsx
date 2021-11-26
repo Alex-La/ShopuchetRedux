@@ -11,7 +11,7 @@ type Props = {
 const InfoItem: React.FC<Props> = ({title, info}) => {
   return (
     <View style={styles.wrap}>
-      <Text style={styles.title} status="primary" category="s1">
+      <Text style={styles.title} status="primary">
         {title}
       </Text>
       <View style={{...styles.row, marginTop: 8}}>

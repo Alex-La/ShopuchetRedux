@@ -96,7 +96,7 @@ const DeleteTradeModal: React.FC<Props> = ({navigation, route}) => {
     <TouchableWithoutFeedback onPress={goBack}>
       <View style={styles.wrap}>
         <Layout style={styles.form}>
-          <Text category="h5" style={{textAlign: 'center'}} status="primary">
+          <Text style={{textAlign: 'center'}} status="primary">
             {renderName()}
           </Text>
           <Button

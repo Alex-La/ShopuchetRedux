@@ -95,7 +95,7 @@ const Registration: React.FC<Props> = ({navigation}) => {
       <Layout style={styles.wrap}>
         <TopNavigation accessoryLeft={BackAction} />
         <View style={styles.formWrap}>
-          <Text category="h2">РЕГИСТРАЦИЯ</Text>
+          <Text>РЕГИСТРАЦИЯ</Text>
           <Input
             value={name}
             onChangeText={setName}

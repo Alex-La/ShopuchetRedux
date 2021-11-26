@@ -144,19 +144,13 @@ const ListItem: React.FC<ListRenderItemInfo<ReturnsProductsDetail>> = ({
   return (
     <Layout key={index} style={styles.wrap} level={even(index) ? '4' : '2'}>
       <View style={{flex: 2}}>
-        <Text numberOfLines={1} category="p2">
-          {item.name}
-        </Text>
+        <Text numberOfLines={1}>{item.name}</Text>
       </View>
       <View style={styles.number}>
-        <Text appearance="hint" category="label">
-          {item.amount?.toFixed(2)}
-        </Text>
+        <Text appearance="hint">{item.amount?.toFixed(2)}</Text>
       </View>
       <View style={styles.number}>
-        <Text appearance="hint" category="label">
-          {item.summ?.toFixed(2)}
-        </Text>
+        <Text appearance="hint">{item.summ?.toFixed(2)}</Text>
       </View>
     </Layout>
   );

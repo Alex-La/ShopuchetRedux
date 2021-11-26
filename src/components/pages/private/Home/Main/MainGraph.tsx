@@ -72,7 +72,7 @@ const MainGraph: React.FC<Props> = ({
             backgroundColor: '#0066FF',
           }}
         />
-        <Text category="c1">Продажи</Text>
+        <Text>Продажи</Text>
         <View
           style={{
             ...styles.dot,
@@ -80,7 +80,7 @@ const MainGraph: React.FC<Props> = ({
             marginLeft: 16,
           }}
         />
-        <Text category="c1">Прибыль</Text>
+        <Text>Прибыль</Text>
       </View>
 
       <ScrollView horizontal style={{marginTop: 25}}>
@@ -88,26 +88,20 @@ const MainGraph: React.FC<Props> = ({
           <View style={{alignItems: 'center'}} key={index}>
             <View style={styles.graph}>
               <View style={[styles.cnt, {width: item.summ * sumPercent}]}>
-                <Text category="label" style={styles.text}>
-                  {item.summ?.toFixed(2)}
-                </Text>
+                <Text style={styles.text}>{item.summ?.toFixed(2)}</Text>
               </View>
               <View
                 style={[styles.income, {width: item.income * incomePercent}]}>
-                <Text category="label" style={styles.text}>
-                  {item.income.toFixed(2)}
-                </Text>
+                <Text style={styles.text}>{item.income.toFixed(2)}</Text>
               </View>
             </View>
-            <Text category="c2" style={{marginTop: 6}} appearance="hint">
+            <Text style={{marginTop: 6}} appearance="hint">
               {convertDate(item.date)}
             </Text>
-            <Text category="c2" style={{marginTop: 7, color: '#0066FF'}}>
+            <Text style={{marginTop: 7, color: '#0066FF'}}>
               {item.summ?.toFixed(2)}
             </Text>
-            <Text category="c2" style={{color: '#5E9CFA'}}>
-              {item.income.toFixed(2)}
-            </Text>
+            <Text style={{color: '#5E9CFA'}}>{item.income.toFixed(2)}</Text>
           </View>
         ))}
       </ScrollView>

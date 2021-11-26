@@ -69,12 +69,8 @@ const Main: React.FC = () => {
     <Layout style={styles.wrap}>
       <RefreshScrollView refreshing={refreshing} onRefresh={onRefresh}>
         <View style={styles.row}>
-          <Text category="h6" status="primary">
-            В кассе на сегодня:
-          </Text>
-          <Text category="h6" status="primary">
-            {mainData.summ}
-          </Text>
+          <Text status="primary">В кассе на сегодня:</Text>
+          <Text status="primary">{mainData.summ}</Text>
         </View>
         <Divider style={{marginTop: 16}} />
         <InfoItem title="Сегодня" info={mainData.day} />

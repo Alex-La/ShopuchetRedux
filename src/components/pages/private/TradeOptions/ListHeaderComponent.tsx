@@ -64,9 +64,7 @@ const ListHeaderComponent: React.FC = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Layout style={styles.wrap} level="2">
         <View style={styles.itemWrap}>
-          <Text appearance="hint" category="label">
-            Дата:
-          </Text>
+          <Text appearance="hint">Дата:</Text>
           <TouchableOpacity onPress={handleOpen} disabled={!route.params.edit}>
             <Text status="primary" style={{padding: 10}}>
               {convertDate(date)}
@@ -88,9 +86,7 @@ const ListHeaderComponent: React.FC = () => {
         </View>
         {route.params.type === TradeOptionsTypes.SALE && (
           <View style={styles.itemWrap}>
-            <Text appearance="hint" category="label">
-              Скидка в %
-            </Text>
+            <Text appearance="hint">Скидка в %</Text>
             <Input
               value={discount}
               onChangeText={handleChangeDiscount}

@@ -43,9 +43,7 @@ const Display: React.FC<Props> = ({navigation}) => {
   return (
     <Layout style={styles.wrap}>
       <View style={styles.row}>
-        <Text category="h6" status="primary">
-          Личные данные
-        </Text>
+        <Text status="primary">Личные данные</Text>
         <RenderEditAction width={20} height={20} />
       </View>
       <Divider style={{marginTop: 16}} />

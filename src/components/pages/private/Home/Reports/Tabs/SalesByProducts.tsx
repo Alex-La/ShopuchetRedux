@@ -90,22 +90,16 @@ const ListItem: React.FC<ListRenderItemInfo<SalesProductsDetails>> = ({
   return (
     <Layout key={index} style={styles.wrap} level={even(index) ? '4' : '2'}>
       <View style={{flex: 2}}>
-        <Text numberOfLines={1} style={{marginBottom: 5}} category="p2">
+        <Text numberOfLines={1} style={{marginBottom: 5}}>
           {item.name}
         </Text>
-        <Text appearance="hint" category="label">
-          {item.amount?.toFixed(2)}
-        </Text>
+        <Text appearance="hint">{item.amount?.toFixed(2)}</Text>
       </View>
       <View style={styles.number}>
-        <Text appearance="hint" category="label">
-          {item.summ?.toFixed(2)}
-        </Text>
+        <Text appearance="hint">{item.summ?.toFixed(2)}</Text>
       </View>
       <View style={styles.number}>
-        <Text appearance="hint" category="label">
-          {item.income?.toFixed(2)}
-        </Text>
+        <Text appearance="hint">{item.income?.toFixed(2)}</Text>
       </View>
     </Layout>
   );

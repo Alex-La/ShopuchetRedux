@@ -71,9 +71,7 @@ const AddProductModal: React.FC<Props> = ({navigation, route}) => {
     <TouchableWithoutFeedback onPress={goBack}>
       <View style={styles.wrap}>
         <Layout style={styles.form}>
-          <Text category="h6" style={{textAlign: 'center'}}>
-            {route.params.detail.name}
-          </Text>
+          <Text style={{textAlign: 'center'}}>{route.params.detail.name}</Text>
           <Text style={{textAlign: 'center'}} appearance="hint">
             Остаток: {route.params.detail.remainder} шт.
           </Text>

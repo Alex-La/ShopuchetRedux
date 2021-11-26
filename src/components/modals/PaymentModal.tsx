@@ -234,7 +234,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
             <Preloader />
           ) : (
             <>
-              <Text category="h5">{title}</Text>
+              <Text>{title}</Text>
               <Method method={method} setMethod={setMethod} />
 
               {type === TAB_TYPES.SALES && (
@@ -349,25 +349,13 @@ const Method: React.FC<MethodProps> = ({method, setMethod}) => {
       </Text>
       <ButtonGroup style={{marginTop: 16}} appearance="outline">
         <Button style={background(0)} onPress={() => handleChangeMethod(0)}>
-          {() => (
-            <Text category="s2" status={status(0)}>
-              Наличные
-            </Text>
-          )}
+          {() => <Text status={status(0)}>Наличные</Text>}
         </Button>
         <Button style={background(1)} onPress={() => handleChangeMethod(1)}>
-          {() => (
-            <Text category="s2" status={status(1)}>
-              Безнал
-            </Text>
-          )}
+          {() => <Text status={status(1)}>Безнал</Text>}
         </Button>
         <Button style={background(2)} onPress={() => handleChangeMethod(2)}>
-          {() => (
-            <Text category="s2" status={status(2)}>
-              Смешанный
-            </Text>
-          )}
+          {() => <Text status={status(2)}>Смешанный</Text>}
         </Button>
       </ButtonGroup>
     </>

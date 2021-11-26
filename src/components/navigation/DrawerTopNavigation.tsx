@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Divider,
-  Icon,
-  Layout,
-  Spinner,
-  Text,
-  useTheme,
-} from '@ui-kitten/components';
+import {Icon, Layout, Text, useTheme} from '@ui-kitten/components';
 import {
   ImageProps,
   Keyboard,
@@ -51,38 +44,29 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <>
-        <Layout style={styles.wrap}>
-          <TouchableOpacity
-            onPress={navigation.openDrawer}
-            style={{padding: 16}}>
-            <MenuIcon width={25} height={25} />
-          </TouchableOpacity>
-          <View>
-            <Text category="s1">{options.title}</Text>
-            {name !== 'Profile' && name !== 'Friends' && subtitle && (
-              <Text category="label" appearance="hint">
-                {subtitle}
-              </Text>
-            )}
-          </View>
-          <View style={{marginLeft: 'auto'}}>
-            {(name === 'Reports' || name === 'Trade') && (
-              <DatePicker
-                navigation={
-                  navigation as unknown as NativeStackNavigationProp<PrivateStackNavigator>
-                }
-                setDateAction={
-                  name === 'Reports' ? reportsSetDate : tradeSetDate
-                }
-                index={name === 'Reports' ? reportsIndex : tradeIndex}
-                date={name === 'Reports' ? reportsDate : tradeDate}
-              />
-            )}
-          </View>
-        </Layout>
-        {name !== 'Reports' && name !== 'Trade' && <Divider />}
-      </>
+      <Layout style={styles.wrap}>
+        <TouchableOpacity onPress={navigation.openDrawer} style={{padding: 16}}>
+          <MenuIcon width={25} height={25} />
+        </TouchableOpacity>
+        <View>
+          <Text>{options.title}</Text>
+          {name !== 'Profile' && name !== 'Friends' && subtitle && (
+            <Text appearance="hint">{subtitle}</Text>
+          )}
+        </View>
+        <View style={{marginLeft: 'auto'}}>
+          {(name === 'Reports' || name === 'Trade') && (
+            <DatePicker
+              navigation={
+                navigation as unknown as NativeStackNavigationProp<PrivateStackNavigator>
+              }
+              setDateAction={name === 'Reports' ? reportsSetDate : tradeSetDate}
+              index={name === 'Reports' ? reportsIndex : tradeIndex}
+              date={name === 'Reports' ? reportsDate : tradeDate}
+            />
+          )}
+        </View>
+      </Layout>
     </TouchableWithoutFeedback>
   );
 };

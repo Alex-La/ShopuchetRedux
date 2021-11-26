@@ -71,9 +71,7 @@ const Edit: React.FC<Props> = ({navigation, route}) => {
   return (
     <Layout style={styles.wrap}>
       <View style={styles.row}>
-        <Text category="h6" status="primary">
-          Личные данные
-        </Text>
+        <Text status="primary">Личные данные</Text>
         <RenderAcceptAction width={20} height={20} />
       </View>
       <Divider style={{marginTop: 16}} />
