@@ -228,14 +228,16 @@ const ListItem: React.FC<ListItemProps> = ({
           borderRightWidth: 1,
           borderColor: theme['color-basic-500'],
         }}>
-        <Text status="primary">{`Чек № ${item.recId} ${renderDate()}`}</Text>
+        <Text category="p2" status="primary">{`Чек № ${
+          item.recId
+        } ${renderDate()}`}</Text>
         {item.products.slice(0, 3).map((item, index) => (
-          <Text key={index} numberOfLines={1}>
+          <Text category="label" key={index} numberOfLines={1}>
             {item.name}
           </Text>
         ))}
         {item.products.length > 3 && (
-          <Text appearance="hint" style={{marginTop: 5}}>
+          <Text category="label" appearance="hint" style={{marginTop: 5}}>
             ... ещё позиций - {item.products.length - 3}шт.
           </Text>
         )}
@@ -248,15 +250,16 @@ const ListItem: React.FC<ListItemProps> = ({
           justifyContent: 'center',
         }}>
         {item.products.slice(0, 3).map((item, index) => (
-          <Text key={index}>
+          <Text category="label" key={index}>
             {item.price} x {item.amount?.toFixed(2)}
           </Text>
         ))}
-        <Text status="primary">
+        <Text category="p2" status="primary">
           ={' '}
-          {item.products
-            .slice(0, 3)
-            .reduce((acc, item) => acc + item.price * item.amount, 0)}
+          {item.products.reduce(
+            (acc, item) => acc + item.price * item.amount,
+            0,
+          )}
         </Text>
       </View>
     </View>

@@ -35,7 +35,9 @@ const ListEmptyComponent: React.FC<Props> = ({navToAddProduct}) => {
       onPress={navToAddProduct}>
       <Layout style={styles.box}>
         <Box />
-        <Text status="primary">{renderTitle()}</Text>
+        <Text category="h3" status="primary">
+          {renderTitle()}
+        </Text>
       </Layout>
     </TouchableOpacity>
   );
