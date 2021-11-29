@@ -54,9 +54,13 @@ const DrawerTopNavigation: React.FC<Props> = ({options, navigation, route}) => {
           <MenuIcon width={25} height={25} />
         </TouchableOpacity>
         <View>
-          <Text status="control">{options.title}</Text>
+          <Text category="h3" status="control">
+            {options.title}
+          </Text>
           {name !== 'Profile' && name !== 'Friends' && subtitle && (
-            <Text appearance="hint">{subtitle}</Text>
+            <Text category="label" appearance="hint">
+              {subtitle}
+            </Text>
           )}
         </View>
         <View style={{marginLeft: 'auto'}}>

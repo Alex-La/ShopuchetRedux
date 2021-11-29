@@ -93,7 +93,7 @@ const Login: React.FC<Props> = ({navigation}) => {
       <Layout style={styles.topWrap}>
         <TopNavigation accessoryRight={ThemeAction} />
         <Layout style={styles.wrap}>
-          <Text>ВХОД</Text>
+          <Text category="h1">ВХОД</Text>
           <Input
             value={email}
             onChangeText={handleChangeEmail}
@@ -116,7 +116,9 @@ const Login: React.FC<Props> = ({navigation}) => {
             size="large"
           />
           <TouchableOpacity style={styles.forgot} onPress={navToForgot}>
-            <Text status="primary">Забыли пароль?</Text>
+            <Text category="p2" status="primary">
+              Забыли пароль?
+            </Text>
           </TouchableOpacity>
           <Button style={styles.login} onPress={logIn}>
             ВХОД

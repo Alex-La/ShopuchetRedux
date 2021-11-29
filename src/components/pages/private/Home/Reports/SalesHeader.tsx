@@ -3,11 +3,8 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {DateRange} from '../../../../../utils';
 import {
-  SalesGroups,
   SalesGroupsHead,
-  SalesMonth,
   SalesMonthHead,
-  SalesProducts,
   SalesProductsHead,
 } from '../../../../../utils/api.types';
 import DateRangeAndSort from './DateRangeAndSort';

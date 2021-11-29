@@ -81,7 +81,7 @@ const DatePicker: React.FC<Props> = ({
             {backgroundColor: theme['color-control-default']},
           ]}>
           {items[selectedIndex.row].icon}
-          <Text status="primary" style={{marginLeft: 10}}>
+          <Text category="p2" status="primary" style={{marginLeft: 10}}>
             {selectedIndex.row === 3
               ? convertDate(date.datebegin, false) +
                 ' - ' +

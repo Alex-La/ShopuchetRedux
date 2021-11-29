@@ -57,7 +57,7 @@ const MainGraph: React.FC<Props> = ({
           {data.map(renderOption)}
         </Select>
         <View style={{flex: 2, alignItems: 'flex-end'}}>
-          <Text appearance="hint">
+          <Text category="p2" appearance="hint">
             {convertDate(displayValue.date.datebegin, false) +
               ' - ' +
               convertDate(displayValue.date.dateend, false)}
@@ -72,7 +72,7 @@ const MainGraph: React.FC<Props> = ({
             backgroundColor: '#0066FF',
           }}
         />
-        <Text>Продажи</Text>
+        <Text category="label">Продажи</Text>
         <View
           style={{
             ...styles.dot,
@@ -80,7 +80,7 @@ const MainGraph: React.FC<Props> = ({
             marginLeft: 16,
           }}
         />
-        <Text>Прибыль</Text>
+        <Text category="label">Прибыль</Text>
       </View>
 
       <ScrollView horizontal style={{marginTop: 25}}>
@@ -88,20 +88,26 @@ const MainGraph: React.FC<Props> = ({
           <View style={{alignItems: 'center'}} key={index}>
             <View style={styles.graph}>
               <View style={[styles.cnt, {width: item.summ * sumPercent}]}>
-                <Text style={styles.text}>{item.summ?.toFixed(2)}</Text>
+                <Text category="label" style={styles.text}>
+                  {item.summ?.toFixed(2)}
+                </Text>
               </View>
               <View
                 style={[styles.income, {width: item.income * incomePercent}]}>
-                <Text style={styles.text}>{item.income.toFixed(2)}</Text>
+                <Text category="label" style={styles.text}>
+                  {item.income.toFixed(2)}
+                </Text>
               </View>
             </View>
-            <Text style={{marginTop: 6}} appearance="hint">
+            <Text category="label" style={{marginTop: 6}} appearance="hint">
               {convertDate(item.date)}
             </Text>
-            <Text style={{marginTop: 7, color: '#0066FF'}}>
+            <Text category="label" style={{marginTop: 7, color: '#0066FF'}}>
               {item.summ?.toFixed(2)}
             </Text>
-            <Text style={{color: '#5E9CFA'}}>{item.income.toFixed(2)}</Text>
+            <Text category="label" style={{color: '#5E9CFA'}}>
+              {item.income.toFixed(2)}
+            </Text>
           </View>
         ))}
       </ScrollView>

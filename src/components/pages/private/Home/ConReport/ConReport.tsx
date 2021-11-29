@@ -123,16 +123,26 @@ const ConReport: React.FC = () => {
             </Text>
           </View>
           <View style={styles.line}>
-            <Text style={styles.item}>Товаров</Text>
-            <Text style={styles.item}>{conReport.sales.products}</Text>
+            <Text category="p2" style={styles.item}>
+              Товаров
+            </Text>
+            <Text category="p2" style={styles.item}>
+              {conReport.sales.products}
+            </Text>
           </View>
           <View style={styles.line}>
-            <Text style={styles.item}>Средний чек</Text>
-            <Text style={styles.item}>{conReport.sales.avg?.toFixed(2)}</Text>
+            <Text category="p2" style={styles.item}>
+              Средний чек
+            </Text>
+            <Text category="p2" style={styles.item}>
+              {conReport.sales.avg?.toFixed(2)}
+            </Text>
           </View>
           <View style={styles.line}>
-            <Text style={styles.item}>Прибыль</Text>
-            <Text style={styles.item}>
+            <Text category="p2" style={styles.item}>
+              Прибыль
+            </Text>
+            <Text category="p2" style={styles.item}>
               {conReport.sales.income?.toFixed(2)}
             </Text>
           </View>
@@ -153,18 +163,28 @@ const ConReport: React.FC = () => {
             </Text>
           </View>
           <View style={styles.line}>
-            <Text style={styles.item}>Наличными</Text>
-            <Text style={styles.item}>{conReport.payed.cach}</Text>
+            <Text category="p2" style={styles.item}>
+              Наличными
+            </Text>
+            <Text category="p2" style={styles.item}>
+              {conReport.payed.cach}
+            </Text>
           </View>
           <View style={styles.line}>
-            <Text style={styles.item}>Безналом</Text>
-            <Text style={styles.item}>
+            <Text category="p2" style={styles.item}>
+              Безналом
+            </Text>
+            <Text category="p2" style={styles.item}>
               {conReport.payed.nonCach.toFixed(2)}
             </Text>
           </View>
           <View style={styles.line}>
-            <Text style={styles.item}>Бонусами</Text>
-            <Text style={styles.item}>{conReport.payed.bonus.toFixed(2)}</Text>
+            <Text category="p2" style={styles.item}>
+              Бонусами
+            </Text>
+            <Text category="p2" style={styles.item}>
+              {conReport.payed.bonus.toFixed(2)}
+            </Text>
           </View>
         </View>
         <Divider />
@@ -187,22 +207,32 @@ const ConReport: React.FC = () => {
             </Text>
           </View>
           <View style={styles.line}>
-            <Text style={styles.item}>Товаров</Text>
-            <Text style={styles.item}>{conReport.ret.products}</Text>
+            <Text category="p2" style={styles.item}>
+              Товаров
+            </Text>
+            <Text category="p2" style={styles.item}>
+              {conReport.ret.products}
+            </Text>
           </View>
         </View>
         <Divider />
 
         <View style={styles.info}>
           <View style={styles.line}>
-            <Text style={styles.item}>Изъято из кассы</Text>
-            <Text style={styles.item}>
+            <Text category="p2" style={styles.item}>
+              Изъято из кассы
+            </Text>
+            <Text category="p2" style={styles.item}>
               {conReport.kassa.outSumm.toFixed(2)}
             </Text>
           </View>
           <View style={styles.line}>
-            <Text style={styles.item}>Внесено в кассу</Text>
-            <Text style={styles.item}>{conReport.kassa.inSumm.toFixed(2)}</Text>
+            <Text category="p2" style={styles.item}>
+              Внесено в кассу
+            </Text>
+            <Text category="p2" style={styles.item}>
+              {conReport.kassa.inSumm.toFixed(2)}
+            </Text>
           </View>
         </View>
       </RefreshScrollView>

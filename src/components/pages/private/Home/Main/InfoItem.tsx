@@ -15,20 +15,28 @@ const InfoItem: React.FC<Props> = ({title, info}) => {
         {title}
       </Text>
       <View style={{...styles.row, marginTop: 8}}>
-        <Text>Продаж:</Text>
-        <Text status="primary">{info.cnt}</Text>
+        <Text category="p2">Продаж:</Text>
+        <Text category="p2" status="primary">
+          {info.cnt}
+        </Text>
       </View>
       <View style={{...styles.row, marginTop: 12}}>
-        <Text>На сумму:</Text>
-        <Text status="primary">{info.summ.toFixed(2)}</Text>
+        <Text category="p2">На сумму:</Text>
+        <Text category="p2" status="primary">
+          {info.summ.toFixed(2)}
+        </Text>
       </View>
       <View style={{...styles.row, marginTop: 12}}>
-        <Text>Прибыль:</Text>
-        <Text status="primary">{info.income.toFixed(2)}</Text>
+        <Text category="p2">Прибыль:</Text>
+        <Text category="p2" status="primary">
+          {info.income.toFixed(2)}
+        </Text>
       </View>
       <View style={{...styles.row, marginTop: 12}}>
-        <Text>Средний чек:</Text>
-        <Text status="primary">{info.avg.toFixed(2)}</Text>
+        <Text category="p2">Средний чек:</Text>
+        <Text category="p2" status="primary">
+          {info.avg.toFixed(2)}
+        </Text>
       </View>
       <Divider style={styles.divider} />
     </View>

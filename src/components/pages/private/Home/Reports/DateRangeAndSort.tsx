@@ -13,7 +13,7 @@ type Props = {
 const DateRangeAndSort: React.FC<Props> = ({date, reduce, setReduce}) => {
   return (
     <View style={styles.wrap}>
-      <Text appearance="hint">
+      <Text category="p2" appearance="hint">
         {convertDate(date.datebegin, false)} -{' '}
         {convertDate(date.dateend, false)}
       </Text>

@@ -6,7 +6,9 @@ const Day: React.FC = () => {
   const styles = useStyleSheet(Styles);
   return (
     <View style={styles.wrap}>
-      <Text status="primary">{new Date().getDate()}</Text>
+      <Text category="label" status="primary">
+        {new Date().getDate()}
+      </Text>
     </View>
   );
 };

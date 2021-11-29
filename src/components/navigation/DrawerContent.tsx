@@ -96,7 +96,9 @@ const DrawerContent: React.FC<Props> = ({navigation}) => {
           styles.header,
           {backgroundColor: uiTheme['color-primary-800']},
         ]}>
-        <Text status="control">Shopuchet</Text>
+        <Text category="h5" status="control">
+          Shopuchet
+        </Text>
         <TopNavigationAction
           icon={theme === 'light' ? SunIcon : MoonIcon}
           onPress={toggleTheme}
