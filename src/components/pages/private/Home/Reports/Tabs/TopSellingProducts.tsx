@@ -99,9 +99,17 @@ const TopSellingProducts: React.FC = () => {
                 <View
                   style={[styles.dot, {backgroundColor: getColor(index)}]}
                 />
-                <Text numberOfLines={1}>{item.name}</Text>
+                <Text numberOfLines={1} category="label">
+                  {item.name}
+                </Text>
               </View>
-              <Text appearance="hint">{item.amount?.toFixed(2)}</Text>
+              <Text
+                category="p2"
+                numberOfLines={1}
+                appearance="hint"
+                style={{flex: 0.3, textAlign: 'right'}}>
+                {item.amount?.toFixed(2)}
+              </Text>
             </View>
           ))}
         </View>
@@ -121,6 +129,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
+    marginRight: 4,
   },
   dot: {
     width: 8,

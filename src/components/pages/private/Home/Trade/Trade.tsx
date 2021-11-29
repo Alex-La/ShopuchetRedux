@@ -15,7 +15,10 @@ const Trade: React.FC = () => {
   const theme = useTheme();
 
   const renderLabel = (text: string, focused: boolean) => (
-    <Text status={focused ? 'primary' : 'basic'} style={{textAlign: 'center'}}>
+    <Text
+      category="c1"
+      status={focused ? 'primary' : 'basic'}
+      style={{textAlign: 'center'}}>
       {text}
     </Text>
   );

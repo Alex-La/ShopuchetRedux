@@ -19,7 +19,7 @@ const Reports: React.FC = () => {
 
   const renderLabel = (text: string, focused: boolean) => (
     <Text
-      category="p2"
+      category="c1"
       status={focused ? 'primary' : 'basic'}
       style={{textAlign: 'center'}}>
       {text}

@@ -46,6 +46,10 @@
 
     "text-label-font-family": "Nunito-SemiBold",
     "text-label-font-size": 12,
-    "text-label-font-weight": "600"
+    "text-label-font-weight": "600",
+
+    "text-caption-1-font-family": "Nunito-Bold",
+    "text-caption-1-font-size": 14,
+    "text-caption-1-font-weight": "700"
   }
 }

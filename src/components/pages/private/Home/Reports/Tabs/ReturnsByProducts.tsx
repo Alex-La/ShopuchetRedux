@@ -116,6 +116,18 @@ const ReturnsByProducts: React.FC = () => {
         </View>
       </View>
       <Divider />
+      <View style={styles.tableHead}>
+        <Text appearance="hint" style={{flex: 2}}>
+          Товар
+        </Text>
+        <Text appearance="hint" style={{flex: 1, textAlign: 'right'}}>
+          Кол-во
+        </Text>
+        <Text appearance="hint" style={{flex: 1, textAlign: 'right'}}>
+          Сумма
+        </Text>
+      </View>
+      <Divider />
     </Layout>
   );
 
@@ -147,10 +159,14 @@ const ListItem: React.FC<ListRenderItemInfo<ReturnsProductsDetail>> = ({
         <Text numberOfLines={1}>{item.name}</Text>
       </View>
       <View style={styles.number}>
-        <Text appearance="hint">{item.amount?.toFixed(2)}</Text>
+        <Text numberOfLines={1} appearance="hint">
+          {item.amount?.toFixed(2)}
+        </Text>
       </View>
       <View style={styles.number}>
-        <Text appearance="hint">{item.summ?.toFixed(2)}</Text>
+        <Text numberOfLines={1} appearance="hint">
+          {item.summ?.toFixed(2)}
+        </Text>
       </View>
     </Layout>
   );
@@ -170,6 +186,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  tableHead: {paddingHorizontal: 16, paddingVertical: 8, flexDirection: 'row'},
 });
 
 export default ReturnsByProducts;

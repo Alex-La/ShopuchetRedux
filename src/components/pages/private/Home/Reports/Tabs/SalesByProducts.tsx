@@ -93,13 +93,19 @@ const ListItem: React.FC<ListRenderItemInfo<SalesProductsDetails>> = ({
         <Text numberOfLines={1} style={{marginBottom: 5}}>
           {item.name}
         </Text>
-        <Text appearance="hint">{item.amount?.toFixed(2)}</Text>
+        <Text category="p2" numberOfLines={1} appearance="hint">
+          {item.amount?.toFixed(2)}
+        </Text>
       </View>
       <View style={styles.number}>
-        <Text appearance="hint">{item.summ?.toFixed(2)}</Text>
+        <Text category="p2" numberOfLines={1} appearance="hint">
+          {item.summ?.toFixed(2)}
+        </Text>
       </View>
       <View style={styles.number}>
-        <Text appearance="hint">{item.income?.toFixed(2)}</Text>
+        <Text category="p2" numberOfLines={1} appearance="hint">
+          {item.income?.toFixed(2)}
+        </Text>
       </View>
     </Layout>
   );

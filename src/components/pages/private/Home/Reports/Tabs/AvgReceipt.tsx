@@ -107,7 +107,7 @@ const ListItem: React.FC<ListItemProps> = ({item, index, theme, percent}) => {
   return (
     <TouchableWithoutFeedback key={index}>
       <View style={{margin: 15}}>
-        <Text>{convertDate(item.date)}</Text>
+        <Text category="c1">{convertDate(item.date)}</Text>
         <View
           style={[
             styles.chart,
@@ -117,7 +117,9 @@ const ListItem: React.FC<ListItemProps> = ({item, index, theme, percent}) => {
               width: `${item.avg * percent}%`,
             },
           ]}>
-          <Text style={styles.text}>{item.avg.toFixed(2)}</Text>
+          <Text category="label" style={styles.text}>
+            {item.avg.toFixed(2)}
+          </Text>
         </View>
       </View>
     </TouchableWithoutFeedback>

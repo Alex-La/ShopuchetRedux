@@ -9,7 +9,7 @@ import {
   setReduce,
 } from '../../../../../../redux/actions/private/reportsActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/reports.types';
-import {convertDate, even, monthNames} from '../../../../../../utils';
+import {even, monthNames} from '../../../../../../utils';
 import {SalesMonthDetails} from '../../../../../../utils/api.types';
 import Preloader from '../../../../../loaders/Preloader';
 import SalesHeader from '../SalesHeader';
@@ -91,13 +91,19 @@ const ListItem: React.FC<ListRenderItemInfo<SalesMonthDetails>> = ({
         <Text numberOfLines={1} style={{marginBottom: 5}}>
           {monthNames[new Date(item.month).getMonth()]}
         </Text>
-        <Text appearance="hint">{item.amount?.toFixed(2)}</Text>
+        <Text category="p2" numberOfLines={1} appearance="hint">
+          {item.amount?.toFixed(2)}
+        </Text>
       </View>
       <View style={styles.number}>
-        <Text appearance="hint">{item.summ?.toFixed(2)}</Text>
+        <Text category="p2" numberOfLines={1} appearance="hint">
+          {item.summ?.toFixed(2)}
+        </Text>
       </View>
       <View style={styles.number}>
-        <Text appearance="hint">{item.income?.toFixed(2)}</Text>
+        <Text category="p2" numberOfLines={1} appearance="hint">
+          {item.income?.toFixed(2)}
+        </Text>
       </View>
     </Layout>
   );
