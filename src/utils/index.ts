@@ -103,3 +103,16 @@ export const incrementDecrementDate = (date: Date, mode: 'inc' | 'dec') => {
   d.setDate(mode === 'inc' ? d.getDate() + 1 : d.getDate() - 1);
   return d;
 };
+
+export const addSpaces = (value?: number): string => {
+  const stringValues = value ? value.toFixed(2).split('.') : '';
+  const reverseString = (str?: string): string =>
+    str ? str.split('').reverse().join('') : '';
+  const reversedResult = reverseString(stringValues[0])
+    .match(/.{1,3}/g)
+    ?.join(' ');
+  return (
+    reverseString(reversedResult || '') +
+    (stringValues[1] ? '.' + stringValues[1] : '0')
+  );
+};

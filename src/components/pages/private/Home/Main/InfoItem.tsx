@@ -1,6 +1,7 @@
 import {Divider, Text} from '@ui-kitten/components';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {addSpaces} from '../../../../../utils';
 import {MainDataObject} from '../../../../../utils/api.types';
 
 type Props = {
@@ -23,19 +24,19 @@ const InfoItem: React.FC<Props> = ({title, info}) => {
       <View style={{...styles.row, marginTop: 12}}>
         <Text category="p2">На сумму:</Text>
         <Text category="p2" status="primary">
-          {info.summ.toFixed(2)}
+          {addSpaces(info.summ)}
         </Text>
       </View>
       <View style={{...styles.row, marginTop: 12}}>
         <Text category="p2">Прибыль:</Text>
         <Text category="p2" status="primary">
-          {info.income.toFixed(2)}
+          {addSpaces(info.income)}
         </Text>
       </View>
       <View style={{...styles.row, marginTop: 12}}>
         <Text category="p2">Средний чек:</Text>
         <Text category="p2" status="primary">
-          {info.avg.toFixed(2)}
+          {addSpaces(info.avg)}
         </Text>
       </View>
       <Divider style={styles.divider} />

@@ -10,7 +10,13 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components';
 import React, {useEffect, useRef, useState} from 'react';
-import {ImageProps, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  ImageProps,
+  InteractionManager,
+  Keyboard,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../redux';
 import {setTradeSession} from '../../redux/actions/private/tradeActions';
 import {TradeSessionDetail} from '../../redux/types/private/trade.types';
@@ -40,8 +46,8 @@ const AddProductModal: React.FC<Props> = ({navigation, route}) => {
   const goBack = () => navigation.goBack();
 
   useEffect(() => {
-    ref.current?.focus();
-  }, []);
+    setTimeout(ref.current?.focus, 100);
+  }, [ref]);
 
   const [amount, setAmount] = useState<string>(
     route.params.type === 'new' ? '1' : route.params.detail.amount.toString(),

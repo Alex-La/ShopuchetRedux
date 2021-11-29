@@ -68,14 +68,11 @@ const ListItem: React.FC<Props> = ({
         key={index}
         style={styles.wrap}
         underlayColor={theme['color-basic-transparent-200']}>
-        <View
-          style={[
-            styles.item,
-            {
-              borderColor: theme['color-basic-600'],
-            },
-          ]}>
-          <Text numberOfLines={1} status="primary" style={styles.product}>
+        <View style={[styles.item]}>
+          <Text
+            numberOfLines={1}
+            status="primary"
+            style={[styles.product, {borderWidth: 1, borderColor: '#D2D8E1'}]}>
             {item.name}
           </Text>
           <Text
@@ -84,7 +81,8 @@ const ListItem: React.FC<Props> = ({
               styles.data,
               {
                 flex: 1,
-                borderLeftColor: theme['color-primary-500'],
+                borderColor: '#D2D8E1',
+                borderWidth: 1,
               },
             ]}>
             {item.amount} шт.
@@ -95,7 +93,8 @@ const ListItem: React.FC<Props> = ({
               styles.data,
               {
                 flex: 1.2,
-                borderLeftColor: theme['color-primary-500'],
+                borderColor: '#D2D8E1',
+                borderWidth: 1,
               },
             ]}>
             {item.cost?.toFixed(2)}
@@ -120,7 +119,6 @@ const ListItem: React.FC<Props> = ({
 const styles = StyleSheet.create({
   wrap: {marginVertical: 5, marginHorizontal: 16},
   item: {
-    borderWidth: 1,
     flexDirection: 'row',
   },
   product: {flex: 3, padding: 5},

@@ -5,7 +5,11 @@ import DatePicker from 'react-native-date-picker';
 import {ImageProps, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../../../../redux';
 import {getConReport} from '../../../../../redux/actions/private/conReportActions';
-import {convertDate, incrementDecrementDate} from '../../../../../utils';
+import {
+  addSpaces,
+  convertDate,
+  incrementDecrementDate,
+} from '../../../../../utils';
 import RefreshScrollView from '../../../../loaders/RefreshScrollView';
 import Preloader from '../../../../loaders/Preloader';
 
@@ -119,7 +123,7 @@ const ConReport: React.FC = () => {
               На сумму:
             </Text>
             <Text status="primary" style={styles.item}>
-              {conReport.sales.summ?.toFixed(2)}
+              {addSpaces(conReport.sales.summ)}
             </Text>
           </View>
           <View style={styles.line}>
@@ -135,7 +139,7 @@ const ConReport: React.FC = () => {
               Средний чек
             </Text>
             <Text category="p2" style={styles.item}>
-              {conReport.sales.avg?.toFixed(2)}
+              {addSpaces(conReport.sales.avg)}
             </Text>
           </View>
           <View style={styles.line}>
@@ -143,7 +147,7 @@ const ConReport: React.FC = () => {
               Прибыль
             </Text>
             <Text category="p2" style={styles.item}>
-              {conReport.sales.income?.toFixed(2)}
+              {addSpaces(conReport.sales.income)}
             </Text>
           </View>
         </View>
@@ -155,11 +159,11 @@ const ConReport: React.FC = () => {
               Оплачено:
             </Text>
             <Text status="primary" style={styles.item}>
-              {(
+              {addSpaces(
                 conReport.payed.cach +
                 conReport.payed.nonCach +
                 conReport.payed.bonus
-              ).toFixed(2)}
+              )}
             </Text>
           </View>
           <View style={styles.line}>
@@ -167,7 +171,7 @@ const ConReport: React.FC = () => {
               Наличными
             </Text>
             <Text category="p2" style={styles.item}>
-              {conReport.payed.cach}
+              {addSpaces(conReport.payed.cach)}
             </Text>
           </View>
           <View style={styles.line}>
@@ -175,7 +179,7 @@ const ConReport: React.FC = () => {
               Безналом
             </Text>
             <Text category="p2" style={styles.item}>
-              {conReport.payed.nonCach.toFixed(2)}
+              {addSpaces(conReport.payed.nonCach)}
             </Text>
           </View>
           <View style={styles.line}>
@@ -183,7 +187,7 @@ const ConReport: React.FC = () => {
               Бонусами
             </Text>
             <Text category="p2" style={styles.item}>
-              {conReport.payed.bonus.toFixed(2)}
+              {addSpaces(conReport.payed.bonus)}
             </Text>
           </View>
         </View>
@@ -203,7 +207,7 @@ const ConReport: React.FC = () => {
               На сумму:
             </Text>
             <Text status="primary" style={styles.item}>
-              {conReport.ret.summ.toFixed(2)}
+              {addSpaces(conReport.ret.summ)}
             </Text>
           </View>
           <View style={styles.line}>
@@ -223,7 +227,7 @@ const ConReport: React.FC = () => {
               Изъято из кассы
             </Text>
             <Text category="p2" style={styles.item}>
-              {conReport.kassa.outSumm.toFixed(2)}
+              {addSpaces(conReport.kassa.outSumm)}
             </Text>
           </View>
           <View style={styles.line}>
@@ -231,7 +235,7 @@ const ConReport: React.FC = () => {
               Внесено в кассу
             </Text>
             <Text category="p2" style={styles.item}>
-              {conReport.kassa.inSumm.toFixed(2)}
+              {addSpaces(conReport.kassa.inSumm)}
             </Text>
           </View>
         </View>
