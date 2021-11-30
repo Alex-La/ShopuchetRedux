@@ -112,15 +112,19 @@ const MainGraph: React.FC<Props> = ({
         <Text category="label">Прибыль</Text>
       </View>
 
-      <LineChart
-        style={{paddingLeft: 16, marginTop: 15}}
-        yLabelsOffset={1}
-        data={datasets}
-        width={screenWidth}
-        height={256}
-        chartConfig={chartConfig}
-        bezier
-      />
+      {mainGraph.length ? (
+        <LineChart
+          style={{paddingLeft: 16, marginTop: 15}}
+          yLabelsOffset={1}
+          data={datasets}
+          width={screenWidth}
+          height={256}
+          chartConfig={chartConfig}
+          bezier
+        />
+      ) : (
+        <></>
+      )}
     </View>
   );
 };
