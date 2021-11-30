@@ -85,7 +85,7 @@ const ListItem: React.FC<Props> = ({
                 borderWidth: 1,
               },
             ]}>
-            {item.amount} шт.
+            {item.amount}
           </Text>
           <Text
             status="primary"

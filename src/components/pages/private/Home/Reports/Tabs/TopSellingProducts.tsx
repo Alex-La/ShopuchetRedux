@@ -69,8 +69,10 @@ const TopSellingProducts: React.FC = () => {
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <Text appearance="hint">Продано товаров:</Text>
-          <Text status="primary">{data.head.cnt}</Text>
+          <Text category="s2">Продано товаров:</Text>
+          <Text category="s2" status="primary">
+            {data.head.cnt}
+          </Text>
         </View>
         <View
           style={{
@@ -78,8 +80,10 @@ const TopSellingProducts: React.FC = () => {
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <Text appearance="hint">На сумму:</Text>
-          <Text status="primary">{data.head.summ?.toFixed(2)}</Text>
+          <Text category="s2">На сумму:</Text>
+          <Text category="s2" status="primary">
+            {data.head.summ?.toFixed(2)}
+          </Text>
         </View>
       </View>
       <Divider />
@@ -99,9 +103,7 @@ const TopSellingProducts: React.FC = () => {
                 <View
                   style={[styles.dot, {backgroundColor: getColor(index)}]}
                 />
-                <Text numberOfLines={1} category="label">
-                  {item.name}
-                </Text>
+                <Text category="label">{item.name}</Text>
               </View>
               <Text
                 category="p2"

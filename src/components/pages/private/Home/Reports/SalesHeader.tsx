@@ -24,27 +24,39 @@ const SalesHeader: React.FC<Props> = ({date, reduce, setReduce, head}) => {
       <DateRangeAndSort date={date} reduce={reduce} setReduce={setReduce} />
       <View style={styles.wrap}>
         <View style={styles.item}>
-          <Text>Всего продаж:</Text>
-          <Text status="primary">{head.cnt}</Text>
+          <Text category="s2">Всего продаж:</Text>
+          <Text category="s2" status="primary">
+            {head.cnt}
+          </Text>
         </View>
         <View style={[styles.item, {marginTop: 8}]}>
-          <Text>На сумму:</Text>
-          <Text status="primary">{head.summ}</Text>
+          <Text category="s2">На сумму:</Text>
+          <Text category="s2" status="primary">
+            {head.summ}
+          </Text>
         </View>
         <View style={[styles.item, {marginTop: 8}]}>
-          <Text>Прибыль:</Text>
-          <Text status="primary">{head.income}</Text>
+          <Text category="s2">Прибыль:</Text>
+          <Text category="s2" status="primary">
+            {head.income}
+          </Text>
         </View>
       </View>
       <Divider />
       <View style={styles.tableHead}>
-        <Text appearance="hint" style={{flex: 2}}>
+        <Text category="s2" appearance="hint" style={{flex: 1.5}}>
           Кол-во
         </Text>
-        <Text appearance="hint" style={{flex: 1, textAlign: 'right'}}>
+        <Text
+          category="s2"
+          appearance="hint"
+          style={{flex: 1, textAlign: 'right'}}>
           Сумма
         </Text>
-        <Text appearance="hint" style={{flex: 1, textAlign: 'right'}}>
+        <Text
+          category="s2"
+          appearance="hint"
+          style={{flex: 1, textAlign: 'right'}}>
           Прибыль
         </Text>
       </View>

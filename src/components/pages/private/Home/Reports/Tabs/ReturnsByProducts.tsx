@@ -101,26 +101,31 @@ const ReturnsByProducts: React.FC = () => {
       />
       <View style={{padding: 16}}>
         <View style={styles.headerItem}>
-          <Text appearance="hint">Всего возвратов:</Text>
-          <Text status="primary">{returnsByProducts.data.head.cnt}</Text>
+          <Text category="s2">Всего возвратов:</Text>
+          <Text category="s2" status="primary">
+            {returnsByProducts.data.head.cnt}
+          </Text>
         </View>
         <View
           style={{
             ...styles.headerItem,
             marginTop: 14,
           }}>
-          <Text appearance="hint">На сумму:</Text>
-          <Text status="primary">
+          <Text category="s2">На сумму:</Text>
+          <Text category="s2" status="primary">
             {returnsByProducts.data.head.summ?.toFixed(2)}
           </Text>
         </View>
       </View>
       <Divider />
       <View style={styles.tableHead}>
-        <Text appearance="hint" style={{flex: 2}}>
+        <Text category="s2" appearance="hint" style={{flex: 1.5}}>
           Товар
         </Text>
-        <Text appearance="hint" style={{flex: 1, textAlign: 'right'}}>
+        <Text
+          category="s2"
+          appearance="hint"
+          style={{flex: 1, textAlign: 'right'}}>
           Кол-во
         </Text>
         <Text appearance="hint" style={{flex: 1, textAlign: 'right'}}>
@@ -155,16 +160,18 @@ const ListItem: React.FC<ListRenderItemInfo<ReturnsProductsDetail>> = ({
 }) => {
   return (
     <Layout key={index} style={styles.wrap} level={even(index) ? '4' : '2'}>
-      <View style={{flex: 2}}>
-        <Text numberOfLines={1}>{item.name}</Text>
+      <View style={{flex: 1.5}}>
+        <Text category="p2" numberOfLines={2}>
+          {item.name}
+        </Text>
       </View>
       <View style={styles.number}>
-        <Text numberOfLines={1} appearance="hint">
+        <Text category="p2" appearance="hint">
           {item.amount?.toFixed(2)}
         </Text>
       </View>
       <View style={styles.number}>
-        <Text numberOfLines={1} appearance="hint">
+        <Text category="p2" appearance="hint">
           {item.summ?.toFixed(2)}
         </Text>
       </View>
