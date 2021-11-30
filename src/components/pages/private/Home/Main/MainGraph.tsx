@@ -1,7 +1,7 @@
 import {IndexPath, Select, SelectItem, Text} from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {LineChart, StackedBarChart} from 'react-native-chart-kit';
+import {LineChart} from 'react-native-chart-kit';
 import {useAppSelector} from '../../../../../redux';
 import {convertDate} from '../../../../../utils';
 import {DateSelect} from './Main';
@@ -58,7 +58,7 @@ const MainGraph: React.FC<Props> = ({
     backgroundGradientFrom: 'white',
     backgroundGradientTo: 'white',
     decimalPlaces: 2, // optional, defaults to 2dp
-    color: () => `black`,
+    color: () => `gray`,
     labelColor: () => `black`,
     style: {
       borderRadius: 16,
@@ -114,8 +114,8 @@ const MainGraph: React.FC<Props> = ({
 
       {mainGraph.length ? (
         <LineChart
-          style={{paddingLeft: 16, marginTop: 15}}
-          yLabelsOffset={1}
+          style={{marginTop: 15}}
+          yLabelsOffset={-30}
           data={datasets}
           width={screenWidth}
           height={256}
