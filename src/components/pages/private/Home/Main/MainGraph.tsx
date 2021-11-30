@@ -1,7 +1,7 @@
 import {IndexPath, Select, SelectItem, Text} from '@ui-kitten/components';
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Grid, LineChart, YAxis} from 'react-native-svg-charts';
+import React, {useEffect, useState} from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import {LineChart, StackedBarChart} from 'react-native-chart-kit';
 import {useAppSelector} from '../../../../../redux';
 import {convertDate} from '../../../../../utils';
 import {DateSelect} from './Main';
@@ -21,21 +21,54 @@ const MainGraph: React.FC<Props> = ({
 }) => {
   const mainGraph = useAppSelector(state => state.main.mainGraph);
 
-  const data1 = mainGraph.map(graph => graph.income);
-  const data2 = mainGraph.map(graph => graph.summ);
+  const [datasets, setDatasets] = useState({
+    labels: [],
+    datasets: [
+      {
+        data: [0],
+        color: () => '#0066FF',
+        strokeWidth: 2,
+      },
+    ],
+  });
 
-  const dataArray = [
-    {
-      data: data1,
-      svg: {stroke: '#0066FF'},
-    },
-    {
-      data: data2,
-      svg: {stroke: '#96C0FF'},
-    },
-  ];
+  useEffect(() => {
+    const dataset = {
+      labels: mainGraph.map(graph => convertDate(graph.date)),
+      datasets: [
+        {
+          data: mainGraph.map(graph => graph.summ),
+          color: () => '#0066FF',
+          strokeWidth: 2,
+        },
+        {
+          data: mainGraph.map(graph => graph.income),
+          color: () => '#96C0FF',
+          strokeWidth: 2,
+        },
+      ],
+    };
+    if (mainGraph.length) setDatasets(dataset);
+  }, [mainGraph]);
 
-  const axesSvg = {fontSize: 10, fill: 'grey'};
+  const screenWidth = Dimensions.get('window').width;
+
+  const chartConfig = {
+    backgroundColor: '#e26a00',
+    backgroundGradientFrom: 'white',
+    backgroundGradientTo: 'white',
+    decimalPlaces: 2, // optional, defaults to 2dp
+    color: () => `black`,
+    labelColor: () => `black`,
+    style: {
+      borderRadius: 16,
+    },
+    propsForDots: {
+      r: '6',
+      strokeWidth: '2',
+      stroke: 'white',
+    },
+  };
 
   const renderOption = (data: DateSelect, index: number) => (
     <SelectItem title={data.name} key={index} />
@@ -79,14 +112,15 @@ const MainGraph: React.FC<Props> = ({
         <Text category="label">Прибыль</Text>
       </View>
 
-      <View style={{height: 250, padding: 20, flexDirection: 'row'}}>
-        <YAxis data={data2} svg={axesSvg} />
-        <View style={{flex: 1, marginLeft: 10}}>
-          <LineChart style={{flex: 1}} data={dataArray}>
-            <Grid />
-          </LineChart>
-        </View>
-      </View>
+      <LineChart
+        style={{paddingLeft: 16, marginTop: 15}}
+        yLabelsOffset={1}
+        data={datasets}
+        width={screenWidth}
+        height={256}
+        chartConfig={chartConfig}
+        bezier
+      />
     </View>
   );
 };
