@@ -104,10 +104,11 @@ export const incrementDecrementDate = (date: Date, mode: 'inc' | 'dec') => {
   return d;
 };
 
+const reverseString = (str?: string): string =>
+  str ? str.split('').reverse().join('') : '';
+
 export const addSpaces = (value?: number): string => {
   const stringValues = value ? value.toFixed(2).split('.') : '';
-  const reverseString = (str?: string): string =>
-    str ? str.split('').reverse().join('') : '';
   const reversedResult = reverseString(stringValues[0])
     .match(/.{1,3}/g)
     ?.join(' ');
@@ -115,4 +116,30 @@ export const addSpaces = (value?: number): string => {
     reverseString(reversedResult || '') +
     (stringValues[1] ? '.' + stringValues[1] : '0')
   );
+};
+
+export const graphPrice = (price?: string): string => {
+  const priceArray = reverseString(price ? price.split('.')[0] : '').match(
+    /.{1,3}/g,
+  );
+  switch (priceArray?.length) {
+    case 1:
+      return priceArray[priceArray.length - 1];
+    case 2:
+      return (
+        priceArray[priceArray.length - 1] +
+        '.' +
+        priceArray[priceArray.length - 2].charAt(2) +
+        'К'
+      );
+    case 3:
+      return (
+        priceArray[priceArray.length - 1] +
+        '.' +
+        priceArray[priceArray.length - 2].charAt(2) +
+        'М'
+      );
+    default:
+      return '';
+  }
 };

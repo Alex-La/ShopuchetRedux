@@ -52,11 +52,11 @@ const Display: React.FC<Props> = ({navigation}) => {
         <View style={styles.row}>
           <View style={styles.imageWrap}>
             <UserIcon width={18} height={18} />
-            <Text category="p2" style={{marginLeft: 8}}>
+            <Text category="c2" style={{marginLeft: 8}}>
               Имя:
             </Text>
           </View>
-          <Text category="p2" status="primary">
+          <Text category="c2" status="primary">
             {user.nm}
           </Text>
         </View>
@@ -64,11 +64,11 @@ const Display: React.FC<Props> = ({navigation}) => {
         <View style={{...styles.row, marginTop: 10}}>
           <View style={styles.imageWrap}>
             <UserIcon width={18} height={18} />
-            <Text category="p2" style={{marginLeft: 8}}>
+            <Text category="c2" style={{marginLeft: 8}}>
               Фамилия:
             </Text>
           </View>
-          <Text category="p2" status="primary">
+          <Text category="c2" status="primary">
             {user.fn}
           </Text>
         </View>
@@ -79,11 +79,11 @@ const Display: React.FC<Props> = ({navigation}) => {
         <View style={styles.row}>
           <View style={styles.imageWrap}>
             <EmailIcon width={18} height={18} />
-            <Text category="p2" style={{marginLeft: 8}}>
+            <Text category="c2" style={{marginLeft: 8}}>
               E-mail:
             </Text>
           </View>
-          <Text category="p2" status="primary">
+          <Text category="c2" status="primary">
             {user.login}
           </Text>
         </View>
@@ -91,12 +91,14 @@ const Display: React.FC<Props> = ({navigation}) => {
         <View style={{...styles.row, marginTop: 10}}>
           <View style={styles.imageWrap}>
             <PhoneIcon width={18} height={18} />
-            <Text category="p2" style={{marginLeft: 8}}>
+            <Text category="c2" style={{marginLeft: 8}}>
               Телефон:
             </Text>
           </View>
-          <Text category="p2" status="primary">
-            {user.phone === 'null' ? 'Не указан' : user.phone}
+          <Text category="c2" status="primary">
+            {user.phone === 'null' || user.phone.length === 0
+              ? 'Не указан'
+              : user.phone}
           </Text>
         </View>
         <Divider style={{marginTop: 19}} />
@@ -106,11 +108,11 @@ const Display: React.FC<Props> = ({navigation}) => {
         <View style={styles.row}>
           <View style={styles.imageWrap}>
             <LockIcon width={18} height={18} />
-            <Text category="p2" style={{marginLeft: 8}}>
+            <Text category="c2" style={{marginLeft: 8}}>
               Пароль:
             </Text>
           </View>
-          <Text category="p2" status="primary">
+          <Text category="c2" status="primary">
             ********
           </Text>
         </View>

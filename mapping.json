@@ -50,6 +50,10 @@
 
     "text-caption-1-font-family": "Nunito-Bold",
     "text-caption-1-font-size": 14,
-    "text-caption-1-font-weight": "700"
+    "text-caption-1-font-weight": "700",
+
+    "text-caption-2-font-family": "Nunito-SemiBold",
+    "text-caption-2-font-size": 18,
+    "text-caption-2-font-weight": "600"
   }
 }

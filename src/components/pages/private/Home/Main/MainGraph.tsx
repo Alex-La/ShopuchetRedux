@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import {useAppSelector} from '../../../../../redux';
-import {convertDate} from '../../../../../utils';
+import {convertDate, graphPrice} from '../../../../../utils';
 import {DateSelect} from './Main';
 
 type Props = {
@@ -48,6 +48,7 @@ const MainGraph: React.FC<Props> = ({
         },
       ],
     };
+    console.log(JSON.stringify(dataset));
     if (mainGraph.length) setDatasets(dataset);
   }, [mainGraph]);
 
@@ -115,11 +116,11 @@ const MainGraph: React.FC<Props> = ({
       {mainGraph.length ? (
         <LineChart
           style={{marginTop: 15}}
-          yLabelsOffset={-30}
           data={datasets}
           width={screenWidth}
           height={256}
           chartConfig={chartConfig}
+          formatYLabel={graphPrice}
           bezier
         />
       ) : (
