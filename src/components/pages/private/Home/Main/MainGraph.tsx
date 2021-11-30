@@ -1,5 +1,5 @@
 import {IndexPath, Select, SelectItem, Text} from '@ui-kitten/components';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Grid, LineChart, YAxis} from 'react-native-svg-charts';
 import {useAppSelector} from '../../../../../redux';
