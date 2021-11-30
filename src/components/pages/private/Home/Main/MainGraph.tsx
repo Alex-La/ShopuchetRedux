@@ -24,10 +24,6 @@ const MainGraph: React.FC<Props> = ({
   const data1 = mainGraph.map(graph => graph.income);
   const data2 = mainGraph.map(graph => graph.summ);
 
-  useEffect(() => {
-    console.log(data1, data2);
-  }, [data1, data2]);
-
   const dataArray = [
     {
       data: data1,
