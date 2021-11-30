@@ -1,6 +1,7 @@
 import {IndexPath, Select, SelectItem, Text} from '@ui-kitten/components';
-import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Grid, LineChart, YAxis} from 'react-native-svg-charts';
 import {useAppSelector} from '../../../../../redux';
 import {convertDate} from '../../../../../utils';
 import {DateSelect} from './Main';
@@ -19,27 +20,26 @@ const MainGraph: React.FC<Props> = ({
   data,
 }) => {
   const mainGraph = useAppSelector(state => state.main.mainGraph);
-  const [sumPercent, setSumPercent] = useState<number>(0);
-  const [incomePercent, setIncomPercent] = useState<number>(0);
+
+  const data1 = mainGraph.map(graph => graph.income);
+  const data2 = mainGraph.map(graph => graph.summ);
 
   useEffect(() => {
-    setSumPercent(
-      (100 /
-        Math.max.apply(
-          null,
-          mainGraph.map(item => item.summ),
-        )) *
-        1.8,
-    );
-    setIncomPercent(
-      (100 /
-        Math.max.apply(
-          null,
-          mainGraph.map(item => item.income),
-        )) *
-        1.8,
-    );
-  }, [mainGraph]);
+    console.log(data1, data2);
+  }, [data1, data2]);
+
+  const dataArray = [
+    {
+      data: data1,
+      svg: {stroke: '#0066FF'},
+    },
+    {
+      data: data2,
+      svg: {stroke: '#96C0FF'},
+    },
+  ];
+
+  const axesSvg = {fontSize: 10, fill: 'grey'};
 
   const renderOption = (data: DateSelect, index: number) => (
     <SelectItem title={data.name} key={index} />
@@ -83,34 +83,14 @@ const MainGraph: React.FC<Props> = ({
         <Text category="label">Прибыль</Text>
       </View>
 
-      <ScrollView horizontal style={{marginTop: 25}}>
-        {mainGraph.map((item, index) => (
-          <View style={{alignItems: 'center'}} key={index}>
-            <View style={styles.graph}>
-              <View style={[styles.cnt, {width: item.summ * sumPercent}]}>
-                <Text category="label" style={styles.text}>
-                  {item.summ?.toFixed(2)}
-                </Text>
-              </View>
-              <View
-                style={[styles.income, {width: item.income * incomePercent}]}>
-                <Text category="label" style={styles.text}>
-                  {item.income.toFixed(2)}
-                </Text>
-              </View>
-            </View>
-            <Text category="label" style={{marginTop: 6}} appearance="hint">
-              {convertDate(item.date)}
-            </Text>
-            <Text category="label" style={{marginTop: 7, color: '#0066FF'}}>
-              {item.summ?.toFixed(2)}
-            </Text>
-            <Text category="label" style={{color: '#5E9CFA'}}>
-              {item.income.toFixed(2)}
-            </Text>
-          </View>
-        ))}
-      </ScrollView>
+      <View style={{height: 250, padding: 20, flexDirection: 'row'}}>
+        <YAxis data={data2} svg={axesSvg} />
+        <View style={{flex: 1, marginLeft: 10}}>
+          <LineChart style={{flex: 1}} data={dataArray}>
+            <Grid />
+          </LineChart>
+        </View>
+      </View>
     </View>
   );
 };
