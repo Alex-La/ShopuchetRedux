@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Divider, IndexPath, Layout, Text} from '@ui-kitten/components';
 
@@ -41,27 +41,38 @@ const Main: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
   const displayValue = data[selectedIndex.row];
 
-  useFocusEffect(
-    React.useCallback(() => {
-      if (tradePoint) dispatch(getMainData(false, tradePoint.gTochkaId));
-    }, [tradePoint]),
+  const loadMainData = useCallback(
+    (refreshing: boolean) => {
+      if (tradePoint) dispatch(getMainData(refreshing, tradePoint.gTochkaId));
+    },
+    [tradePoint],
   );
 
+  const loadMainGraph = useCallback(() => {
+    if (tradePoint)
+      dispatch(
+        getMainGraph(
+          tradePoint.gTochkaId,
+          displayValue.date.datebegin,
+          displayValue.date.dateend,
+        ),
+      );
+  }, [tradePoint, displayValue]);
+
   useFocusEffect(
-    React.useCallback(() => {
-      if (tradePoint)
-        dispatch(
-          getMainGraph(
-            tradePoint.gTochkaId,
-            displayValue.date.datebegin,
-            displayValue.date.dateend,
-          ),
-        );
-    }, [tradePoint, displayValue]),
+    useCallback(() => {
+      loadMainData(false);
+    }, [loadMainData]),
   );
 
-  const onRefresh = () =>
-    tradePoint && dispatch(getMainData(true, tradePoint.gTochkaId));
+  useFocusEffect(loadMainGraph);
+
+  const onRefresh = () => {
+    if (tradePoint) {
+      loadMainData(true);
+      loadMainGraph();
+    }
+  };
 
   if (loading) return <Preloader />;
 

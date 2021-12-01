@@ -48,7 +48,6 @@ const MainGraph: React.FC<Props> = ({
         },
       ],
     };
-    console.log(JSON.stringify(dataset));
     if (mainGraph.length) setDatasets(dataset);
   }, [mainGraph]);
 

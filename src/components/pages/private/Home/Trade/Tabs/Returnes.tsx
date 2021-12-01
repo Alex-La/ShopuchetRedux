@@ -115,7 +115,7 @@ const Returnes: React.FC<Props> = ({navigation, route}) => {
     return (
       <Layout style={styles.headerWrap}>
         <View style={styles.item}>
-          <Text appearance="hint">Всего приходов:</Text>
+          <Text appearance="hint">Всего возвратов:</Text>
           <Text status="primary">{head.cntReturn}</Text>
         </View>
         <View style={[styles.item, styles.margin]}>

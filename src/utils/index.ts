@@ -119,25 +119,18 @@ export const addSpaces = (value?: number): string => {
 };
 
 export const graphPrice = (price?: string): string => {
-  const priceArray = reverseString(price ? price.split('.')[0] : '').match(
-    /.{1,3}/g,
-  );
-  switch (priceArray?.length) {
+  const reversePrice = reverseString(price ? price?.split('.')[0] : '');
+  const reverseArray = reversePrice.match(/.{1,3}/g);
+  switch (reverseArray?.length) {
     case 1:
-      return priceArray[priceArray.length - 1];
+      return reverseString(reverseArray[0]);
     case 2:
       return (
-        priceArray[priceArray.length - 1] +
-        '.' +
-        priceArray[priceArray.length - 2].charAt(2) +
-        'К'
+        reverseString(reverseArray[1]) + '.' + reverseArray[0].charAt(2) + 'К'
       );
     case 3:
       return (
-        priceArray[priceArray.length - 1] +
-        '.' +
-        priceArray[priceArray.length - 2].charAt(2) +
-        'М'
+        reverseString(reverseArray[2]) + '.' + reverseArray[1].charAt(2) + 'М'
       );
     default:
       return '';
