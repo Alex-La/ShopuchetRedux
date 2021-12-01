@@ -67,7 +67,7 @@ const Remainders: React.FC = () => {
       const level = even(index) ? '2' : '1';
       return (
         <Layout key={index} level={level} style={styles.tableHead}>
-          <View style={{flex: 4}}>
+          <View style={{flex: 3}}>
             <Text style={{marginBottom: 3}}>{item.groupName}</Text>
             <Text category="p2" appearance="hint" numberOfLines={1}>
               {item.name}
@@ -117,7 +117,7 @@ const Remainders: React.FC = () => {
       <Divider />
 
       <View style={styles.tableHead}>
-        <Text appearance="hint" style={{flex: 4}}>
+        <Text appearance="hint" style={{flex: 3}}>
           Товар
         </Text>
         <Text appearance="hint" style={styles.tableHeadRemainder}>

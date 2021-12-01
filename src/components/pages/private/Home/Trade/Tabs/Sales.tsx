@@ -26,7 +26,7 @@ import {
   setLoading,
 } from '../../../../../../redux/actions/private/tradeActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/trade.types';
-import {convertDate} from '../../../../../../utils';
+import {addSpaces, convertDate} from '../../../../../../utils';
 import {SalesDetail} from '../../../../../../utils/api.types';
 import {
   PrivateStackNavigator,
@@ -109,11 +109,11 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
         </View>
         <View style={[styles.item, styles.margin]}>
           <Text appearance="hint">На сумму:</Text>
-          <Text status="primary">{sales.summ?.toFixed(2)}</Text>
+          <Text status="primary">{addSpaces(sales.summ)}</Text>
         </View>
         <View style={[styles.item, styles.margin]}>
           <Text appearance="hint">Прибыль:</Text>
-          <Text status="primary">{sales.income?.toFixed(2)}</Text>
+          <Text status="primary">{addSpaces(sales.income)}</Text>
         </View>
       </Layout>
     );

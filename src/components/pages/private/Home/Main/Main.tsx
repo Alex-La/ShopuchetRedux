@@ -14,6 +14,7 @@ import {useFocusEffect} from '@react-navigation/core';
 import MainGraph from './MainGraph';
 import Preloader from '../../../../loaders/Preloader';
 import {
+  addSpaces,
   DateRange,
   getDayRange,
   getMonthRange,
@@ -81,7 +82,7 @@ const Main: React.FC = () => {
       <RefreshScrollView refreshing={refreshing} onRefresh={onRefresh}>
         <View style={styles.row}>
           <Text status="primary">В кассе на сегодня:</Text>
-          <Text status="primary">{mainData.summ}</Text>
+          <Text status="primary">{addSpaces(mainData.summ, false)}</Text>
         </View>
         <Divider style={{marginTop: 16}} />
         <InfoItem title="Сегодня" info={mainData.day} />

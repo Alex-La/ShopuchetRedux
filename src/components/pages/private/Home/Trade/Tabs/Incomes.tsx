@@ -37,6 +37,7 @@ import {
 } from '../../../../../../utils/navigation.types';
 import Preloader from '../../../../../loaders/Preloader';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import {addSpaces} from '../../../../../../utils';
 
 const Trash = (props?: Partial<ImageProps>) => (
   <Icon {...props} name="trash-2-outline" />
@@ -120,7 +121,7 @@ const Incomes: React.FC<Props> = ({navigation, route}) => {
         </View>
         <View style={[styles.item, styles.margin]}>
           <Text appearance="hint">На сумму:</Text>
-          <Text status="primary">{head.sumReceipt?.toFixed(2)}</Text>
+          <Text status="primary">{addSpaces(head.sumReceipt)}</Text>
         </View>
       </Layout>
     );

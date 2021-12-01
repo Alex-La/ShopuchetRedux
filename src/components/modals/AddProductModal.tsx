@@ -69,8 +69,8 @@ const AddProductModal: React.FC<Props> = ({navigation, route}) => {
     if (index > -1) details[index] = detail;
     else details.push(detail);
     dispatch(setTradeSession({...tradeSession, details}));
-    navigation.goBack();
     route.params.callback();
+    navigation.goBack();
   };
 
   return (

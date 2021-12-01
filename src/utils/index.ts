@@ -107,14 +107,17 @@ export const incrementDecrementDate = (date: Date, mode: 'inc' | 'dec') => {
 const reverseString = (str?: string): string =>
   str ? str.split('').reverse().join('') : '';
 
-export const addSpaces = (value?: number): string => {
+export const addSpaces = (value?: number, fixed: boolean = true): string => {
   const stringValues = value ? value.toFixed(2).split('.') : '';
   const reversedResult = reverseString(stringValues[0])
     .match(/.{1,3}/g)
     ?.join(' ');
+  const result = reverseString(reversedResult || '');
+  const returnResult =
+    result.charAt(0) === '-' ? '-' + result.slice(2) : result;
   return (
-    reverseString(reversedResult || '') +
-    (stringValues[1] ? '.' + stringValues[1] : '0')
+    returnResult +
+    (stringValues[1] ? (fixed ? '.' + stringValues[1] : '') : '0')
   );
 };
 
