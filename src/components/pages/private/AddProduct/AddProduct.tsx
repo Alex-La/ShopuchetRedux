@@ -78,7 +78,7 @@ const AddProduct: React.FC<Props> = ({navigation}) => {
   const navToAddProductModal = (detail: TradeSessionDetail) =>
     navigation.navigate('AddProductModal', {
       detail,
-      callback: navigation.goBack,
+      callback: () => setTimeout(navigation.goBack, 100),
       type: 'new',
     });
 
