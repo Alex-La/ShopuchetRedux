@@ -108,17 +108,13 @@ const reverseString = (str?: string): string =>
   str ? str.split('').reverse().join('') : '';
 
 export const addSpaces = (value?: number, fixed: boolean = true): string => {
-  const stringValues = value ? value.toFixed(2).split('.') : '';
-  const reversedResult = reverseString(stringValues[0])
-    .match(/.{1,3}/g)
-    ?.join(' ');
-  const result = reverseString(reversedResult || '');
-  const returnResult =
-    result.charAt(0) === '-' ? '-' + result.slice(2) : result;
-  return (
-    returnResult +
-    (stringValues[1] ? (fixed ? '.' + stringValues[1] : '') : '0')
-  );
+  const stringVal = fixed ? value?.toFixed(2) : value?.toString();
+  if (fixed && stringVal) {
+    const parts = stringVal?.split('.');
+    parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return parts.join('.');
+  }
+  return stringVal?.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') || '';
 };
 
 export const graphPrice = (price?: string): string => {
