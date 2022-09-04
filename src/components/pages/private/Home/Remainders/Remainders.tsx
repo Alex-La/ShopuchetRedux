@@ -69,7 +69,7 @@ const Remainders: React.FC = () => {
         <Layout key={index} level={level} style={styles.tableHead}>
           <View style={{flex: 3}}>
             <Text style={{marginBottom: 3}}>{item.groupName}</Text>
-            <Text category="p2" appearance="hint" numberOfLines={1}>
+            <Text category="c1" appearance="hint" numberOfLines={2}>
               {item.name}
             </Text>
           </View>
