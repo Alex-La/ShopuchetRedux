@@ -49,8 +49,8 @@ type Props = {
   route: RouteProp<PrivateStackNavigator, 'PaymentModal'>;
 };
 
-const PaymentModal: React.FC<Props> = ({navigation, route}) => {
-  const {details, discount, type, newTrade, typeId, date} = useAppSelector(
+const PaymentModal: React.FC<Props> = ({navigation}) => {
+  const {details, discount, type, newTrade, typeId} = useAppSelector(
     state => state.trade.tradeSession,
   );
 
@@ -96,7 +96,7 @@ const PaymentModal: React.FC<Props> = ({navigation, route}) => {
       summCash: Number(summCash),
       summNoncash: Number(summNocash),
       summBonus: Number(summBonus),
-      date: convertDateTime(date),
+      date: convertDateTime(new Date()),
     };
 
     const saleDetails = details.map(detail => ({

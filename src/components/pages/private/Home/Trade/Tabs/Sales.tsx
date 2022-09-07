@@ -62,6 +62,10 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
     state => state.main.tradePoint?.gTochkaId,
   );
 
+  React.useEffect(() => {
+    console.log(details);
+  }, [details]);
+
   const loadSales = useCallback(
     (refreshing: boolean) => {
       if (currentGTochkaId)
