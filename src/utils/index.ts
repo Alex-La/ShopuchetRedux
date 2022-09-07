@@ -111,7 +111,7 @@ export const addSpaces = (value?: number, fixed: boolean = true): string => {
   const stringVal = fixed ? value?.toFixed(2) : value?.toString();
   if (fixed && stringVal) {
     const parts = stringVal?.split('.');
-    parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     return parts.join('.');
   }
   return stringVal?.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') || '';
