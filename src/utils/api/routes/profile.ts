@@ -14,6 +14,8 @@ const profile = {
         oldpwd ? `&oldpwd=${oldpwd}` : ''
       }${newpwd ? `&newpwd=${newpwd}` : ''}`,
     ),
+
+  deleteAccount: () => axiosInstance.post<string>('/api/deleteAccount'),
 };
 
 export default profile;

@@ -17,6 +17,7 @@ const Display: React.FC<Props> = ({navigation}) => {
   const theme = useTheme();
 
   const navToEdit = () => navigation.navigate('Edit', user);
+  const navToDelete = () => navigation.navigate('Delete');
 
   const RenderEditAction = (props: Partial<ImageProps>) => (
     <TouchableOpacity onPress={navToEdit}>
@@ -38,6 +39,10 @@ const Display: React.FC<Props> = ({navigation}) => {
 
   const LockIcon = (props: Partial<ImageProps>) => (
     <Icon {...props} name="lock-outline" fill={theme['color-basic-600']} />
+  );
+
+  const TrashIcon = (props: Partial<ImageProps>) => (
+    <Icon {...props} name="trash-2-outline" fill={theme['color-danger-500']} />
   );
 
   return (
@@ -115,6 +120,17 @@ const Display: React.FC<Props> = ({navigation}) => {
           <Text category="c2" status="primary">
             ********
           </Text>
+        </View>
+        <Divider style={{marginTop: 19}} />
+      </View>
+      <View style={{marginTop: 16}}>
+        <View style={[styles.row, {justifyContent: 'center'}]}>
+          <TouchableOpacity style={styles.imageWrap} onPress={navToDelete}>
+            <TrashIcon width={18} height={18} />
+            <Text category="c2" status="danger" style={{marginLeft: 8}}>
+              Удалить аккаунт
+            </Text>
+          </TouchableOpacity>
         </View>
         <Divider style={{marginTop: 19}} />
       </View>

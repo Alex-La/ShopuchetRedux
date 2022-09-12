@@ -46,3 +46,28 @@ export const updateUser =
         }),
     );
   };
+
+export const deleteAccount =
+  (): ThunkAction<
+    Promise<string>,
+    RootState,
+    unknown,
+    SetLoadingAction | SetUserAction
+  > =>
+  async dispatch => {
+    dispatch(setLoading(true));
+    return await new Promise(resolve =>
+      api.profile
+        .deleteAccount()
+        .then(res => {
+          if (res.status === 200) {
+            resolve(res.data);
+            dispatch(setLoading(false));
+          }
+        })
+        .catch(e => {
+          dispatch(setLoading(false));
+          dispatch(handleError(e.response));
+        }),
+    );
+  };

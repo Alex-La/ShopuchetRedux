@@ -82,4 +82,5 @@ export type ReportsTopTabNavigator = {
 export type ProfileStackNavigator = {
   Display: undefined;
   Edit: User;
+  Delete: undefined;
 };
