@@ -48,7 +48,12 @@ export const main = (state: Main = initialState, action: MainActions): Main => {
     case MAIN_ACTION_TYPES.SET_REFRESHING:
       return {...state, refreshing: (action as SetRefreshingAction).payload};
     case MAIN_ACTION_TYPES.SET_TRADE_POINTS:
-      return {...state, tradePoints: (action as SetTradePointsAction).payload};
+      return {
+        ...state,
+        tradePoints: (action as SetTradePointsAction).payload.sort(
+          (a, b) => a.recId - b.recId,
+        ),
+      };
     case MAIN_ACTION_TYPES.SET_TRADE_POINT:
       const tradeAction = action as SetTradePointAction;
       return {...state, tradePoint: tradeAction.payload};
