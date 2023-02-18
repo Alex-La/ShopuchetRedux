@@ -253,6 +253,8 @@ const PaymentModal: React.FC<Props> = ({navigation}) => {
                     style={{marginTop: 24}}
                     label="Сумма наличными"
                     selectTextOnFocus
+                    returnKeyLabel="Готово"
+                    returnKeyType="done"
                     keyboardType="decimal-pad"
                   />
                   <Input
@@ -264,6 +266,8 @@ const PaymentModal: React.FC<Props> = ({navigation}) => {
                     style={{marginTop: 16}}
                     label="Сумма безналом"
                     selectTextOnFocus
+                    returnKeyLabel="Готово"
+                    returnKeyType="done"
                     keyboardType="decimal-pad"
                   />
                 </>
@@ -279,6 +283,8 @@ const PaymentModal: React.FC<Props> = ({navigation}) => {
                   style={{marginTop: 24}}
                   label="Сумма к оплате"
                   selectTextOnFocus
+                  returnKeyLabel="Готово"
+                  returnKeyType="done"
                   keyboardType="decimal-pad"
                 />
               )}
@@ -290,6 +296,8 @@ const PaymentModal: React.FC<Props> = ({navigation}) => {
                   style={{marginTop: 16}}
                   label="Сумма бонусами"
                   selectTextOnFocus
+                  returnKeyLabel="Готово"
+                  returnKeyType="done"
                   keyboardType="decimal-pad"
                 />
               )}

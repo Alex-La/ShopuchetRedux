@@ -92,6 +92,8 @@ const AddFriendModal: React.FC<Props> = ({navigation}) => {
             accessoryLeft={EmailIcon}
             placeholder="E-mail"
             size="large"
+            returnKeyLabel="Готово"
+            returnKeyType="done"
             keyboardType="email-address"
             keyboardAppearance={theme}
             value={email}

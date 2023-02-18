@@ -93,6 +93,8 @@ const ListHeaderComponent: React.FC = () => {
               onBlur={handleBlur}
               style={{backgroundColor: 'transparent', borderWidth: 0}}
               selectTextOnFocus
+              returnKeyLabel="Готово"
+              returnKeyType="done"
               keyboardType="number-pad"
               textStyle={styles.percentage}
             />

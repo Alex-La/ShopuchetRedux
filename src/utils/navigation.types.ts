@@ -15,6 +15,7 @@ export enum TradeOptionsTypes {
   SALE = 'Новая продажа',
   INCOME = 'Приход',
   RETURN = 'Возврат',
+  WRITED_OFF = 'Списание',
   RECEIPT = 'RECEIPT',
 }
 
@@ -68,6 +69,7 @@ export type TradeTopTabNavigator = {
   Sales: TradeNav;
   Incomes: TradeNav;
   Returns: TradeNav;
+  WritedOff: TradeNav;
 };
 
 export type ReportsTopTabNavigator = {

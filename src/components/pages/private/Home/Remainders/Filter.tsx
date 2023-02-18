@@ -38,6 +38,8 @@ const Filter: React.FC<Props> = ({
       <Input
         value={cnt}
         onChangeText={setCnt}
+        returnKeyLabel="Готово"
+        returnKeyType="done"
         keyboardType="number-pad"
         keyboardAppearance={theme}
         selectTextOnFocus

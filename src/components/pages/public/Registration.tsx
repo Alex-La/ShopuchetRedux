@@ -120,6 +120,8 @@ const Registration: React.FC<Props> = ({navigation}) => {
             accessoryLeft={Email}
             placeholder="E-mail"
             style={styles.input}
+            returnKeyLabel="Готово"
+            returnKeyType="done"
             keyboardType="email-address"
             size="large"
             keyboardAppearance={theme}
@@ -130,6 +132,8 @@ const Registration: React.FC<Props> = ({navigation}) => {
             accessoryLeft={Phone}
             placeholder="Телефон"
             style={styles.input}
+            returnKeyLabel="Готово"
+            returnKeyType="done"
             keyboardType="phone-pad"
             size="large"
             keyboardAppearance={theme}

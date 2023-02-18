@@ -72,6 +72,12 @@ const trade = {
         datebegin,
       )}&dateend=${convertDate(dateend)}&page=${page}&rows=20&type=1`,
     ),
+  getWritedOff: (gtochkaid: number, datebegin: Date, dateend: Date) =>
+    axiosInstance.get<Sales>(
+      `/api/readwritedoff?gtochkaid=${gtochkaid}&datebegin=${convertDate(
+        datebegin,
+      )}&dateend=${convertDate(dateend)}`,
+    ),
   getZakazInfo: (zakazid: number) =>
     axiosInstance.get<ZakazInfo>(`/api/readzakazdetails?zakazid=${zakazid}`),
   deleteSale: (zakazIds: number[]) =>

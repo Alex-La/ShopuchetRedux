@@ -97,6 +97,8 @@ const Edit: React.FC<Props> = ({navigation, route}) => {
           style={{marginTop: 10}}
           value={email}
           onChangeText={setEmail}
+          returnKeyLabel="Готово"
+          returnKeyType="done"
           keyboardType={'email-address'}
           keyboardAppearance={appTheme.theme}
         />
@@ -106,6 +108,8 @@ const Edit: React.FC<Props> = ({navigation, route}) => {
           style={{marginTop: 10}}
           value={phone}
           onChangeText={setPhone}
+          returnKeyLabel="Готово"
+          returnKeyType="done"
           keyboardType={'phone-pad'}
           keyboardAppearance={appTheme.theme}
         />

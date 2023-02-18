@@ -99,6 +99,8 @@ const Login: React.FC<Props> = ({navigation}) => {
             onChangeText={handleChangeEmail}
             accessoryLeft={Email}
             placeholder="E-mail"
+            returnKeyLabel="Готово"
+            returnKeyType="done"
             keyboardType="email-address"
             keyboardAppearance={theme}
             style={styles.email}

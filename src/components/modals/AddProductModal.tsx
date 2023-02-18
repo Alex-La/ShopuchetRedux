@@ -89,6 +89,8 @@ const AddProductModal: React.FC<Props> = ({navigation, route}) => {
             placeholder="Количество"
             style={{marginTop: 30}}
             selectTextOnFocus
+            returnKeyLabel="Готово"
+            returnKeyType="done"
             keyboardType="decimal-pad"
           />
           <Input
@@ -98,6 +100,8 @@ const AddProductModal: React.FC<Props> = ({navigation, route}) => {
             placeholder="Цена"
             style={{marginTop: 15}}
             selectTextOnFocus
+            returnKeyLabel="Готово"
+            returnKeyType="done"
             keyboardType="decimal-pad"
           />
           <View style={{marginTop: 30, flexDirection: 'row'}}>

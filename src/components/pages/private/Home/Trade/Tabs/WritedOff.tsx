@@ -22,7 +22,7 @@ import {
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux';
 import {
-  getSales,
+  getWritedOff,
   setLoading,
 } from '../../../../../../redux/actions/private/tradeActions';
 import {TAB_TYPES} from '../../../../../../redux/types/private/trade.types';
@@ -46,27 +46,36 @@ const Edit = (props?: Partial<ImageProps>) => (
 
 type Props = {
   navigation: NativeStackNavigationProp<PrivateStackNavigator>;
-  route: RouteProp<TradeTopTabNavigator, 'Sales'>;
+  route: RouteProp<TradeTopTabNavigator, 'WritedOff'>;
 };
 
-const Sales: React.FC<Props> = ({navigation, route}) => {
+const WritedOff: React.FC<Props> = ({navigation, route}) => {
   const theme = useTheme();
 
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(state => state.trade.tabs.sales.loading);
-  const refreshing = useAppSelector(state => state.trade.tabs.sales.refreshing);
-  const {sales, details} = useAppSelector(state => state.trade.tabs.sales.data);
+  const loading = useAppSelector(state => state.trade.tabs.writedOff.loading);
+  const refreshing = useAppSelector(
+    state => state.trade.tabs.writedOff.refreshing,
+  );
+  const {sales, details} = useAppSelector(
+    state => state.trade.tabs.writedOff.data,
+  );
   const date = useAppSelector(state => state.trade.date);
   const index = useAppSelector(state => state.trade.index);
   const currentGTochkaId = useAppSelector(
     state => state.main.tradePoint?.gTochkaId,
   );
 
-  const loadSales = useCallback(
+  const loadWritedOff = useCallback(
     (refreshing: boolean) => {
       if (currentGTochkaId)
         dispatch(
-          getSales(refreshing, currentGTochkaId, date.datebegin, date.dateend),
+          getWritedOff(
+            refreshing,
+            currentGTochkaId,
+            date.datebegin,
+            date.dateend,
+          ),
         );
     },
     [currentGTochkaId, date],
@@ -74,7 +83,7 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
 
   useEffect(() => {
     if (route.params.reload) {
-      loadSales(false);
+      loadWritedOff(false);
       navigation.setParams({reload: false});
     }
   }, [route.params]);
@@ -82,19 +91,19 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
   useFocusEffect(
     useCallback(() => {
       if (currentGTochkaId) {
-        loadSales(false);
+        loadWritedOff(false);
       }
-      return () => dispatch(setLoading(true, TAB_TYPES.SALES));
+      return () => dispatch(setLoading(true, TAB_TYPES.WRITED_OFF));
     }, [currentGTochkaId, date]),
   );
 
-  const handleRefresh = () => loadSales(true);
+  const handleRefresh = () => loadWritedOff(true);
 
   const navToNewTrade = () =>
     currentGTochkaId &&
     navigation.navigate('TradeOptions', {
-      type: TradeOptionsTypes.SALE,
-      sessionType: TAB_TYPES.SALES,
+      type: TradeOptionsTypes.WRITED_OFF,
+      sessionType: TAB_TYPES.WRITED_OFF,
       edit: true,
       newTrade: true,
       typeId: currentGTochkaId,
@@ -104,7 +113,7 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
     return (
       <Layout style={styles.headerWrap}>
         <View style={styles.item}>
-          <Text appearance="hint">Всего продаж:</Text>
+          <Text appearance="hint">Всего cписаний:</Text>
           <Text status="primary">{sales.cnt}</Text>
         </View>
         <View style={[styles.item, styles.margin]}>
@@ -135,13 +144,10 @@ const Sales: React.FC<Props> = ({navigation, route}) => {
             dateIndex={index}
             theme={theme}
             navigation={navigation}
-            reload={() => loadSales(false)}
+            reload={() => loadWritedOff(false)}
           />
         )}
       />
-      <Button onPress={navToNewTrade} style={styles.button}>
-        Новая продажа
-      </Button>
     </Layout>
   );
 };
@@ -178,7 +184,7 @@ const ListItem: React.FC<ListItemProps> = ({
       refresh: reload,
       deleteId: item.zakazId,
       type: TradeOptionsTypes.SALE,
-      sessionType: TAB_TYPES.SALES,
+      sessionType: TAB_TYPES.WRITED_OFF,
     });
   };
 
@@ -188,7 +194,7 @@ const ListItem: React.FC<ListItemProps> = ({
       edit: true,
       newTrade: false,
       type: TradeOptionsTypes.RECEIPT,
-      sessionType: TAB_TYPES.SALES,
+      sessionType: TAB_TYPES.WRITED_OFF,
       recId: item.recId,
       zakazId: item.zakazId,
       typeId: item.zakazId,
@@ -201,7 +207,7 @@ const ListItem: React.FC<ListItemProps> = ({
       edit: false,
       newTrade: false,
       type: TradeOptionsTypes.RECEIPT,
-      sessionType: TAB_TYPES.SALES,
+      sessionType: TAB_TYPES.WRITED_OFF,
       recId: item.recId,
       zakazId: item.zakazId,
       typeId: item.zakazId,
@@ -274,7 +280,7 @@ const ListItem: React.FC<ListItemProps> = ({
       style={{marginHorizontal: 16, marginVertical: 8}}>
       <OverflowMenu
         anchor={RenderAnchor}
-        visible={visible}
+        visible={false} // set 'visible' when time comes true
         onBackdropPress={() => setVisible(false)}
         backdropStyle={{
           backgroundColor: theme['color-basic-transparent-focus'],
@@ -297,4 +303,4 @@ const styles = StyleSheet.create({
   margin: {marginTop: 6},
 });
 
-export default Sales;
+export default WritedOff;

@@ -11,6 +11,7 @@ import {
   SetReturnAction,
   SetSalesAction,
   SetTradeSessionAction,
+  SetWritedOffAction,
   TAB_TYPES,
   TradeActions,
   TradeSession,
@@ -71,6 +72,11 @@ export const setReturns = (
   type: TRADE_ACTION_TYPES.SET_RETURN,
   loadMore,
   payload: returns,
+});
+
+export const setWritedOff = (writedOff: Sales): SetWritedOffAction => ({
+  type: TRADE_ACTION_TYPES.SET_WRITED_OFF,
+  payload: writedOff,
 });
 
 export const getSales =
@@ -145,6 +151,30 @@ export const getReturns =
       .catch(e => {
         dispatch(setLoading(false, TAB_TYPES.RETURN));
         dispatch(setRefreshing(false, TAB_TYPES.RETURN));
+        dispatch(handleError(e.response));
+      });
+  };
+
+export const getWritedOff =
+  (
+    refreshing: boolean,
+    gtochkaid: number,
+    datebegin: Date,
+    dateend: Date,
+  ): ThunkAction<any, RootState, unknown, TradeActions> =>
+  dispatch => {
+    if (refreshing) dispatch(setRefreshing(true, TAB_TYPES.WRITED_OFF));
+    else dispatch(setLoading(true, TAB_TYPES.WRITED_OFF));
+    api.trade
+      .getWritedOff(gtochkaid, datebegin, dateend)
+      .then(res => {
+        dispatch(setWritedOff(res.data));
+        dispatch(setRefreshing(false, TAB_TYPES.WRITED_OFF));
+        dispatch(setLoading(false, TAB_TYPES.WRITED_OFF));
+      })
+      .catch(e => {
+        dispatch(setRefreshing(false, TAB_TYPES.WRITED_OFF));
+        dispatch(setLoading(false, TAB_TYPES.WRITED_OFF));
         dispatch(handleError(e.response));
       });
   };

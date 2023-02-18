@@ -8,6 +8,7 @@ import {TradeTopTabNavigator} from '../../../../../utils/navigation.types';
 import Sales from './Tabs/Sales';
 import Incomes from './Tabs/Incomes';
 import Returnes from './Tabs/Returnes';
+import WritedOff from './Tabs/WritedOff';
 
 const TopTab = createMaterialTopTabNavigator<TradeTopTabNavigator>();
 
@@ -54,6 +55,14 @@ const Trade: React.FC = () => {
         component={Returnes}
         options={{
           tabBarLabel: ({focused}) => renderLabel('Возвраты', focused),
+        }}
+        initialParams={{reload: false}}
+      />
+      <TopTab.Screen
+        name="WritedOff"
+        component={WritedOff}
+        options={{
+          tabBarLabel: ({focused}) => renderLabel('Списания', focused),
         }}
         initialParams={{reload: false}}
       />

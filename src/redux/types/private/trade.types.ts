@@ -11,6 +11,7 @@ export type Tabs = {
   sales: Tab<Sales>;
   income: Tab<Sklad>;
   return: Tab<Sklad>;
+  writedOff: Tab<Sales>;
 };
 
 export type Trade = {
@@ -24,6 +25,7 @@ export enum TAB_TYPES {
   SALES = 'sales',
   INCOME = 'income',
   RETURN = 'return',
+  WRITED_OFF = 'writedOff',
 }
 
 export type TradeSessionDetail = {
@@ -56,6 +58,7 @@ export enum TRADE_ACTION_TYPES {
   SET_SALES = 'TRADE_ACTION/SET_SALES',
   SET_INCOME = 'TRADE_ACTION/SET_INCOME',
   SET_RETURN = 'TRADE_ACTION/SET_RETURN',
+  SET_WRITED_OFF = 'TRADE_ACTION/SET_WRITED_OFF',
   SET_TRADE_SESSION = 'TRADE_ACTION/SET_TRADE_SESSION',
 }
 
@@ -88,6 +91,11 @@ export type SetReturnAction = {
   payload: Sklad;
 };
 
+export type SetWritedOffAction = {
+  type: string;
+  payload: Sales;
+};
+
 export type SetTradeSessionAction = {
   type: string;
   payload: TradeSession;
@@ -98,6 +106,7 @@ export type TradeActions =
   | SetSalesAction
   | SetIncomeAction
   | SetReturnAction
+  | SetWritedOffAction
   | SetTradeSessionAction
   | SetLoadingAction
   | SetRefreshingAction;

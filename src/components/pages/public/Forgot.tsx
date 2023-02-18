@@ -60,6 +60,8 @@ const Forgot: React.FC<Props> = ({navigation}) => {
             onChangeText={setEmail}
             accessoryLeft={Email}
             placeholder="E-mail"
+            returnKeyLabel="Готово"
+            returnKeyType="done"
             keyboardType="email-address"
             keyboardAppearance={theme}
             style={styles.email}

@@ -7,6 +7,7 @@ import {
   SetReturnAction,
   SetSalesAction,
   SetTradeSessionAction,
+  SetWritedOffAction,
   Tab,
   TAB_TYPES,
   Trade,
@@ -66,6 +67,7 @@ export const initialState: Trade = {
     sales: initialSale,
     income: initialSklad,
     return: initialSklad,
+    writedOff: initialSale,
   },
   tradeSession: initialTradeSession,
 };
@@ -161,6 +163,15 @@ export const trade = (
         tabs: {
           ...state.tabs,
           return: {...state.tabs.return, data: returnAction.payload},
+        },
+      };
+    case TRADE_ACTION_TYPES.SET_WRITED_OFF:
+      const writedOffAction = action as SetWritedOffAction;
+      return {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          writedOff: {...state.tabs.writedOff, data: writedOffAction.payload},
         },
       };
     case TRADE_ACTION_TYPES.SET_TRADE_SESSION:
