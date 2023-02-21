@@ -30,6 +30,7 @@ const Trade: React.FC = () => {
       screenOptions={{
         lazy: true,
         lazyPlaceholder: () => <Preloader />,
+        tabBarScrollEnabled: true,
         tabBarStyle: {backgroundColor: theme['background-basic-color-1']},
         tabBarPressColor: theme['color-primary-300'],
         tabBarIndicatorStyle: {backgroundColor: theme['color-primary-500']},
